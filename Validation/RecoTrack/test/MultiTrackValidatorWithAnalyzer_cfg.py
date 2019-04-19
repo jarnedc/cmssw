@@ -1,6 +1,20 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process("MULTITRACKVALIDATOR")
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing('python')
+
+
+
+## data or MC options
+options.register(
+        'isData',True,VarParsing.multiplicity.singleton,VarParsing.varType.bool,
+        'flag to indicate data or MC')
+
+options.register(
+        'maxEvts',20,VarParsing.multiplicity.singleton,VarParsing.varType.int,
+        'flag to indicate max events to process')
+
+process = cms.Process("MULTITRACKVALIDATORWITHANALYZER")
 
 # message logger
 process.MessageLogger = cms.Service("MessageLogger",
@@ -9,10 +23,10 @@ process.MessageLogger = cms.Service("MessageLogger",
 
 
 #Adding SimpleMemoryCheck service:
-#process.SimpleMemoryCheck=cms.Service("SimpleMemoryCheck",
-#                                   ignoreTotal=cms.untracked.int32(1),
-#                                   oncePerEventMode=cms.untracked.bool(True)
-#)
+process.SimpleMemoryCheck=cms.Service("SimpleMemoryCheck",
+                                   ignoreTotal=cms.untracked.int32(1),
+                                   oncePerEventMode=cms.untracked.bool(True)
+)
 
 process.Timing = cms.Service("Timing"
     ,summaryOnly = cms.untracked.bool(True)
@@ -24,24 +38,8 @@ secFiles = cms.untracked.vstring()
 #source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
 source = cms.Source ("PoolSource",fileNames = readFiles,duplicateCheckMode = cms.untracked.string ("noDuplicateCheck"))
 readFiles.extend( [
-	#'file:///user/jdeclerc/CMSSW_8_0_30/src/STEP2_Sexaq/SUS-RunIISummer16DR80Premix-00068_1_374_noAssoc.root'
-	#'file:///user/jdeclerc/CMSSW_8_0_30/src/STEP2_Sexaq/SUS-RunIISummer16DR80Premix-00068_step1_1_374_withGenParticlesPlusGEANTInputToTrackingTruthProducerOriginalChargePtCut_STEP2.root'
-	#'file:///user/jdeclerc/CMSSW_8_0_30/src/STEP2_Sexaq/testStep2_GenParticlesPlusGEANT_inside.root'
-	#'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/STEP2_Sexaq/SUS-RunIISummer16DR80Premix-00068_1_38.root'
-
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined001.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined002.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined003.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined004.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined005.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined006.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined007.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined008.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined009.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined010.root',
-	'dcap://maite.iihe.ac.be/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/Sexaquark_13TeV_trial6_FEVT_GenParticlesPlusGEANTInputTrackingTruthProducer/combined/crmc_Sexaq_combined011.root'
-
+       #'/store/relval/CMSSW_7_4_0_pre6/RelValTTbar_13/GEN-SIM-RECO/PU25ns_MCRUN2_74_V1-v3/00000/067739D0-AFAB-E411-AC03-0025905A48D0.root'
+	'file:///user/jdeclerc/CMSSW_8_0_30/src/STEP2_Sexaq/SUS-RunIISummer16DR80Premix-00068_1_374_noAssoc.root'
                   ] )
 
 
@@ -94,7 +92,7 @@ secFiles.extend( [
         '/store/relval/CMSSW_7_4_0_pre6/RelValTTbar_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PU25ns_MCRUN2_74_V1-v3/00000/FE40619E-61AB-E411-B453-0025905B858C.root',
         ] )
 process.source = source
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(400) )
 
 ### conditions
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
@@ -108,7 +106,7 @@ process.load("Configuration.StandardSequences.RawToDigi_cff")
 process.load("Configuration.EventContent.EventContent_cff")
 process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
-process.load('Configuration.StandardSequences.EndOfProcess_cff')
+#process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
 
 ### validation-specific includes
@@ -116,23 +114,24 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load("SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi")
 process.load("SimTracker.TrackAssociation.trackingParticleRecoTrackAsssociation_cfi")
 process.load("Validation.RecoTrack.cuts_cff")
-process.load("Validation.RecoTrack.MultiTrackValidator_cff")
-process.load("DQMServices.Components.EDMtoMEConverter_cff")
+process.load("Validation.RecoTrack.MultiTrackValidatorWithAnalyzer_cff")
+#process.load("DQMServices.Components.EDMtoMEConverter_cff")
 process.load("Validation.Configuration.postValidation_cff")
 process.quickTrackAssociatorByHits.SimToRecoDenominator = 'reco'
 
 
 
 
-########### configuration MultiTrackValidator ########
-process.multiTrackValidator.associators = ['quickTrackAssociatorByHits']
-
-process.multiTrackValidator.label = ['cutsRecoTracks']
-process.multiTrackValidator.histoProducerAlgoBlock.useLogPt = True
-process.multiTrackValidator.histoProducerAlgoBlock.minPt = 0.1
-process.multiTrackValidator.histoProducerAlgoBlock.maxPt = 3000.0
-process.multiTrackValidator.histoProducerAlgoBlock.nintPt = 40
-process.multiTrackValidator.UseAssociators = True
+########### configuration MultiTrackValidatorWithAnalyzer ########
+process.multiTrackValidatorWithAnalyzer.associators = ['quickTrackAssociatorByHits']
+#process.cutsRecoTracks.quality = ['','highPurity']
+#process.cutsRecoTracks.quality = ['']
+process.multiTrackValidatorWithAnalyzer.label = ['cutsRecoTracks']
+process.multiTrackValidatorWithAnalyzer.histoProducerAlgoBlock.useLogPt = True
+process.multiTrackValidatorWithAnalyzer.histoProducerAlgoBlock.minPt = 0.1
+process.multiTrackValidatorWithAnalyzer.histoProducerAlgoBlock.maxPt = 3000.0
+process.multiTrackValidatorWithAnalyzer.histoProducerAlgoBlock.nintPt = 40
+process.multiTrackValidatorWithAnalyzer.UseAssociators = True
 
 
 #process.load("Validation.RecoTrack.cuts_cff")
@@ -148,7 +147,7 @@ process.load("SimTracker.TrackerHitAssociation.tpClusterProducer_cfi")
 process.validation = cms.Sequence(
     process.tpClusterProducer *
     process.quickTrackAssociatorByHits *
-    process.multiTrackValidator
+    process.multiTrackValidatorWithAnalyzer
 )
 
 # paths
@@ -158,31 +157,44 @@ process.val = cms.Path(
 )
 
 # Output definition
-process.DQMoutput = cms.OutputModule("PoolOutputModule",
-    splitLevel = cms.untracked.int32(0),
-    outputCommands = process.DQMEventContent.outputCommands,
-    fileName = cms.untracked.string('file:MTV_inDQM.root'),
-    dataset = cms.untracked.PSet(
-        filterName = cms.untracked.string(''),
-        dataTier = cms.untracked.string('DQM')
-    )
+#process.DQMoutput = cms.OutputModule("PoolOutputModule",
+#    splitLevel = cms.untracked.int32(0),
+#    outputCommands = process.DQMEventContent.outputCommands,
+#    fileName = cms.untracked.string('file:MTV_inDQM.root'),
+#    dataset = cms.untracked.PSet(
+#        filterName = cms.untracked.string(''),
+#        dataTier = cms.untracked.string('DQM')
+#    )
+#)
+
+process.p = cms.Path(
+  process.cutsRecoTracks*process.tpClusterProducer*process.quickTrackAssociatorByHits*process.multiTrackValidatorWithAnalyzer
 )
 
-process.endjob_step = cms.EndPath(process.endOfProcess)
-process.DQMoutput_step = cms.EndPath(process.DQMoutput)
-
-
-process.schedule = cms.Schedule(
-      process.val,process.endjob_step,process.DQMoutput_step
+process.out = cms.OutputModule("PoolOutputModule",
+    outputCommands = cms.untracked.vstring('keep *'),
+    fileName = cms.untracked.string('analyzed_sexaq_Step2_trackAssociator_edm.root')
 )
 
-process.options = cms.untracked.PSet(
-    numberOfThreads = cms.untracked.uint32(1),
-    numberOfStreams = cms.untracked.uint32(1),
-    wantSummary = cms.untracked.bool(True)
-)
+#process.endjob_step = cms.EndPath(process.out)
+#process.DQMoutput_step = cms.EndPath(process.DQMoutput)
+
+
+#process.schedule = cms.Schedule(
+      #process.val,process.endjob_step,process.DQMoutput_step
+ #     process.val,process.endjob_step
+#)
+
 
 process.TFileService = cms.Service('TFileService',
     fileName = cms.string('analyzed_sexaq_Step2_trackAssociator.root')
 )
+
+#process.options = cms.untracked.PSet(
+#    numberOfThreads = cms.untracked.uint32(8),
+#    numberOfStreams = cms.untracked.uint32(8),
+#    wantSummary = cms.untracked.bool(True)
+#)
+
+process.ep = cms.EndPath(process.out)
 

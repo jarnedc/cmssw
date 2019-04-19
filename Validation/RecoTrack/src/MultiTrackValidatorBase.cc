@@ -16,9 +16,15 @@ MultiTrackValidatorBase::MultiTrackValidatorBase(const edm::ParameterSet& pset, 
 
   label = pset.getParameter< std::vector<edm::InputTag> >("label");
   if (isSeed) {
-    for (auto& itag : label) labelTokenSeed.push_back(iC.consumes<edm::View<TrajectorySeed> >(itag));
+    for (auto& itag : label){
+	 std::cout << "The label for seeds: " << itag << std::endl;
+	 labelTokenSeed.push_back(iC.consumes<edm::View<TrajectorySeed> >(itag));
+    }	
   } else {
-    for (auto& itag : label) labelToken.push_back(iC.consumes<edm::View<reco::Track> >(itag));
+    for (auto& itag : label){
+	 std::cout << "The label for tracks: " << itag << std::endl;
+	 labelToken.push_back(iC.consumes<edm::View<reco::Track> >(itag));
+    }
   }
   bsSrc = iC.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>( "beamSpot" ));
 

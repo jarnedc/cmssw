@@ -27,7 +27,7 @@ trackingParticles = cms.PSet(
 	),
 	simTrackCollection = cms.InputTag('g4SimHits'),
 	simVertexCollection = cms.InputTag('g4SimHits'),
-	genParticleCollection = cms.InputTag('genParticles'),
+	genParticleCollection = cms.InputTag('genParticlesPlusGEANT'),
 	removeDeadModules = cms.bool(False), # currently not implemented
 	volumeRadius = cms.double(120.0),
 	volumeZ = cms.double(300.0),

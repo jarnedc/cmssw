@@ -5,8 +5,8 @@ from SimTracker.TrackAssociation.LhcParametersDefinerForTP_cfi import *
 from SimTracker.TrackAssociation.CosmicParametersDefinerForTP_cfi import *
 from Validation.RecoTrack.MTVHistoProducerAlgoForTrackerBlock_cfi import *
 
-multiTrackValidator = cms.EDAnalyzer(
-    "MultiTrackValidator",
+multiTrackValidatorWithAnalyzer = cms.EDAnalyzer(
+    "MultiTrackValidatorWithAnalyzer",
 
     ### general settings ###
     # selection of TP for evaluation of efficiency #
@@ -55,11 +55,7 @@ multiTrackValidator = cms.EDAnalyzer(
     simHitTpMapTag = cms.InputTag("simHitTPAssocProducer"),               # needed by CosmicParametersDefinerForTP
 
     ### reco input configuration ###
-    label = cms.VInputTag(
-	cms.InputTag("generalTracks"),
-	#cms.InputTag("displacedTracks")
-    ),
-    genParticlePlusGEANT= cms.InputTag("genParticlesPlusGEANT"),
+    label = cms.VInputTag(cms.InputTag("generalTracks")),
     beamSpot = cms.InputTag("offlineBeamSpot"),
 
     ### dE/dx configuration ###
@@ -91,5 +87,5 @@ multiTrackValidator = cms.EDAnalyzer(
 
 from Configuration.StandardSequences.Eras import eras
 if eras.fastSim.isChosen():
-    multiTrackValidator.sim = [cms.InputTag('famosSimHits','TrackerHits')]
+    multiTrackValidatorWithAnalyzer.sim = [cms.InputTag('famosSimHits','TrackerHits')]
     
