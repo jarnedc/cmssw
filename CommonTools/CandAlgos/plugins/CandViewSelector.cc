@@ -19,9 +19,8 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 
 typedef SingleObjectSelector<
-          edm::View<reco::Candidate>,
-  StringCutObjectSelector<reco::Candidate, true>,
-          reco::CandidateCollection
+          reco::CandidateView,
+  StringCutObjectSelector<reco::Candidate, true>
        > CandViewSelector;
 
 DEFINE_FWK_MODULE(CandViewSelector);

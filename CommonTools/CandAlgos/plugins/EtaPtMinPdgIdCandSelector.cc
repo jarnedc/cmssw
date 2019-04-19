@@ -23,7 +23,7 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 
 typedef SingleObjectSelector<
-          reco::CandidateCollection,
+          reco::CandidateView,
           AndSelector<
             PtMinSelector,
             EtaRangeSelector,

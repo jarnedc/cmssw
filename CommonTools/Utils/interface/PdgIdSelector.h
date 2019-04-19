@@ -22,7 +22,7 @@ struct PdgIdSelector {
     * this = o; return * this;
   }
   template<typename T>
-  bool operator()( const T & t ) const { 
+  bool operator()( const T & t ) const {
     return std::find( begin_, end_, abs( t.pdgId() ) ) != end_;
   }
 private:
