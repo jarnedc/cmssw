@@ -54,37 +54,49 @@ G4SQInelasticCrossSection::~G4SQInelasticCrossSection()
 
 G4bool G4SQInelasticCrossSection::IsElementApplicable(
                              const G4DynamicParticle* aPart, 
-			     G4int Z, const G4Material*)
+                             G4int Z, const G4Material*)
 {
   return ((0 < Z) && 
           (aPart->GetDefinition() == theSQ || 
-	   aPart->GetDefinition() == theAntiSQ)
-	 );
+           aPart->GetDefinition() == theAntiSQ)
+         );
 }
 
 
 G4double G4SQInelasticCrossSection::GetElementCrossSection(
-			     const G4DynamicParticle* aPart, 
-			     G4int Z, const G4Material*)
+                             const G4DynamicParticle* aPart, 
+                             G4int Z, const G4Material*)
 {
-  if (aPart->GetDefinition() == theAntiSQ) {
-    return GetSQCrossSection(aPart->GetKineticEnergy(), Z);
+  // return zero fo particle instead of antiparticle
+  // sexaquark interaction with matter expected really tiny
+  if (aPart->GetDefinition() != theAntiSQ) return 0;
+
+  // zero crosssection for particle at rest
+  if(aPart->GetKineticEnergy() <= 0.0) { return 0.0; }
+
+  // get the atomic weight (to estimate nr neutrons)
+  G4double A = nist->GetAtomicMassAmu(Z);
+  // increase the passed number of neutrons, so that we can mimic
+  // a flat interaction probability as a function of neutron density
+  // in the detector
+  // it's a hack, but it's much more efficient than running millions
+  // of events with a very low cross section
+  G4double coeff = 1e20;
+  const_cast<G4DynamicParticle*>(aPart)->SetMagneticMoment(aPart->GetMagneticMoment()+coeff*(A-Z));
+  // now calculate the cross section
+  G4double baseXS = 1.*millibarn; //40. * millibarn;
+  // the following scaled xsection makes that we get instead of an exponential
+  // rather a flat interaction probability over an ensemble of particles
+  // for all material (neutrons) in the detector
+  G4double scaledXS = baseXS;// / (1 - baseXS * aPart->GetMagneticMoment());
+//std::cout << "$$$ XSW scale " << scaledXS << " pt=" <<
+//aPart->GetMomentum().perp()/GeV
+//<< " eta=" << aPart->GetMomentum().eta() << std::endl;
+
+  // now return the scaled cross section
+  if (scaledXS < 0) {  // eventually this scaling violates unitarity
+    return 1; // in which case we return a huge cross section
   } else {
-    return 0; // return zero fo particle instead of antiparticle
-              // sexaquark interaction with matter expected really tiny
+    return scaledXS;
   }
 }
-
-
-G4double G4SQInelasticCrossSection::GetSQCrossSection(
-			     G4double kineticEnergy, G4int Z)
-{
-  if(kineticEnergy <= 0.0) { return 0.0; }
- 
-  G4double a = nist->GetAtomicMassAmu(Z);
-  G4double nOfNeutrons = a - Z;
-  G4double crossSection = nOfNeutrons * 1200. * millibarn; //can put it to 1200
-
-  return crossSection;
-}
-
