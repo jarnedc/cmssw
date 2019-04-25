@@ -11,7 +11,7 @@ config.General.requestName = 'SIMBackground_'+day+'_'+version
 
 config.section_('JobType') 
 config.JobType.pluginName = 'Analysis' 
-config.JobType.psetName = 'sexaq_cfg_original_withGrandDaughterpdgIdCuts_for_CRAB.py' 
+config.JobType.psetName = 'sexaq_cfg_original_withoutGrandDaughterpdgIdCuts_for_CRAB.py' 
 
 config.section_('Data') 
 config.Data.unitsPerJob = 1 

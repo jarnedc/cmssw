@@ -123,7 +123,6 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
 
 
 ###################
-#process.p = cms.Path(process.genParticles * process.generatorSmeared * process.antisexaqev  * process.fiducial)
 process.p = cms.Path(process.genParticles * process.generatorSmeared * process.fiducial * process.NumAntiSexaqevFilter )
 process.outpath = cms.EndPath(process.GEN)
 
