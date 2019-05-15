@@ -42,14 +42,18 @@
 #include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "DataFormats/TrackingRecHit/interface/TrackingRecHit.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
-
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/Candidate/interface/Candidate.h"
+#include "DataFormats/Math/interface/deltaPhi.h"
+#include <TVector3.h>
 class dso_hidden V0Fitter {
 
    public:
       V0Fitter(const edm::ParameterSet& theParams, edm::ConsumesCollector && iC);
       void fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
          reco::VertexCompositeCandidateCollection & k, reco::VertexCompositeCandidateCollection & l);
-
+      TVector3 PCA_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point);
+      double dxy_signed_line_point(TVector3, TVector3, TVector3);
    private:
 
       bool vertexFitter_;
@@ -81,6 +85,7 @@ class dso_hidden V0Fitter {
       edm::EDGetTokenT<reco::BeamSpot> token_beamSpot;
       bool useVertex_;
       edm::EDGetTokenT<std::vector<reco::Vertex>> token_vertices;
+      edm::EDGetTokenT<std::vector<reco::GenParticle>> m_genParticlesToken_SIM_GEANT;
 };
 
 #endif

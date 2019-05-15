@@ -32,6 +32,7 @@
 #include <memory>
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "CommonTools/CandUtils/interface/AddFourMomenta.h"
+#include <fstream>
 
 // pdg mass constants
 namespace {
@@ -50,8 +51,9 @@ V0Fitter::V0Fitter(const edm::ParameterSet& theParameters, edm::ConsumesCollecto
 {
    token_beamSpot = iC.consumes<reco::BeamSpot>(theParameters.getParameter<edm::InputTag>("beamSpot"));
    useVertex_ = theParameters.getParameter<bool>("useVertex");
-   token_vertices = iC.consumes<std::vector<reco::Vertex>>(theParameters.getParameter<edm::InputTag>("vertices"));
-
+   token_vertices = iC.consumes<std::vector<reco::Vertex>>(theParameters.getParameter<edm::InputTag>("vertices")); 
+   m_genParticlesToken_SIM_GEANT = iC.consumes<std::vector<reco::GenParticle> >(theParameters.getParameter<edm::InputTag>("genCollection_SIM_GEANT"));
+	
    token_tracks = iC.consumes<reco::TrackCollection>(theParameters.getParameter<edm::InputTag>("trackRecoAlgorithm"));
    vertexFitter_ = theParameters.getParameter<bool>("vertexFitter");
    useRefTracks_ = theParameters.getParameter<bool>("useRefTracks");
@@ -83,6 +85,34 @@ V0Fitter::V0Fitter(const edm::ParameterSet& theParameters, edm::ConsumesCollecto
    lambdaMassCut_ = theParameters.getParameter<double>("lambdaMassCut");
 }
 
+TVector3 V0Fitter::PCA_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point){
+   //first move the vector along the line to the starting point of Point_line
+   double normalise = sqrt(Vector_along_line.X()*Vector_along_line.X()+Vector_along_line.Y()*Vector_along_line.Y()+Vector_along_line.Z()*Vector_along_line.Z());
+   TVector3 n(Vector_along_line.X()/normalise,Vector_along_line.Y()/normalise,Vector_along_line.Z()/normalise);
+   TVector3 a = Point_line;
+   TVector3 p = Point;
+
+   //see https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line (Vector formulation)
+   TVector3 vector_PCA = (a-p)-((a-p)*n)*n;
+   return vector_PCA ;
+}
+
+double V0Fitter::dxy_signed_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in){
+
+  //looking at XY, so put the Z component to 0 first
+  TVector3 Point_line(Point_line_in.X(),Point_line_in.Y(),0.);
+  TVector3 Vector_along_line(Vector_along_line_in.X(), Vector_along_line_in.Y(),0.);
+  TVector3 Point(Point_in.X(), Point_in.Y(), 0.);
+
+  TVector3 shortest_distance = PCA_line_point(Point_line,  Vector_along_line, Point);
+  double dxy_signed_line_point = sqrt(shortest_distance.X()*shortest_distance.X()+shortest_distance.Y()*shortest_distance.Y());
+
+  TVector3 displacement = Point_line - Point;
+  if(displacement*Vector_along_line<0)dxy_signed_line_point = -dxy_signed_line_point;
+
+  return dxy_signed_line_point;
+}
+
 // method containing the algorithm for vertex reconstruction
 void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
    reco::VertexCompositeCandidateCollection & theKshorts, reco::VertexCompositeCandidateCollection & theLambdas)
@@ -98,7 +128,81 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
    iEvent.getByToken(token_beamSpot, theBeamSpotHandle);
    const reco::BeamSpot* theBeamSpot = theBeamSpotHandle.product();
    math::XYZPoint referencePos(theBeamSpot->position());
-  
+ 
+   //load the GEN particlesPlusGEANT to find examine the reconstruction of antiS daughters
+   edm::Handle<vector<reco::GenParticle>> h_genParticles;
+   iEvent.getByToken(m_genParticlesToken_SIM_GEANT, h_genParticles);
+
+   //loop over the GEN particles and push back a vector which contains math::XYZVector with the momenta of the Ks and Lambda
+   std::vector<math::XYZVector> momentaKsAntiS;
+   std::vector<TVector3> decayVertexKsAntiS;
+   std::vector<double>phiKsAntiS;
+   std::vector<double>etaKsAntiS;
+   std::vector<double>dxyKsAntiS;
+
+   std::vector<math::XYZVector> momentaAntiLambdaAntiS;
+   std::vector<TVector3> decayVertexAntiLambdaAntiS;
+   std::vector<double>phiAntiLambdaAntiS;
+   std::vector<double>etaAntiLambdaAntiS;
+   std::vector<double>dxyAntiLambdaAntiS;
+
+   if(h_genParticles.isValid()){
+      for(unsigned int i = 0; i < h_genParticles->size(); ++i){//loop all genparticlesPlusGEANT
+	const reco::Candidate * genParticle = &h_genParticles->at(i);
+	//all antiS with 2 daughters
+	if(genParticle->pdgId() == -1020000020 && genParticle->numberOfDaughters() == 2 ) {
+		TVector3 beamspot(referencePos.X(), referencePos.Y(), referencePos.Z());
+
+		momentaKsAntiS.push_back(genParticle->daughter(0)->momentum());
+		momentaAntiLambdaAntiS.push_back(genParticle->daughter(1)->momentum());
+		
+		phiKsAntiS.push_back(genParticle->daughter(0)->phi());		
+		etaKsAntiS.push_back(genParticle->daughter(0)->eta());		
+	
+		phiAntiLambdaAntiS.push_back(genParticle->daughter(1)->phi());		
+		etaAntiLambdaAntiS.push_back(genParticle->daughter(1)->eta());		
+
+		TVector3 CreationVertexKsAntiS(genParticle->daughter(0)->vx(),genParticle->daughter(0)->vy(),genParticle->daughter(0)->vz());
+		TVector3 MomentumKsAntiS(genParticle->daughter(0)->px(),genParticle->daughter(0)->py(),genParticle->daughter(0)->pz());
+		dxyKsAntiS.push_back(dxy_signed_line_point(CreationVertexKsAntiS, MomentumKsAntiS, beamspot));
+
+		TVector3 CreationVertexAntiLambdaAntiS(genParticle->daughter(1)->vx(),genParticle->daughter(1)->vy(),genParticle->daughter(1)->vz());
+		TVector3 MomentumAntiLambdaAntiS(genParticle->daughter(1)->px(),genParticle->daughter(1)->py(),genParticle->daughter(1)->pz());
+		dxyAntiLambdaAntiS.push_back(dxy_signed_line_point(CreationVertexAntiLambdaAntiS, MomentumAntiLambdaAntiS, beamspot));
+
+		TVector3 vertex;
+		if(genParticle->daughter(0)->numberOfDaughters()>0){
+			vertex.SetX(genParticle->daughter(0)->daughter(0)->vx());
+			vertex.SetY(genParticle->daughter(0)->daughter(0)->vy());
+			vertex.SetZ(genParticle->daughter(0)->daughter(0)->vz());
+			decayVertexKsAntiS.push_back(vertex);
+			
+		}
+		else{
+			vertex.SetX(999);
+			vertex.SetY(999);
+			vertex.SetZ(999);
+			decayVertexKsAntiS.push_back(vertex);
+		
+		}
+		if(genParticle->daughter(1)->numberOfDaughters()>0){
+			vertex.SetX(genParticle->daughter(1)->daughter(0)->vx());
+			vertex.SetY(genParticle->daughter(1)->daughter(0)->vy());
+			vertex.SetZ(genParticle->daughter(1)->daughter(0)->vz());
+			decayVertexAntiLambdaAntiS.push_back(vertex);
+		}
+		else{
+			vertex.SetX(999);
+			vertex.SetY(999);
+			vertex.SetZ(999);
+			decayVertexAntiLambdaAntiS.push_back(vertex);
+		
+		}
+        }
+      }
+    }
+
+ 
    reco::Vertex referenceVtx;
    if (useVertex_) {
       edm::Handle<std::vector<reco::Vertex>> vertices;
@@ -106,6 +210,7 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
       referenceVtx = vertices->at(0);
       referencePos = referenceVtx.position();
    }
+
 
    edm::ESHandle<MagneticField> theMagneticFieldHandle;
    iSetup.get<IdealMagneticFieldRecord>().get(theMagneticFieldHandle);
@@ -153,32 +258,93 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
          continue;
       }
 
+      //calculate the sum of the track momenta. This gives an initial guess on the direction of the V0. Check if this direction matches the direction of any of the daughters of the antiS, like this you know that this V0 comes from the antiS...
+      math::XYZVector SumMomentaTrackPair = theTrackRefs[trdx1]->momentum() + theTrackRefs[trdx2]->momentum();
+
+      double deltaRKsmin = 999;
+      int indexMatchedKs = -1;
+      for(unsigned int i = 0 ; i < momentaKsAntiS.size(); i++){
+	double deltaPhi = reco::deltaPhi(SumMomentaTrackPair.phi(),momentaKsAntiS[i].phi());
+	double deltaEta = SumMomentaTrackPair.eta()-momentaKsAntiS[i].eta();
+	double deltaR = sqrt(deltaPhi*deltaPhi+deltaEta*deltaEta);
+	if(deltaR < deltaRKsmin){ deltaRKsmin = deltaR; indexMatchedKs = i;}
+      }
+
+      bool tracksAreFromAntiSKs = false;
+      if(deltaRKsmin<0.03) tracksAreFromAntiSKs = true;
+
+      double deltaRAntiLambdamin = 999;
+      int indexMatchedAntiLambda = -1;
+      for(unsigned int i = 0 ; i < momentaAntiLambdaAntiS.size(); i++){
+	double deltaPhi = reco::deltaPhi(SumMomentaTrackPair.phi(),momentaAntiLambdaAntiS[i].phi());
+	double deltaEta = SumMomentaTrackPair.eta()-momentaAntiLambdaAntiS[i].eta();
+	double deltaR = sqrt(deltaPhi*deltaPhi+deltaEta*deltaEta);
+	if(deltaR < deltaRAntiLambdamin){  deltaRAntiLambdamin = deltaR; indexMatchedAntiLambda = i;}
+      }
+
+
+      bool tracksAreFromAntiSAntiLambda = false;
+      if(deltaRAntiLambdamin<0.03) tracksAreFromAntiSAntiLambda = true;
+
+      if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda) std::cout << "--------------------------------------------------------------------------------------------------------------------" << std::endl;
+      if(tracksAreFromAntiSKs)std::cout << "found 2 tracks which sum of momenta is pointing within deltaR < 0.03 of a Ks from the antiS, deltaR: " << deltaRKsmin << std::endl;
+      if(tracksAreFromAntiSAntiLambda)std::cout << "found 2 tracks which sum of momenta is pointing within deltaR < 0.03 of a AntiL from the AntiS, deltaR: " << deltaRAntiLambdamin << std::endl;
+      std::ofstream outfile;
+      outfile.open("statisticsV0Cuts.txt", std::ios_base::app);
+
+      if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda) outfile << "------- \n";
       // measure distance between tracks at their closest approach
-      if (!posTransTkPtr->impactPointTSCP().isValid() || !negTransTkPtr->impactPointTSCP().isValid()) continue;
+      if (!posTransTkPtr->impactPointTSCP().isValid() || !negTransTkPtr->impactPointTSCP().isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "0 \n";};continue;}
       FreeTrajectoryState const & posState = posTransTkPtr->impactPointTSCP().theState();
       FreeTrajectoryState const & negState = negTransTkPtr->impactPointTSCP().theState();
       ClosestApproachInRPhi cApp;
       cApp.calculate(posState, negState);
-      if (!cApp.status()) continue;
+      
+      if (!cApp.status()){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "1";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "1 passed ClosestApproachInRPhi valid" << std::endl;}
       float dca = std::abs(cApp.distance());
-      if (dca > tkDCACut_) continue;
+
+      //print the R-PHI closest approach, because often goes wrong here
+      if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda) std::cout << "closest approach in R-Phi: "<< dca << std::endl;
+      //print some info on the GEN KS and AntiLambda to see if there is a correlation between their parameters and large R-Phi PCA
+      if(tracksAreFromAntiSKs)std::cout << "Ks decays at: " << decayVertexKsAntiS[indexMatchedKs].X() << "," << decayVertexKsAntiS[indexMatchedKs].Y() << "," << decayVertexKsAntiS[indexMatchedKs].Z() << std::endl;
+      if(tracksAreFromAntiSKs)std::cout << "Ks phi, eta: " << phiKsAntiS[indexMatchedKs] << "," << etaKsAntiS[indexMatchedKs] << std::endl ;
+      if(tracksAreFromAntiSKs)std::cout << "Ks dxy: " << dxyKsAntiS[indexMatchedKs] <<  std::endl ;
+
+      if(tracksAreFromAntiSAntiLambda)std::cout << "AntiLambda decays at: " << decayVertexAntiLambdaAntiS[indexMatchedAntiLambda].X() << "," << decayVertexAntiLambdaAntiS[indexMatchedAntiLambda].Y() << "," << decayVertexAntiLambdaAntiS[indexMatchedAntiLambda].Z() << std::endl;
+      if(tracksAreFromAntiSAntiLambda)std::cout << "AntiLambda phi, eta: " << phiAntiLambdaAntiS[indexMatchedAntiLambda] << "," << etaAntiLambdaAntiS[indexMatchedAntiLambda] << std::endl ;
+      if(tracksAreFromAntiSAntiLambda)std::cout << "AntiLambda dxy: " << dxyAntiLambdaAntiS[indexMatchedAntiLambda] <<  std::endl ;
+
+      //print some parameters of the V0 tracks:
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda)   std::cout << "negTrack: innerposition xyz: " << negativeTrackRef->innerPosition().X() << "," << negativeTrackRef->innerPosition().Y() << "," << negativeTrackRef->innerPosition().Z()  << std::endl;
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda)   std::cout << "posTrack: innerposition xyz: " << positiveTrackRef->innerPosition().X() << "," << positiveTrackRef->innerPosition().Y() << "," << positiveTrackRef->innerPosition().Z()  << std::endl;
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda)   std::cout << "negTrack: innermomentum xyz: " << negativeTrackRef->innerMomentum().X() << "," << negativeTrackRef->innerMomentum().Y() << "," << negativeTrackRef->innerMomentum().Z()  << std::endl;
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda)   std::cout << "posTrack: innermomentum xyz: " << positiveTrackRef->innerMomentum().X() << "," << positiveTrackRef->innerMomentum().Y() << "," << positiveTrackRef->innerMomentum().Z()  << std::endl;
+
+
+      if (dca > tkDCACut_){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "2 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "2 passed closest approach cut" << std::endl;}
 
       // the POCA should at least be in the sensitive volume
       GlobalPoint cxPt = cApp.crossingPoint();
-      if (sqrt(cxPt.x()*cxPt.x() + cxPt.y()*cxPt.y()) > 120. || std::abs(cxPt.z()) > 300.) continue;
+      if (sqrt(cxPt.x()*cxPt.x() + cxPt.y()*cxPt.y()) > 120. || std::abs(cxPt.z()) > 300.) {if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "3 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "3 passed POCA cut" << std::endl;}
 
       // the tracks should at least point in the same quadrant
       TrajectoryStateClosestToPoint const & posTSCP = posTransTkPtr->trajectoryStateClosestToPoint(cxPt);
       TrajectoryStateClosestToPoint const & negTSCP = negTransTkPtr->trajectoryStateClosestToPoint(cxPt);
-      if (!posTSCP.isValid() || !negTSCP.isValid()) continue;
-      if (posTSCP.momentum().dot(negTSCP.momentum())  < 0) continue;
+      if (!posTSCP.isValid() || !negTSCP.isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "4 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "4 passed quadrant cut" << std::endl;}
+      if (posTSCP.momentum().dot(negTSCP.momentum())  < 0) {if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "5 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "5 passed cut on dot product" << std::endl;}
      
       // calculate mPiPi
       double totalE = sqrt(posTSCP.momentum().mag2() + piMassSquared) + sqrt(negTSCP.momentum().mag2() + piMassSquared);
       double totalESq = totalE*totalE;
       double totalPSq = (posTSCP.momentum() + negTSCP.momentum()).mag2();
       double mass = sqrt(totalESq - totalPSq);
-      if (mass > mPiPiCut_) continue;
+      if (mass > mPiPiCut_){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "6 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "6 passed inv mass PiPi cut" << std::endl;}
 
       // Fill the vector of TransientTracks to send to KVF
       std::vector<reco::TransientTrack> transTracks;
@@ -196,10 +362,12 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
          AdaptiveVertexFitter theAdaptiveFitter;
          theRecoVertex = theAdaptiveFitter.vertex(transTracks);
       }
-      if (!theRecoVertex.isValid()) continue;
+      if (!theRecoVertex.isValid()){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "7 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "7 passed vertexing" << std::endl;}
      
       reco::Vertex theVtx = theRecoVertex;
-      if (theVtx.normalizedChi2() > vtxChi2Cut_) continue;
+      if (theVtx.normalizedChi2() > vtxChi2Cut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "8 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "8 passed vertex Chi2 cut" << std::endl;}
       GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z());
 
       // 2D decay significance
@@ -208,27 +376,30 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
       SVector3 distVecXY(vtxPos.x()-referencePos.x(), vtxPos.y()-referencePos.y(), 0.);
       double distMagXY = ROOT::Math::Mag(distVecXY);
       double sigmaDistMagXY = sqrt(ROOT::Math::Similarity(totalCov, distVecXY)) / distMagXY;
-      if (distMagXY/sigmaDistMagXY < vtxDecaySigXYCut_) continue;
+      if (distMagXY/sigmaDistMagXY < vtxDecaySigXYCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "9 \n";}; continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "9 passed 2D sign cut" << std::endl;}
 
       // 3D decay significance
       SVector3 distVecXYZ(vtxPos.x()-referencePos.x(), vtxPos.y()-referencePos.y(), vtxPos.z()-referencePos.z());
       double distMagXYZ = ROOT::Math::Mag(distVecXYZ);
       double sigmaDistMagXYZ = sqrt(ROOT::Math::Similarity(totalCov, distVecXYZ)) / distMagXYZ;
-      if (distMagXYZ/sigmaDistMagXYZ < vtxDecaySigXYZCut_) continue;
+      if (distMagXYZ/sigmaDistMagXYZ < vtxDecaySigXYZCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "10 \n";}; continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "10 passed 3D sign cut" << std::endl;}
 
       // make sure the vertex radius is within the inner track hit radius
       if (innerHitPosCut_ > 0. && positiveTrackRef->innerOk()) {
          reco::Vertex::Point posTkHitPos = positiveTrackRef->innerPosition();
          double posTkHitPosD2 =  (posTkHitPos.x()-referencePos.x())*(posTkHitPos.x()-referencePos.x()) +
             (posTkHitPos.y()-referencePos.y())*(posTkHitPos.y()-referencePos.y());
-         if (sqrt(posTkHitPosD2) < (distMagXY - sigmaDistMagXY*innerHitPosCut_)) continue;
+         if (sqrt(posTkHitPosD2) < (distMagXY - sigmaDistMagXY*innerHitPosCut_)){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "11 \n";}; continue;}
       }
       if (innerHitPosCut_ > 0. && negativeTrackRef->innerOk()) {
          reco::Vertex::Point negTkHitPos = negativeTrackRef->innerPosition();
          double negTkHitPosD2 = (negTkHitPos.x()-referencePos.x())*(negTkHitPos.x()-referencePos.x()) +
             (negTkHitPos.y()-referencePos.y())*(negTkHitPos.y()-referencePos.y());
-         if (sqrt(negTkHitPosD2) < (distMagXY - sigmaDistMagXY*innerHitPosCut_)) continue;
+         if (sqrt(negTkHitPosD2) < (distMagXY - sigmaDistMagXY*innerHitPosCut_)){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "11 \n";}; continue;}
       }
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "11 passed inner track hit radius cut" << std::endl;}
       
       std::auto_ptr<TrajectoryStateClosestToPoint> trajPlus;
       std::auto_ptr<TrajectoryStateClosestToPoint> trajMins;
@@ -255,7 +426,7 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
          trajMins.reset(new TrajectoryStateClosestToPoint(negTransTkPtr->trajectoryStateClosestToPoint(vtxPos)));
       }
 
-      if (trajPlus.get() == 0 || trajMins.get() == 0 || !trajPlus->isValid() || !trajMins->isValid()) continue;
+      if (trajPlus.get() == 0 || trajMins.get() == 0 || !trajPlus->isValid() || !trajMins->isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "12 \n";}; continue;}
 
       GlobalVector positiveP(trajPlus->momentum());
       GlobalVector negativeP(trajMins->momentum());
@@ -267,13 +438,15 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
       double px = totalP.x();
       double py = totalP.y();
       double angleXY = (dx*px+dy*py)/(sqrt(dx*dx+dy*dy)*sqrt(px*px+py*py));
-      if (angleXY < cosThetaXYCut_) continue;
+      if (angleXY < cosThetaXYCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "13 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "13 passed 2D pointing angle cut" << std::endl;}
 
       // 3D pointing angle
       double dz = theVtx.z()-referencePos.z();
       double pz = totalP.z();
       double angleXYZ = (dx*px+dy*py+dz*pz)/(sqrt(dx*dx+dy*dy+dz*dz)*sqrt(px*px+py*py+pz*pz));
-      if (angleXYZ < cosThetaXYZCut_) continue;
+      if (angleXYZ < cosThetaXYZCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "14 \n";};continue;}
+      if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "14 passed 3D pointing angle cut" << std::endl;}
 
       // calculate total energy of V0 3 ways: assume it's a kShort, a Lambda, or a LambdaBar.
       double piPlusE = sqrt(positiveP.mag2() + piMassSquared);

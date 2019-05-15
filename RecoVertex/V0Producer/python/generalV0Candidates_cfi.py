@@ -10,6 +10,9 @@ generalV0Candidates = cms.EDProducer("V0Producer",
    # which vertex collection to use
    vertices = cms.InputTag('offlinePrimaryVertices'),
 
+   #load also the genparticlesPlusGEANT to understand which V0s are linked to an antiS
+   genCollection_SIM_GEANT =  cms.InputTag("genParticlesPlusGEANT","","SIM"), 
+
    # which TrackCollection to use for vertexing
    trackRecoAlgorithm = cms.InputTag('generalTracks'),
 
@@ -48,13 +51,15 @@ generalV0Candidates = cms.EDProducer("V0Producer",
    # -- miscellaneous cuts --
    # POCA distance between tracks <
    tkDCACut = cms.double(2.),
+   #tkDCACut = cms.double(999999.),
    # invariant mass of track pair - assuming both tracks are charged pions <
    mPiPiCut = cms.double(0.6),
    # check if either track has a hit radially inside the vertex position minus this number times the sigma of the vertex fit
    # note: Set this to -1 to disable this cut, which MUST be done if you want to run V0Producer on the AOD track collection!
-   innerHitPosCut = cms.double(4.),
+   innerHitPosCut = cms.double(-1),
    # cos(angleXY) between x and p of V0 candidate >
-   cosThetaXYCut = cms.double(0.9998),
+   #cosThetaXYCut = cms.double(0.9998),
+   cosThetaXYCut = cms.double(0.),
    # cos(angleXYZ) between x and p of V0 candidate >
    cosThetaXYZCut = cms.double(-2.),
 
