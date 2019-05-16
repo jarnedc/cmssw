@@ -304,97 +304,97 @@ void AnalyzerAllSteps::beginJob() {
      TFileDirectory dir_GENRECO_KsNonAntiS = dir_RECO.mkdir("GENRECO_KsNonAntiS");
      histos_th1f["h_GENRECO_KsNonAntiS_deltaR"] = dir_GENRECO_KsNonAntiS.make<TH1F>(b+"h_GENRECO_KsNonAntiS_deltaR", "; #DeltaR(gen Ks, reco Ks); #entries ",1000,0,10);
 
-     TFileDirectory dir_GENRECO_Matched_KsNonAntiS = dir_GENRECO_KsNonAntiS.mkdir("GENRECO_Matched_KsNonAntiS");
-     histos_th1f["h_GENRECO_Matched_KsNonAntiS_pt"] = dir_GENRECO_Matched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsNonAntiS_pt", "; Ks pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_GENRECO_Matched_KsNonAntiS_eta"] = dir_GENRECO_Matched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsNonAntiS_eta", "; Ks #eta; #entries ",200,-10,10);
-     histos_th1f["h_GENRECO_Matched_KsNonAntiS_phi"] = dir_GENRECO_Matched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsNonAntiS_phi", "; Ks #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_GENRECO_Matched_KsNonAntiS_vx_vy"] = dir_GENRECO_Matched_KsNonAntiS.make<TH2F>(b+"h2_GENRECO_Matched_KsNonAntiS_vx_vy", "; Ks vx (cm); Ks vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_GENRECO_Matched_KsNonAntiS_vx_vz"] = dir_GENRECO_Matched_KsNonAntiS.make<TH2F>(b+"h2_GENRECO_Matched_KsNonAntiS_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_Matched_KsNonAntiS_lxy"] = dir_GENRECO_Matched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsNonAntiS_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_GENRECO_Matched_KsNonAntiS_vz"] =  dir_GENRECO_Matched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsNonAntiS_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_GENRECO_Matched_KsNonAntiS_dxy"] = dir_GENRECO_Matched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsNonAntiS_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
+     TFileDirectory dir_GENRECO_RECO_KsNonAntiS = dir_GENRECO_KsNonAntiS.mkdir("GENRECO_RECO_KsNonAntiS");
+     histos_th1f["h_GENRECO_RECO_KsNonAntiS_pt"] = dir_GENRECO_RECO_KsNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsNonAntiS_pt", "; Ks pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_RECO_KsNonAntiS_eta"] = dir_GENRECO_RECO_KsNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsNonAntiS_eta", "; Ks #eta; #entries ",200,-10,10);
+     histos_th1f["h_GENRECO_RECO_KsNonAntiS_phi"] = dir_GENRECO_RECO_KsNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsNonAntiS_phi", "; Ks #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_GENRECO_RECO_KsNonAntiS_vx_vy"] = dir_GENRECO_RECO_KsNonAntiS.make<TH2F>(b+"h2_GENRECO_RECO_KsNonAntiS_vx_vy", "; Ks vx (cm); Ks vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_GENRECO_RECO_KsNonAntiS_vx_vz"] = dir_GENRECO_RECO_KsNonAntiS.make<TH2F>(b+"h2_GENRECO_RECO_KsNonAntiS_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_GENRECO_RECO_KsNonAntiS_lxy"] = dir_GENRECO_RECO_KsNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsNonAntiS_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_GENRECO_RECO_KsNonAntiS_vz"] =  dir_GENRECO_RECO_KsNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsNonAntiS_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_GENRECO_RECO_KsNonAntiS_dxy"] = dir_GENRECO_RECO_KsNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsNonAntiS_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
 
-     TFileDirectory dir_GENRECO_NotMatched_KsNonAntiS = dir_GENRECO_KsNonAntiS.mkdir("GENRECO_NotMatched_KsNonAntiS");
-     histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_pt"] = dir_GENRECO_NotMatched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsNonAntiS_pt", "; Ks pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_eta"] = dir_GENRECO_NotMatched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsNonAntiS_eta", "; Ks #eta; #entries ",200,-10,10);
-     histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_phi"] = dir_GENRECO_NotMatched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsNonAntiS_phi", "; Ks #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_GENRECO_NotMatched_KsNonAntiS_vx_vy"] = dir_GENRECO_NotMatched_KsNonAntiS.make<TH2F>(b+"h2_GENRECO_NotMatched_KsNonAntiS_vx_vy", "; Ks vx (cm); Ks vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_GENRECO_NotMatched_KsNonAntiS_vx_vz"] = dir_GENRECO_NotMatched_KsNonAntiS.make<TH2F>(b+"h2_GENRECO_NotMatched_KsNonAntiS_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_lxy"] = dir_GENRECO_NotMatched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsNonAntiS_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_vz"] =  dir_GENRECO_NotMatched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsNonAntiS_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_dxy"] = dir_GENRECO_NotMatched_KsNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsNonAntiS_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
+     TFileDirectory dir_GENRECO_All_KsNonAntiS = dir_GENRECO_KsNonAntiS.mkdir("GENRECO_All_KsNonAntiS");
+     histos_th1f["h_GENRECO_All_KsNonAntiS_pt"] = dir_GENRECO_All_KsNonAntiS.make<TH1F>(b+"h_GENRECO_All_KsNonAntiS_pt", "; Ks pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_All_KsNonAntiS_eta"] = dir_GENRECO_All_KsNonAntiS.make<TH1F>(b+"h_GENRECO_All_KsNonAntiS_eta", "; Ks #eta; #entries ",200,-10,10);
+     histos_th1f["h_GENRECO_All_KsNonAntiS_phi"] = dir_GENRECO_All_KsNonAntiS.make<TH1F>(b+"h_GENRECO_All_KsNonAntiS_phi", "; Ks #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_GENRECO_All_KsNonAntiS_vx_vy"] = dir_GENRECO_All_KsNonAntiS.make<TH2F>(b+"h2_GENRECO_All_KsNonAntiS_vx_vy", "; Ks vx (cm); Ks vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_GENRECO_All_KsNonAntiS_vx_vz"] = dir_GENRECO_All_KsNonAntiS.make<TH2F>(b+"h2_GENRECO_All_KsNonAntiS_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_GENRECO_All_KsNonAntiS_lxy"] = dir_GENRECO_All_KsNonAntiS.make<TH1F>(b+"h_GENRECO_All_KsNonAntiS_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_GENRECO_All_KsNonAntiS_vz"] =  dir_GENRECO_All_KsNonAntiS.make<TH1F>(b+"h_GENRECO_All_KsNonAntiS_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_GENRECO_All_KsNonAntiS_dxy"] = dir_GENRECO_All_KsNonAntiS.make<TH1F>(b+"h_GENRECO_All_KsNonAntiS_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
 
      
      TFileDirectory dir_GENRECO_KsAntiS = dir_RECO.mkdir("GENRECO_KsAntiS");
      histos_th1f["h_GENRECO_KsAntiS_deltaR"] = dir_GENRECO_KsAntiS.make<TH1F>(b+"h_GENRECO_KsAntiS_deltaR", "; #DeltaR(gen Ks, reco Ks); #entries ",1000,0,10);
 
-     TFileDirectory dir_GENRECO_Matched_KsAntiS = dir_GENRECO_KsAntiS.mkdir("GENRECO_Matched_KsAntiS");
-     histos_th1f["h_GENRECO_Matched_KsAntiS_pt"] = dir_GENRECO_Matched_KsAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsAntiS_pt", "; Ks pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_GENRECO_Matched_KsAntiS_eta"] = dir_GENRECO_Matched_KsAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsAntiS_eta", "; Ks #eta; #entries ",200,-10,10);
-     histos_th1f["h_GENRECO_Matched_KsAntiS_phi"] = dir_GENRECO_Matched_KsAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsAntiS_phi", "; Ks #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_GENRECO_Matched_KsAntiS_vx_vy"] = dir_GENRECO_Matched_KsAntiS.make<TH2F>(b+"h2_GENRECO_Matched_KsAntiS_vx_vy", "; Ks vx (cm); Ks vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_GENRECO_Matched_KsAntiS_vx_vz"] = dir_GENRECO_Matched_KsAntiS.make<TH2F>(b+"h2_GENRECO_Matched_KsAntiS_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_Matched_KsAntiS_lxy"] = dir_GENRECO_Matched_KsAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsAntiS_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_GENRECO_Matched_KsAntiS_vz"] =  dir_GENRECO_Matched_KsAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsAntiS_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_GENRECO_Matched_KsAntiS_dxy"] = dir_GENRECO_Matched_KsAntiS.make<TH1F>(b+"h_GENRECO_Matched_KsAntiS_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
+     TFileDirectory dir_GENRECO_RECO_KsAntiS = dir_GENRECO_KsAntiS.mkdir("GENRECO_RECO_KsAntiS");
+     histos_th1f["h_GENRECO_RECO_KsAntiS_pt"] = dir_GENRECO_RECO_KsAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsAntiS_pt", "; Ks pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_RECO_KsAntiS_eta"] = dir_GENRECO_RECO_KsAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsAntiS_eta", "; Ks #eta; #entries ",200,-10,10);
+     histos_th1f["h_GENRECO_RECO_KsAntiS_phi"] = dir_GENRECO_RECO_KsAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsAntiS_phi", "; Ks #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_GENRECO_RECO_KsAntiS_vx_vy"] = dir_GENRECO_RECO_KsAntiS.make<TH2F>(b+"h2_GENRECO_RECO_KsAntiS_vx_vy", "; Ks vx (cm); Ks vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_GENRECO_RECO_KsAntiS_vx_vz"] = dir_GENRECO_RECO_KsAntiS.make<TH2F>(b+"h2_GENRECO_RECO_KsAntiS_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_GENRECO_RECO_KsAntiS_lxy"] = dir_GENRECO_RECO_KsAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsAntiS_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_GENRECO_RECO_KsAntiS_vz"] =  dir_GENRECO_RECO_KsAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsAntiS_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_GENRECO_RECO_KsAntiS_dxy"] = dir_GENRECO_RECO_KsAntiS.make<TH1F>(b+"h_GENRECO_RECO_KsAntiS_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
 
-     TFileDirectory dir_GENRECO_NotMatched_KsAntiS = dir_GENRECO_KsAntiS.mkdir("GENRECO_NotMatched_KsAntiS");
-     histos_th1f["h_GENRECO_NotMatched_KsAntiS_pt"] = dir_GENRECO_NotMatched_KsAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsAntiS_pt", "; Ks pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_GENRECO_NotMatched_KsAntiS_eta"] = dir_GENRECO_NotMatched_KsAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsAntiS_eta", "; Ks #eta; #entries ",200,-10,10);
-     histos_th1f["h_GENRECO_NotMatched_KsAntiS_phi"] = dir_GENRECO_NotMatched_KsAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsAntiS_phi", "; Ks #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_GENRECO_NotMatched_KsAntiS_vx_vy"] = dir_GENRECO_NotMatched_KsAntiS.make<TH2F>(b+"h2_GENRECO_NotMatched_KsAntiS_vx_vy", "; Ks vx (cm); Ks vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_GENRECO_NotMatched_KsAntiS_vx_vz"] = dir_GENRECO_NotMatched_KsAntiS.make<TH2F>(b+"h2_GENRECO_NotMatched_KsAntiS_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_NotMatched_KsAntiS_lxy"] = dir_GENRECO_NotMatched_KsAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsAntiS_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_GENRECO_NotMatched_KsAntiS_vz"] =  dir_GENRECO_NotMatched_KsAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsAntiS_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_GENRECO_NotMatched_KsAntiS_dxy"] = dir_GENRECO_NotMatched_KsAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_KsAntiS_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
+     TFileDirectory dir_GENRECO_All_KsAntiS = dir_GENRECO_KsAntiS.mkdir("GENRECO_All_KsAntiS");
+     histos_th1f["h_GENRECO_All_KsAntiS_pt"] = dir_GENRECO_All_KsAntiS.make<TH1F>(b+"h_GENRECO_All_KsAntiS_pt", "; Ks pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_All_KsAntiS_eta"] = dir_GENRECO_All_KsAntiS.make<TH1F>(b+"h_GENRECO_All_KsAntiS_eta", "; Ks #eta; #entries ",200,-10,10);
+     histos_th1f["h_GENRECO_All_KsAntiS_phi"] = dir_GENRECO_All_KsAntiS.make<TH1F>(b+"h_GENRECO_All_KsAntiS_phi", "; Ks #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_GENRECO_All_KsAntiS_vx_vy"] = dir_GENRECO_All_KsAntiS.make<TH2F>(b+"h2_GENRECO_All_KsAntiS_vx_vy", "; Ks vx (cm); Ks vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_GENRECO_All_KsAntiS_vx_vz"] = dir_GENRECO_All_KsAntiS.make<TH2F>(b+"h2_GENRECO_All_KsAntiS_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_GENRECO_All_KsAntiS_lxy"] = dir_GENRECO_All_KsAntiS.make<TH1F>(b+"h_GENRECO_All_KsAntiS_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_GENRECO_All_KsAntiS_vz"] =  dir_GENRECO_All_KsAntiS.make<TH1F>(b+"h_GENRECO_All_KsAntiS_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_GENRECO_All_KsAntiS_dxy"] = dir_GENRECO_All_KsAntiS.make<TH1F>(b+"h_GENRECO_All_KsAntiS_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
 
 
      TFileDirectory dir_GENRECO_AntiLambdaNonAntiS = dir_RECO.mkdir("GENRECO_AntiLambdaNonAntiS");
      histos_th1f["h_GENRECO_AntiLambdaNonAntiS_deltaR"] = dir_GENRECO_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_AntiLambdaNonAntiS_deltaR", "; #DeltaR(gen AntiLambda, reco AntiLambda); #entries ",1000,0,10);
 
-     TFileDirectory dir_GENRECO_Matched_AntiLambdaNonAntiS = dir_GENRECO_AntiLambdaNonAntiS.mkdir("GENRECO_Matched_AntiLambdaNonAntiS");
-     histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_pt"] = dir_GENRECO_Matched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaNonAntiS_pt", "; AntiLambda pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_eta"] = dir_GENRECO_Matched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaNonAntiS_eta", "; AntiLambda #eta; #entries ",200,-10,10);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_phi"] = dir_GENRECO_Matched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaNonAntiS_phi", "; AntiLambda #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_GENRECO_Matched_AntiLambdaNonAntiS_vx_vy"] = dir_GENRECO_Matched_AntiLambdaNonAntiS.make<TH2F>(b+"h2_GENRECO_Matched_AntiLambdaNonAntiS_vx_vy", "; AntiLambda vx (cm); AntiLambda vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_GENRECO_Matched_AntiLambdaNonAntiS_vx_vz"] = dir_GENRECO_Matched_AntiLambdaNonAntiS.make<TH2F>(b+"h2_GENRECO_Matched_AntiLambdaNonAntiS_vx_vz", "; AntiLambda vx (cm); AntiLambda vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_lxy"] = dir_GENRECO_Matched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaNonAntiS_lxy", "; AntiLambda lxy(beamspot, AntiLambda vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_vz"] =  dir_GENRECO_Matched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaNonAntiS_vz", "; AntiLambda vz(AntiLambda vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_dxy"] = dir_GENRECO_Matched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaNonAntiS_dxy", "; AntiLambda dxy(beamspot) (cm); #entries ",400,-20,20);
+     TFileDirectory dir_GENRECO_RECO_AntiLambdaNonAntiS = dir_GENRECO_AntiLambdaNonAntiS.mkdir("GENRECO_RECO_AntiLambdaNonAntiS");
+     histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_pt"] = dir_GENRECO_RECO_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaNonAntiS_pt", "; AntiLambda pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_eta"] = dir_GENRECO_RECO_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaNonAntiS_eta", "; AntiLambda #eta; #entries ",200,-10,10);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_phi"] = dir_GENRECO_RECO_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaNonAntiS_phi", "; AntiLambda #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_GENRECO_RECO_AntiLambdaNonAntiS_vx_vy"] = dir_GENRECO_RECO_AntiLambdaNonAntiS.make<TH2F>(b+"h2_GENRECO_RECO_AntiLambdaNonAntiS_vx_vy", "; AntiLambda vx (cm); AntiLambda vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_GENRECO_RECO_AntiLambdaNonAntiS_vx_vz"] = dir_GENRECO_RECO_AntiLambdaNonAntiS.make<TH2F>(b+"h2_GENRECO_RECO_AntiLambdaNonAntiS_vx_vz", "; AntiLambda vx (cm); AntiLambda vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_lxy"] = dir_GENRECO_RECO_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaNonAntiS_lxy", "; AntiLambda lxy(beamspot, AntiLambda vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_vz"] =  dir_GENRECO_RECO_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaNonAntiS_vz", "; AntiLambda vz(AntiLambda vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_dxy"] = dir_GENRECO_RECO_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaNonAntiS_dxy", "; AntiLambda dxy(beamspot) (cm); #entries ",400,-20,20);
 
-     TFileDirectory dir_GENRECO_NotMatched_AntiLambdaNonAntiS = dir_GENRECO_AntiLambdaNonAntiS.mkdir("GENRECO_NotMatched_AntiLambdaNonAntiS");
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_pt"] = dir_GENRECO_NotMatched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaNonAntiS_pt", "; AntiLambda pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_eta"] = dir_GENRECO_NotMatched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaNonAntiS_eta", "; AntiLambda #eta; #entries ",200,-10,10);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_phi"] = dir_GENRECO_NotMatched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaNonAntiS_phi", "; AntiLambda #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_GENRECO_NotMatched_AntiLambdaNonAntiS_vx_vy"] = dir_GENRECO_NotMatched_AntiLambdaNonAntiS.make<TH2F>(b+"h2_GENRECO_NotMatched_AntiLambdaNonAntiS_vx_vy", "; AntiLambda vx (cm); AntiLambda vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_GENRECO_NotMatched_AntiLambdaNonAntiS_vx_vz"] = dir_GENRECO_NotMatched_AntiLambdaNonAntiS.make<TH2F>(b+"h2_GENRECO_NotMatched_AntiLambdaNonAntiS_vx_vz", "; AntiLambda vx (cm); AntiLambda vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_lxy"] = dir_GENRECO_NotMatched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaNonAntiS_lxy", "; AntiLambda lxy(beamspot, AntiLambda vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_vz"] =  dir_GENRECO_NotMatched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaNonAntiS_vz", "; AntiLambda vz(AntiLambda vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_dxy"] = dir_GENRECO_NotMatched_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaNonAntiS_dxy", "; AntiLambda dxy(beamspot) (cm); #entries ",400,-20,20);
+     TFileDirectory dir_GENRECO_All_AntiLambdaNonAntiS = dir_GENRECO_AntiLambdaNonAntiS.mkdir("GENRECO_All_AntiLambdaNonAntiS");
+     histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_pt"] = dir_GENRECO_All_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaNonAntiS_pt", "; AntiLambda pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_eta"] = dir_GENRECO_All_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaNonAntiS_eta", "; AntiLambda #eta; #entries ",200,-10,10);
+     histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_phi"] = dir_GENRECO_All_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaNonAntiS_phi", "; AntiLambda #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_GENRECO_All_AntiLambdaNonAntiS_vx_vy"] = dir_GENRECO_All_AntiLambdaNonAntiS.make<TH2F>(b+"h2_GENRECO_All_AntiLambdaNonAntiS_vx_vy", "; AntiLambda vx (cm); AntiLambda vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_GENRECO_All_AntiLambdaNonAntiS_vx_vz"] = dir_GENRECO_All_AntiLambdaNonAntiS.make<TH2F>(b+"h2_GENRECO_All_AntiLambdaNonAntiS_vx_vz", "; AntiLambda vx (cm); AntiLambda vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_lxy"] = dir_GENRECO_All_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaNonAntiS_lxy", "; AntiLambda lxy(beamspot, AntiLambda vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_vz"] =  dir_GENRECO_All_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaNonAntiS_vz", "; AntiLambda vz(AntiLambda vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_dxy"] = dir_GENRECO_All_AntiLambdaNonAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaNonAntiS_dxy", "; AntiLambda dxy(beamspot) (cm); #entries ",400,-20,20);
      
 
      TFileDirectory dir_GENRECO_AntiLambdaAntiS = dir_RECO.mkdir("GENRECO_AntiLambdaAntiS");
      histos_th1f["h_GENRECO_AntiLambdaAntiS_deltaR"] = dir_GENRECO_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_AntiLambdaAntiS_deltaR", "; #DeltaR(gen AntiLambda, reco AntiLambda); #entries ",1000,0,10);
 
-     TFileDirectory dir_GENRECO_Matched_AntiLambdaAntiS = dir_GENRECO_AntiLambdaAntiS.mkdir("GENRECO_Matched_AntiLambdaAntiS");
-     histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_pt"] = dir_GENRECO_Matched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaAntiS_pt", "; AntiLambda pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_eta"] = dir_GENRECO_Matched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaAntiS_eta", "; AntiLambda #eta; #entries ",200,-10,10);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_phi"] = dir_GENRECO_Matched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaAntiS_phi", "; AntiLambda #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_GENRECO_Matched_AntiLambdaAntiS_vx_vy"] = dir_GENRECO_Matched_AntiLambdaAntiS.make<TH2F>(b+"h2_GENRECO_Matched_AntiLambdaAntiS_vx_vy", "; AntiLambda vx (cm); AntiLambda vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_GENRECO_Matched_AntiLambdaAntiS_vx_vz"] = dir_GENRECO_Matched_AntiLambdaAntiS.make<TH2F>(b+"h2_GENRECO_Matched_AntiLambdaAntiS_vx_vz", "; AntiLambda vx (cm); AntiLambda vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_lxy"] = dir_GENRECO_Matched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaAntiS_lxy", "; AntiLambda lxy(beamspot, AntiLambda vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_vz"] =  dir_GENRECO_Matched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaAntiS_vz", "; AntiLambda vz(AntiLambda vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_dxy"] = dir_GENRECO_Matched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_Matched_AntiLambdaAntiS_dxy", "; AntiLambda dxy(beamspot) (cm); #entries ",400,-20,20);
+     TFileDirectory dir_GENRECO_RECO_AntiLambdaAntiS = dir_GENRECO_AntiLambdaAntiS.mkdir("GENRECO_RECO_AntiLambdaAntiS");
+     histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_pt"] = dir_GENRECO_RECO_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaAntiS_pt", "; AntiLambda pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_eta"] = dir_GENRECO_RECO_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaAntiS_eta", "; AntiLambda #eta; #entries ",200,-10,10);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_phi"] = dir_GENRECO_RECO_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaAntiS_phi", "; AntiLambda #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_GENRECO_RECO_AntiLambdaAntiS_vx_vy"] = dir_GENRECO_RECO_AntiLambdaAntiS.make<TH2F>(b+"h2_GENRECO_RECO_AntiLambdaAntiS_vx_vy", "; AntiLambda vx (cm); AntiLambda vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_GENRECO_RECO_AntiLambdaAntiS_vx_vz"] = dir_GENRECO_RECO_AntiLambdaAntiS.make<TH2F>(b+"h2_GENRECO_RECO_AntiLambdaAntiS_vx_vz", "; AntiLambda vx (cm); AntiLambda vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_lxy"] = dir_GENRECO_RECO_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaAntiS_lxy", "; AntiLambda lxy(beamspot, AntiLambda vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_vz"] =  dir_GENRECO_RECO_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaAntiS_vz", "; AntiLambda vz(AntiLambda vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_dxy"] = dir_GENRECO_RECO_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiLambdaAntiS_dxy", "; AntiLambda dxy(beamspot) (cm); #entries ",400,-20,20);
 
-     TFileDirectory dir_GENRECO_NotMatched_AntiLambdaAntiS = dir_GENRECO_AntiLambdaAntiS.mkdir("GENRECO_NotMatched_AntiLambdaAntiS");
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_pt"] = dir_GENRECO_NotMatched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaAntiS_pt", "; AntiLambda pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_eta"] = dir_GENRECO_NotMatched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaAntiS_eta", "; AntiLambda #eta; #entries ",200,-10,10);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_phi"] = dir_GENRECO_NotMatched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaAntiS_phi", "; AntiLambda #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_GENRECO_NotMatched_AntiLambdaAntiS_vx_vy"] = dir_GENRECO_NotMatched_AntiLambdaAntiS.make<TH2F>(b+"h2_GENRECO_NotMatched_AntiLambdaAntiS_vx_vy", "; AntiLambda vx (cm); AntiLambda vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_GENRECO_NotMatched_AntiLambdaAntiS_vx_vz"] = dir_GENRECO_NotMatched_AntiLambdaAntiS.make<TH2F>(b+"h2_GENRECO_NotMatched_AntiLambdaAntiS_vx_vz", "; AntiLambda vx (cm); AntiLambda vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_lxy"] = dir_GENRECO_NotMatched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaAntiS_lxy", "; AntiLambda lxy(beamspot, AntiLambda vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_vz"] =  dir_GENRECO_NotMatched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaAntiS_vz", "; AntiLambda vz(AntiLambda vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_dxy"] = dir_GENRECO_NotMatched_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_NotMatched_AntiLambdaAntiS_dxy", "; AntiLambda dxy(beamspot) (cm); #entries ",400,-20,20);
+     TFileDirectory dir_GENRECO_All_AntiLambdaAntiS = dir_GENRECO_AntiLambdaAntiS.mkdir("GENRECO_All_AntiLambdaAntiS");
+     histos_th1f["h_GENRECO_All_AntiLambdaAntiS_pt"] = dir_GENRECO_All_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaAntiS_pt", "; AntiLambda pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_All_AntiLambdaAntiS_eta"] = dir_GENRECO_All_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaAntiS_eta", "; AntiLambda #eta; #entries ",200,-10,10);
+     histos_th1f["h_GENRECO_All_AntiLambdaAntiS_phi"] = dir_GENRECO_All_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaAntiS_phi", "; AntiLambda #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_GENRECO_All_AntiLambdaAntiS_vx_vy"] = dir_GENRECO_All_AntiLambdaAntiS.make<TH2F>(b+"h2_GENRECO_All_AntiLambdaAntiS_vx_vy", "; AntiLambda vx (cm); AntiLambda vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_GENRECO_All_AntiLambdaAntiS_vx_vz"] = dir_GENRECO_All_AntiLambdaAntiS.make<TH2F>(b+"h2_GENRECO_All_AntiLambdaAntiS_vx_vz", "; AntiLambda vx (cm); AntiLambda vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_GENRECO_All_AntiLambdaAntiS_lxy"] = dir_GENRECO_All_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaAntiS_lxy", "; AntiLambda lxy(beamspot, AntiLambda vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_GENRECO_All_AntiLambdaAntiS_vz"] =  dir_GENRECO_All_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaAntiS_vz", "; AntiLambda vz(AntiLambda vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_GENRECO_All_AntiLambdaAntiS_dxy"] = dir_GENRECO_All_AntiLambdaAntiS.make<TH1F>(b+"h_GENRECO_All_AntiLambdaAntiS_dxy", "; AntiLambda dxy(beamspot) (cm); #entries ",400,-20,20);
      
      
 
@@ -1234,180 +1234,183 @@ void AnalyzerAllSteps::FillHistosRECOAntiS(const reco::VertexCompositeCandidate 
 void AnalyzerAllSteps::RecoEvaluationKsNonAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, TVector3 beamspot){
   const reco::Candidate  * GENKsNonAntiS = genParticle; 
   if(h_V0Ks.isValid()){
+      double deltaRmin = 999.;
       for(unsigned int i = 0; i < h_V0Ks->size(); ++i){//loop all Ks candidates
 	const reco::VertexCompositeCandidate * Ks = &h_V0Ks->at(i);	
 	double deltaPhi = reco::deltaPhi(Ks->phi(),genParticle->phi());
 	double deltaEta = Ks->eta() - genParticle->eta();
 	double deltaR = pow(deltaPhi*deltaPhi+deltaEta*deltaEta,0.5);
 	histos_th1f["h_GENRECO_KsNonAntiS_deltaR"]->Fill(deltaR);
-	
+        if(deltaR < deltaRmin) deltaRmin = deltaR;
+       }	
 	TVector3 KsCreationVertex(GENKsNonAntiS->vx(),GENKsNonAntiS->vy(),GENKsNonAntiS->vz());
 	double Lxy = lxy(beamspot,KsCreationVertex);
 	TVector3 KsMomentum(GENKsNonAntiS->px(),GENKsNonAntiS->py(),GENKsNonAntiS->pz());
 	double dxy = dxy_signed_line_point(KsCreationVertex,KsMomentum,beamspot);
 
-	if(deltaR<0.03){//matched
+	if(deltaRmin<0.03){//matched
 		
-		histos_th1f["h_GENRECO_Matched_KsNonAntiS_pt"]->Fill(GENKsNonAntiS->pt());	
-		histos_th1f["h_GENRECO_Matched_KsNonAntiS_eta"]->Fill(GENKsNonAntiS->eta());	
-		histos_th1f["h_GENRECO_Matched_KsNonAntiS_phi"]->Fill(GENKsNonAntiS->phi());	
-		histos_th2f["h2_GENRECO_Matched_KsNonAntiS_vx_vy"]->Fill(GENKsNonAntiS->vx(),GENKsNonAntiS->vy());
-		histos_th2f["h2_GENRECO_Matched_KsNonAntiS_vx_vz"]->Fill(GENKsNonAntiS->vx(),GENKsNonAntiS->vz());
-		histos_th1f["h_GENRECO_Matched_KsNonAntiS_lxy"]->Fill(Lxy);	
-		histos_th1f["h_GENRECO_Matched_KsNonAntiS_vz"]->Fill(GENKsNonAntiS->vz());	
-		histos_th1f["h_GENRECO_Matched_KsNonAntiS_dxy"]->Fill(dxy);	
+		histos_th1f["h_GENRECO_RECO_KsNonAntiS_pt"]->Fill(GENKsNonAntiS->pt());	
+		histos_th1f["h_GENRECO_RECO_KsNonAntiS_eta"]->Fill(GENKsNonAntiS->eta());	
+		histos_th1f["h_GENRECO_RECO_KsNonAntiS_phi"]->Fill(GENKsNonAntiS->phi());	
+		histos_th2f["h2_GENRECO_RECO_KsNonAntiS_vx_vy"]->Fill(GENKsNonAntiS->vx(),GENKsNonAntiS->vy());
+		histos_th2f["h2_GENRECO_RECO_KsNonAntiS_vx_vz"]->Fill(GENKsNonAntiS->vx(),GENKsNonAntiS->vz());
+		histos_th1f["h_GENRECO_RECO_KsNonAntiS_lxy"]->Fill(Lxy);	
+		histos_th1f["h_GENRECO_RECO_KsNonAntiS_vz"]->Fill(GENKsNonAntiS->vz());	
+		histos_th1f["h_GENRECO_RECO_KsNonAntiS_dxy"]->Fill(dxy);	
 
 	}
 
-	else{//not matched
 
-		histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_pt"]->Fill(GENKsNonAntiS->pt());	
-		histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_eta"]->Fill(GENKsNonAntiS->eta());	
-		histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_phi"]->Fill(GENKsNonAntiS->phi());	
-		histos_th2f["h2_GENRECO_NotMatched_KsNonAntiS_vx_vy"]->Fill(GENKsNonAntiS->vx(),GENKsNonAntiS->vy());
-		histos_th2f["h2_GENRECO_NotMatched_KsNonAntiS_vx_vz"]->Fill(GENKsNonAntiS->vx(),GENKsNonAntiS->vz());
-		histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_lxy"]->Fill(Lxy);	
-		histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_vz"]->Fill(GENKsNonAntiS->vz());	
-		histos_th1f["h_GENRECO_NotMatched_KsNonAntiS_dxy"]->Fill(dxy);	
+	histos_th1f["h_GENRECO_All_KsNonAntiS_pt"]->Fill(GENKsNonAntiS->pt());	
+	histos_th1f["h_GENRECO_All_KsNonAntiS_eta"]->Fill(GENKsNonAntiS->eta());	
+	histos_th1f["h_GENRECO_All_KsNonAntiS_phi"]->Fill(GENKsNonAntiS->phi());	
+	histos_th2f["h2_GENRECO_All_KsNonAntiS_vx_vy"]->Fill(GENKsNonAntiS->vx(),GENKsNonAntiS->vy());
+	histos_th2f["h2_GENRECO_All_KsNonAntiS_vx_vz"]->Fill(GENKsNonAntiS->vx(),GENKsNonAntiS->vz());
+	histos_th1f["h_GENRECO_All_KsNonAntiS_lxy"]->Fill(Lxy);	
+	histos_th1f["h_GENRECO_All_KsNonAntiS_vz"]->Fill(GENKsNonAntiS->vz());	
+	histos_th1f["h_GENRECO_All_KsNonAntiS_dxy"]->Fill(dxy);	
 
-	}
 
       }	
-  }
+  
 }
 
 void AnalyzerAllSteps::RecoEvaluationKsAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, TVector3 beamspot){
   const reco::Candidate  * GENKsAntiS = genParticle; 
   if(h_V0Ks.isValid()){
+      double deltaRmin = 999.;
       for(unsigned int i = 0; i < h_V0Ks->size(); ++i){//loop all Ks candidates
 	const reco::VertexCompositeCandidate * Ks = &h_V0Ks->at(i);	
 	double deltaPhi = reco::deltaPhi(Ks->phi(),genParticle->phi());
 	double deltaEta = Ks->eta() - genParticle->eta();
 	double deltaR = pow(deltaPhi*deltaPhi+deltaEta*deltaEta,0.5);
 	histos_th1f["h_GENRECO_KsAntiS_deltaR"]->Fill(deltaR);
-	
+        if(deltaR < deltaRmin) deltaRmin = deltaR;
+      }
+
 	TVector3 KsCreationVertex(GENKsAntiS->vx(),GENKsAntiS->vy(),GENKsAntiS->vz());
 	double Lxy = lxy(beamspot,KsCreationVertex);
 	TVector3 KsMomentum(GENKsAntiS->px(),GENKsAntiS->py(),GENKsAntiS->pz());
 	double dxy = dxy_signed_line_point(KsCreationVertex,KsMomentum,beamspot);
 
-	if(deltaR<0.03){//matched
+	if(deltaRmin<0.03){//matched
 		
-		histos_th1f["h_GENRECO_Matched_KsAntiS_pt"]->Fill(GENKsAntiS->pt());	
-		histos_th1f["h_GENRECO_Matched_KsAntiS_eta"]->Fill(GENKsAntiS->eta());	
-		histos_th1f["h_GENRECO_Matched_KsAntiS_phi"]->Fill(GENKsAntiS->phi());	
-		histos_th2f["h2_GENRECO_Matched_KsAntiS_vx_vy"]->Fill(GENKsAntiS->vx(),GENKsAntiS->vy());
-		histos_th2f["h2_GENRECO_Matched_KsAntiS_vx_vz"]->Fill(GENKsAntiS->vx(),GENKsAntiS->vz());
-		histos_th1f["h_GENRECO_Matched_KsAntiS_lxy"]->Fill(Lxy);	
-		histos_th1f["h_GENRECO_Matched_KsAntiS_vz"]->Fill(GENKsAntiS->vz());	
-		histos_th1f["h_GENRECO_Matched_KsAntiS_dxy"]->Fill(dxy);	
+		histos_th1f["h_GENRECO_RECO_KsAntiS_pt"]->Fill(GENKsAntiS->pt());	
+		histos_th1f["h_GENRECO_RECO_KsAntiS_eta"]->Fill(GENKsAntiS->eta());	
+		histos_th1f["h_GENRECO_RECO_KsAntiS_phi"]->Fill(GENKsAntiS->phi());	
+		histos_th2f["h2_GENRECO_RECO_KsAntiS_vx_vy"]->Fill(GENKsAntiS->vx(),GENKsAntiS->vy());
+		histos_th2f["h2_GENRECO_RECO_KsAntiS_vx_vz"]->Fill(GENKsAntiS->vx(),GENKsAntiS->vz());
+		histos_th1f["h_GENRECO_RECO_KsAntiS_lxy"]->Fill(Lxy);	
+		histos_th1f["h_GENRECO_RECO_KsAntiS_vz"]->Fill(GENKsAntiS->vz());	
+		histos_th1f["h_GENRECO_RECO_KsAntiS_dxy"]->Fill(dxy);	
 
 	}
 
-	else{//not matched
 
-		histos_th1f["h_GENRECO_NotMatched_KsAntiS_pt"]->Fill(GENKsAntiS->pt());	
-		histos_th1f["h_GENRECO_NotMatched_KsAntiS_eta"]->Fill(GENKsAntiS->eta());	
-		histos_th1f["h_GENRECO_NotMatched_KsAntiS_phi"]->Fill(GENKsAntiS->phi());	
-		histos_th2f["h2_GENRECO_NotMatched_KsAntiS_vx_vy"]->Fill(GENKsAntiS->vx(),GENKsAntiS->vy());
-		histos_th2f["h2_GENRECO_NotMatched_KsAntiS_vx_vz"]->Fill(GENKsAntiS->vx(),GENKsAntiS->vz());
-		histos_th1f["h_GENRECO_NotMatched_KsAntiS_lxy"]->Fill(Lxy);	
-		histos_th1f["h_GENRECO_NotMatched_KsAntiS_vz"]->Fill(GENKsAntiS->vz());	
-		histos_th1f["h_GENRECO_NotMatched_KsAntiS_dxy"]->Fill(dxy);	
+	histos_th1f["h_GENRECO_All_KsAntiS_pt"]->Fill(GENKsAntiS->pt());	
+	histos_th1f["h_GENRECO_All_KsAntiS_eta"]->Fill(GENKsAntiS->eta());	
+	histos_th1f["h_GENRECO_All_KsAntiS_phi"]->Fill(GENKsAntiS->phi());	
+	histos_th2f["h2_GENRECO_All_KsAntiS_vx_vy"]->Fill(GENKsAntiS->vx(),GENKsAntiS->vy());
+	histos_th2f["h2_GENRECO_All_KsAntiS_vx_vz"]->Fill(GENKsAntiS->vx(),GENKsAntiS->vz());
+	histos_th1f["h_GENRECO_All_KsAntiS_lxy"]->Fill(Lxy);	
+	histos_th1f["h_GENRECO_All_KsAntiS_vz"]->Fill(GENKsAntiS->vz());	
+	histos_th1f["h_GENRECO_All_KsAntiS_dxy"]->Fill(dxy);	
 
-	}
 
-      }	
+      	
   }
 }
 
 void AnalyzerAllSteps::RecoEvaluationAntiLambdaNonAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L, TVector3 beamspot){
   const reco::Candidate  * GENAntiLambdaNonAntiS = genParticle; 
   if(h_V0L.isValid()){
+      double deltaRmin = 999.;
       for(unsigned int i = 0; i < h_V0L->size(); ++i){//loop all AntiLambda candidates
 	const reco::VertexCompositeCandidate * AntiLambda = &h_V0L->at(i);	
 	double deltaPhi = reco::deltaPhi(AntiLambda->phi(),genParticle->phi());
 	double deltaEta = AntiLambda->eta() - genParticle->eta();
 	double deltaR = pow(deltaPhi*deltaPhi+deltaEta*deltaEta,0.5);
 	histos_th1f["h_GENRECO_AntiLambdaNonAntiS_deltaR"]->Fill(deltaR);
-	
+	if(deltaR < deltaRmin) deltaRmin = deltaR;
+      }	
+
 	TVector3 AntiLambdaCreationVertex(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vy(),GENAntiLambdaNonAntiS->vz());
 	double Lxy = lxy(beamspot,AntiLambdaCreationVertex);
 	TVector3 AntiLambdaMomentum(GENAntiLambdaNonAntiS->px(),GENAntiLambdaNonAntiS->py(),GENAntiLambdaNonAntiS->pz());
 	double dxy = dxy_signed_line_point(AntiLambdaCreationVertex,AntiLambdaMomentum,beamspot);
 
-	if(deltaR<0.03){//matched
+	if(deltaRmin<0.03){//matched
 		
-		histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_pt"]->Fill(GENAntiLambdaNonAntiS->pt());	
-		histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_eta"]->Fill(GENAntiLambdaNonAntiS->eta());	
-		histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_phi"]->Fill(GENAntiLambdaNonAntiS->phi());	
-		histos_th2f["h2_GENRECO_Matched_AntiLambdaNonAntiS_vx_vy"]->Fill(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vy());
-		histos_th2f["h2_GENRECO_Matched_AntiLambdaNonAntiS_vx_vz"]->Fill(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vz());
-		histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_lxy"]->Fill(Lxy);	
-		histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_vz"]->Fill(GENAntiLambdaNonAntiS->vz());	
-		histos_th1f["h_GENRECO_Matched_AntiLambdaNonAntiS_dxy"]->Fill(dxy);	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_pt"]->Fill(GENAntiLambdaNonAntiS->pt());	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_eta"]->Fill(GENAntiLambdaNonAntiS->eta());	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_phi"]->Fill(GENAntiLambdaNonAntiS->phi());	
+		histos_th2f["h2_GENRECO_RECO_AntiLambdaNonAntiS_vx_vy"]->Fill(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vy());
+		histos_th2f["h2_GENRECO_RECO_AntiLambdaNonAntiS_vx_vz"]->Fill(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vz());
+		histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_lxy"]->Fill(Lxy);	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_vz"]->Fill(GENAntiLambdaNonAntiS->vz());	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_dxy"]->Fill(dxy);	
 
 	}
 
-	else{//not matched
 
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_pt"]->Fill(GENAntiLambdaNonAntiS->pt());	
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_eta"]->Fill(GENAntiLambdaNonAntiS->eta());	
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_phi"]->Fill(GENAntiLambdaNonAntiS->phi());	
-		histos_th2f["h2_GENRECO_NotMatched_AntiLambdaNonAntiS_vx_vy"]->Fill(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vy());
-		histos_th2f["h2_GENRECO_NotMatched_AntiLambdaNonAntiS_vx_vz"]->Fill(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vz());
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_lxy"]->Fill(Lxy);	
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_vz"]->Fill(GENAntiLambdaNonAntiS->vz());	
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaNonAntiS_dxy"]->Fill(dxy);	
+	histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_pt"]->Fill(GENAntiLambdaNonAntiS->pt());	
+	histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_eta"]->Fill(GENAntiLambdaNonAntiS->eta());	
+	histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_phi"]->Fill(GENAntiLambdaNonAntiS->phi());	
+	histos_th2f["h2_GENRECO_All_AntiLambdaNonAntiS_vx_vy"]->Fill(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vy());
+	histos_th2f["h2_GENRECO_All_AntiLambdaNonAntiS_vx_vz"]->Fill(GENAntiLambdaNonAntiS->vx(),GENAntiLambdaNonAntiS->vz());
+	histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_lxy"]->Fill(Lxy);	
+	histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_vz"]->Fill(GENAntiLambdaNonAntiS->vz());	
+	histos_th1f["h_GENRECO_All_AntiLambdaNonAntiS_dxy"]->Fill(dxy);	
 
-	}
 
-      }	
+      	
   }
 }
 
 void AnalyzerAllSteps::RecoEvaluationAntiLambdaAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L, TVector3 beamspot){
   const reco::Candidate  * GENAntiLambdaAntiS = genParticle; 
   if(h_V0L.isValid()){
+	double deltaRmin = 999.;
       for(unsigned int i = 0; i < h_V0L->size(); ++i){//loop all AntiLambda candidates
 	const reco::VertexCompositeCandidate * AntiLambda = &h_V0L->at(i);	
 	double deltaPhi = reco::deltaPhi(AntiLambda->phi(),genParticle->phi());
 	double deltaEta = AntiLambda->eta() - genParticle->eta();
 	double deltaR = pow(deltaPhi*deltaPhi+deltaEta*deltaEta,0.5);
 	histos_th1f["h_GENRECO_AntiLambdaAntiS_deltaR"]->Fill(deltaR);
+	if(deltaR < deltaRmin) deltaRmin = deltaR;
+      }
+
 	
 	TVector3 AntiLambdaCreationVertex(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vy(),GENAntiLambdaAntiS->vz());
 	double Lxy = lxy(beamspot,AntiLambdaCreationVertex);
 	TVector3 AntiLambdaMomentum(GENAntiLambdaAntiS->px(),GENAntiLambdaAntiS->py(),GENAntiLambdaAntiS->pz());
 	double dxy = dxy_signed_line_point(AntiLambdaCreationVertex,AntiLambdaMomentum,beamspot);
 
-	if(deltaR<0.03){//matched
+	if(deltaRmin<0.03){//matched
 		
-		histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_pt"]->Fill(GENAntiLambdaAntiS->pt());	
-		histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_eta"]->Fill(GENAntiLambdaAntiS->eta());	
-		histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_phi"]->Fill(GENAntiLambdaAntiS->phi());	
-		histos_th2f["h2_GENRECO_Matched_AntiLambdaAntiS_vx_vy"]->Fill(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vy());
-		histos_th2f["h2_GENRECO_Matched_AntiLambdaAntiS_vx_vz"]->Fill(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vz());
-		histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_lxy"]->Fill(Lxy);	
-		histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_vz"]->Fill(GENAntiLambdaAntiS->vz());	
-		histos_th1f["h_GENRECO_Matched_AntiLambdaAntiS_dxy"]->Fill(dxy);	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_pt"]->Fill(GENAntiLambdaAntiS->pt());	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_eta"]->Fill(GENAntiLambdaAntiS->eta());	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_phi"]->Fill(GENAntiLambdaAntiS->phi());	
+		histos_th2f["h2_GENRECO_RECO_AntiLambdaAntiS_vx_vy"]->Fill(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vy());
+		histos_th2f["h2_GENRECO_RECO_AntiLambdaAntiS_vx_vz"]->Fill(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vz());
+		histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_lxy"]->Fill(Lxy);	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_vz"]->Fill(GENAntiLambdaAntiS->vz());	
+		histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_dxy"]->Fill(dxy);	
 
 	}
 
-	else{//not matched
 
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_pt"]->Fill(GENAntiLambdaAntiS->pt());	
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_eta"]->Fill(GENAntiLambdaAntiS->eta());	
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_phi"]->Fill(GENAntiLambdaAntiS->phi());	
-		histos_th2f["h2_GENRECO_NotMatched_AntiLambdaAntiS_vx_vy"]->Fill(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vy());
-		histos_th2f["h2_GENRECO_NotMatched_AntiLambdaAntiS_vx_vz"]->Fill(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vz());
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_lxy"]->Fill(Lxy);	
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_vz"]->Fill(GENAntiLambdaAntiS->vz());	
-		histos_th1f["h_GENRECO_NotMatched_AntiLambdaAntiS_dxy"]->Fill(dxy);	
+	histos_th1f["h_GENRECO_All_AntiLambdaAntiS_pt"]->Fill(GENAntiLambdaAntiS->pt());	
+	histos_th1f["h_GENRECO_All_AntiLambdaAntiS_eta"]->Fill(GENAntiLambdaAntiS->eta());	
+	histos_th1f["h_GENRECO_All_AntiLambdaAntiS_phi"]->Fill(GENAntiLambdaAntiS->phi());	
+	histos_th2f["h2_GENRECO_All_AntiLambdaAntiS_vx_vy"]->Fill(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vy());
+	histos_th2f["h2_GENRECO_All_AntiLambdaAntiS_vx_vz"]->Fill(GENAntiLambdaAntiS->vx(),GENAntiLambdaAntiS->vz());
+	histos_th1f["h_GENRECO_All_AntiLambdaAntiS_lxy"]->Fill(Lxy);	
+	histos_th1f["h_GENRECO_All_AntiLambdaAntiS_vz"]->Fill(GENAntiLambdaAntiS->vz());	
+	histos_th1f["h_GENRECO_All_AntiLambdaAntiS_dxy"]->Fill(dxy);	
 
-	}
 
-      }	
   }
 }
 
