@@ -9,6 +9,7 @@
 #include "TTree.h"
 #include "TH1F.h"
 #include "TH2F.h"
+#include "TH2I.h"
 #include "TH3F.h"
 #include "TEfficiency.h"
 #include "TFile.h"
@@ -74,6 +75,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     void FillHistosNonAntiSTracksRECO(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosNonAntiSTracksAll(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosAntiSTracks(const TrackingParticle& tp, TVector3 beamspot, TrackingParticleCollection const & TPColl, edm::Handle<TrackingParticleCollection> h_TP, edm::Handle< reco::TrackToTrackingParticleAssociator> h_trackAssociator, edm::Handle<View<reco::Track>> h_generalTracks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L);
+    void FillMajorEfficiencyPlot(std::vector<bool>granddaughterTrackMatched,const reco::Track *matchedTrackPointerKsPosPion,const reco::Track *matchedTrackPointerKsNegPion,const reco::Track *matchedTrackPointerAntiLPosPion,const reco::Track *matchedTrackPointerAntiLNegProton, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L);
 
     void FillHistosGENAntiS(const reco::Candidate * , TVector3 beamspot);
     void FillHistosGENKsNonAntiS(const reco::Candidate *, TVector3 beamspot );
@@ -136,6 +138,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     
     //--------- Histogram Declaration --------------------//
     std::map<TString, TH1F *> histos_th1f;
+    std::map<TString, TH2I *> histos_th2i;
     std::map<TString, TH2F *> histos_th2f;
     std::map<TString, TEfficiency *> histos_teff;
     std::map<TString, TProfile *> histos_TProfile;

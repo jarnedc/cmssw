@@ -36,6 +36,13 @@ AnalyzerAllSteps::AnalyzerAllSteps(edm::ParameterSet const& pset):
 void AnalyzerAllSteps::beginJob() {
 
      TFileDirectory dir_TrackingEff = m_fs->mkdir("TrackingEff"); 
+
+     TFileDirectory dir_TrackingEff_Global = dir_TrackingEff.mkdir("Global");
+ 
+     histos_th2i["h2_GlobalEfficiencies"] = dir_TrackingEff_Global.make<TH2I>(b+"h2_GlobalEfficiencies", ";#bar{#Lambda}: 0=no daughters RECO, 1=#{p} daug RECO, 2=#pi^{+} daug RECO, 3=#bar{p}&#pi^{+} daug RECO, 4=V0-#bar{#Lambda} RECO; Ks: 0=no daughters RECO, 1=#pi^{+} daug RECO, 2=#pi^{-} daug RECO, 3=#pi^{+}&#pi^{-} daug RECO, 4=V0-Ks RECO",5,-0.5,4.5,5,-0.5,4.5);
+     histos_th1f["h_deltaR_V0Ks_momentumSumKsDaughterTracks"] = dir_TrackingEff_Global.make<TH1F>(b+"h_deltaR_V0Ks_momentumSumKsDaughterTracks", ";Daughter #bar{S} #DeltaR(RECO V0-Ks,#vec{p_{matched RECO track daug1}}+#vec{p_{matched RECO track daug2}}); #entries ",1000,0,10);
+     histos_th1f["h_deltaR_V0AntiL_momentumSumAntiLDaughterTracks"] = dir_TrackingEff_Global.make<TH1F>(b+"h_deltaR_V0AntiL_momentumSumAntiLDaughterTracks", ";Daughter #bar{S} #DeltaR(RECO V0-#bar{#Lambda},#vec{p_{matched RECO track daug1}}+#vec{p_{matched RECO track daug2}}); #entries ",1000,0,10);
+
      TFileDirectory dir_TrackingEff_NonAntiS = dir_TrackingEff.mkdir("NonAntiS"); 
      
      TFileDirectory dir_TrackingEff_NonAntiS_RECO = dir_TrackingEff_NonAntiS.mkdir("RECO"); 
@@ -577,6 +584,10 @@ void AnalyzerAllSteps::FillHistosAntiSTracks(const TrackingParticle& tp, TVector
 	//now start from this tp and go down in gen particles to check if you find daughter and granddaughters
 	vector<bool> granddaughterTrackMatched;
 	granddaughterTrackMatched.push_back(false);granddaughterTrackMatched.push_back(false);granddaughterTrackMatched.push_back(false);granddaughterTrackMatched.push_back(false);
+	const reco::Track *matchedTrackPointerKsPosPion = nullptr;
+	const reco::Track *matchedTrackPointerKsNegPion = nullptr;
+	const reco::Track *matchedTrackPointerAntiLPosPion = nullptr;
+	const reco::Track *matchedTrackPointerAntiLNegProton = nullptr;
 	
 	//get antiS decay vertex
 	tv_iterator tp_firstDecayVertex = tp.decayVertices_begin();
@@ -602,7 +613,7 @@ void AnalyzerAllSteps::FillHistosAntiSTracks(const TrackingParticle& tp, TVector
 							 std::cout << "3. found granddaughter of the antiS" << std::endl;
 							  //now check if you have matching track to this granddaughter
 													
-							  //const reco::Track *matchedTrackPointer = nullptr;
+							  const reco::Track *matchedTrackPointer = nullptr;
 							  TrackingParticleRef tpr(h_TP,k);
 							  edm::Handle<reco::TrackToTrackingParticleAssociator> theAssociator;
 							  reco::SimToRecoCollection simRecCollL;
@@ -616,12 +627,12 @@ void AnalyzerAllSteps::FillHistosAntiSTracks(const TrackingParticle& tp, TVector
 								  if (rt.size()!=0) {
 									    
 									    std::cout << "4. found matching track" << std::endl;
-									    //matchedTrackPointer = rt.begin()->first.get();
+									    matchedTrackPointer = rt.begin()->first.get();
 									    //matchingTrackFound = true;
-									    if(abs(tp_daughter.pdgId()) == 310 && tp_granddaughter.pdgId()==pdgIdPosPion){granddaughterTrackMatched[0]=true;}
-									    else if(abs(tp_daughter.pdgId()) == 310 && tp_granddaughter.pdgId()==pdgIdNegPion){granddaughterTrackMatched[1]=true;}
-									    else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdAntiProton){granddaughterTrackMatched[2]=true;}
-									    else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdPosPion){granddaughterTrackMatched[3]=true;}
+									    if(abs(tp_daughter.pdgId()) == 310 && tp_granddaughter.pdgId()==pdgIdPosPion){granddaughterTrackMatched[0]=true;matchedTrackPointerKsPosPion= matchedTrackPointer;}
+									    else if(abs(tp_daughter.pdgId()) == 310 && tp_granddaughter.pdgId()==pdgIdNegPion){granddaughterTrackMatched[1]=true;matchedTrackPointerKsNegPion=matchedTrackPointer;}
+									    else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdAntiProton){granddaughterTrackMatched[2]=true;matchedTrackPointerAntiLPosPion=matchedTrackPointer;}
+									    else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdPosPion){granddaughterTrackMatched[3]=true;matchedTrackPointerAntiLNegProton=matchedTrackPointer;}
 								  }
 							  }
 							  /*}else{
@@ -637,6 +648,87 @@ void AnalyzerAllSteps::FillHistosAntiSTracks(const TrackingParticle& tp, TVector
   std::cout << "Ks, pi- " << granddaughterTrackMatched[1] << std::endl; 
   std::cout << " L, p-  " << granddaughterTrackMatched[2] << std::endl; 
   std::cout << " L, pi+ " << granddaughterTrackMatched[3] << std::endl; 
+  
+  FillMajorEfficiencyPlot(granddaughterTrackMatched, matchedTrackPointerKsPosPion,matchedTrackPointerKsNegPion,matchedTrackPointerAntiLPosPion,matchedTrackPointerAntiLNegProton,h_V0Ks,h_V0L);
+
+}
+
+void AnalyzerAllSteps::FillMajorEfficiencyPlot(std::vector<bool>granddaughterTrackMatched, const reco::Track *matchedTrackPointerKsPosPion,const reco::Track *matchedTrackPointerKsNegPion,const reco::Track *matchedTrackPointerAntiLPosPion,const reco::Track *matchedTrackPointerAntiLNegProton, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L){
+	//if the Ks daughters were found calculate the sum of the daughters momenta and try to find a reco Ks which matches this in deltaR
+	bool matchingV0KsFound = false;
+	if(matchedTrackPointerKsPosPion && matchedTrackPointerKsNegPion){
+		  math::XYZVector sumV0Momenta = matchedTrackPointerKsPosPion->momentum() + matchedTrackPointerKsNegPion->momentum();
+		  double deltaRmin = 999;
+		  if(h_V0Ks.isValid()){
+		      for(unsigned int i = 0; i < h_V0Ks->size(); ++i){//loop all Ks candidates
+			const reco::VertexCompositeCandidate * V0 = &h_V0Ks->at(i);	
+			double deltaPhi = reco::deltaPhi(sumV0Momenta.phi(),V0->phi());
+			double deltaEta = sumV0Momenta.eta()-V0->eta();
+			double deltaR = sqrt(deltaPhi*deltaPhi+deltaEta*deltaEta);
+			histos_th1f["h_deltaR_V0Ks_momentumSumKsDaughterTracks"]->Fill(deltaR);
+			if(deltaR < deltaRmin) deltaR = deltaRmin;
+		      }
+		      matchingV0KsFound = true;
+		  }
+	}
+
+	//if the AntiL daughters were found calculate the sum of the daughters momenta and try to find a reco AntiL which matches this in deltaR
+	bool matchingV0AntiLFound = false;
+	if(matchedTrackPointerAntiLPosPion && matchedTrackPointerAntiLNegProton){
+		  math::XYZVector sumV0Momenta = matchedTrackPointerAntiLPosPion->momentum() + matchedTrackPointerAntiLNegProton->momentum();
+		  double deltaRmin = 999;
+		  if(h_V0L.isValid()){
+		      for(unsigned int i = 0; i < h_V0L->size(); ++i){//loop all Ks candidates
+			const reco::VertexCompositeCandidate * V0 = &h_V0L->at(i);	
+			double deltaPhi = reco::deltaPhi(sumV0Momenta.phi(),V0->phi());
+			double deltaEta = sumV0Momenta.eta()-V0->eta();
+			double deltaR = sqrt(deltaPhi*deltaPhi+deltaEta*deltaEta);
+			histos_th1f["h_deltaR_V0AntiL_momentumSumAntiLDaughterTracks"]->Fill(deltaR);
+			if(deltaR < deltaRmin) deltaR = deltaRmin;
+		      }
+		      matchingV0AntiLFound = true;
+		  }
+	}
+
+	if(!matchingV0KsFound && !matchingV0AntiLFound){//fill the lower 4*4 part of the matrix
+		if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,0.);
+		else if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,1.);
+		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,2.);
+		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,3.);
+
+		else if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,0.);
+		else if(granddaughterTrackMatched[0]  && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,1.);
+		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,2.);
+		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,3.);
+
+		else if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,0.);
+		else if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,1.);
+		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,2.);
+		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,3.);
+
+		else if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,0.);
+		else if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,1.);
+		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,2.);
+		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,3.);
+	}
+	else if(matchingV0KsFound && !matchingV0AntiLFound){//fill the top row of the matrix
+		if( !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,4.);
+		else if(granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,4.);
+		else if(!granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,4.);
+		else if(granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,4.);
+	}
+	else if(!matchingV0KsFound && matchingV0AntiLFound){//fill the right column of the matrix
+		if( !granddaughterTrackMatched[0] && !granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,0.);
+		else if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,1.);
+		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,2.);
+		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,3.);
+
+	}
+	else{//this means you found both a RECO V0-Ks and RECO V0-AntiL
+		histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,4.);
+	}
+
+	
 
 }
 
