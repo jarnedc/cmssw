@@ -73,6 +73,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
 
     void FillHistosNonAntiSTracksRECO(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosNonAntiSTracksAll(const TrackingParticle& tp, TVector3 beamspot);
+    void FillHistosAntiSTracks(const TrackingParticle& tp, TVector3 beamspot, TrackingParticleCollection const & TPColl, edm::Handle<TrackingParticleCollection> h_TP, edm::Handle< reco::TrackToTrackingParticleAssociator> h_trackAssociator, edm::Handle<View<reco::Track>> h_generalTracks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L);
 
     void FillHistosGENAntiS(const reco::Candidate * , TVector3 beamspot);
     void FillHistosGENKsNonAntiS(const reco::Candidate *, TVector3 beamspot );

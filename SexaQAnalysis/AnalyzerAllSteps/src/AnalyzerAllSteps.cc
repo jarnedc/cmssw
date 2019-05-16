@@ -416,7 +416,9 @@ void AnalyzerAllSteps::analyze(edm::Event const& iEvent, edm::EventSetup const& 
 		FillHistosNonAntiSTracksAll(tp , beamspot);
        	  }
 	  //now in the above two catagories you are missing all the tracks from the antiS granddaughters, so when you encounter an antiS you should still have to fill four it's 4 potential granddaughters the histograms and also one where you count how many antiS have four granddaughters reconstructed
-	  }
+	  
+	  if(tp.pdgId() == pdgIdAntiS)FillHistosAntiSTracks(tp, beamspot, TPColl,  h_TP, h_trackAssociator, h_generalTracks, h_V0Ks, h_V0L);
+	}
   }
 
   int nAntiSThisEvent = 0;
@@ -568,6 +570,73 @@ void AnalyzerAllSteps::FillHistosNonAntiSTracksAll(const TrackingParticle& tp, T
 	if(tp.pt() > 0.9 && abs(tp.eta()) < 2.5) histos_th1f["h_NonAntiSTrack_All_lxy_cut_pt_eta"]->Fill(Lxy);
 	if(tp.pt() > 0.9 && Lxy < 3.5) histos_th1f["h_NonAntiSTrack_All_eta_cut_pt_lxy"]->Fill(tp.eta());
 	
+
+}
+
+void AnalyzerAllSteps::FillHistosAntiSTracks(const TrackingParticle& tp, TVector3 beamspot, TrackingParticleCollection const & TPColl, edm::Handle<TrackingParticleCollection> h_TP, edm::Handle< reco::TrackToTrackingParticleAssociator> h_trackAssociator, edm::Handle<View<reco::Track>> h_generalTracks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L){
+	//now start from this tp and go down in gen particles to check if you find daughter and granddaughters
+	vector<bool> granddaughterTrackMatched;
+	granddaughterTrackMatched.push_back(false);granddaughterTrackMatched.push_back(false);granddaughterTrackMatched.push_back(false);granddaughterTrackMatched.push_back(false);
+	
+	//get antiS decay vertex
+	tv_iterator tp_firstDecayVertex = tp.decayVertices_begin();
+	double tpdecayVx = (**tp_firstDecayVertex).position().X(); double tpdecayVy = (**tp_firstDecayVertex).position().Y(); double tpdecayVz = (**tp_firstDecayVertex).position().Z();
+	std::cout << "-----------------" << std::endl;
+	std::cout << "1. found an antiS" << std::endl;
+	//now loop over the TP and try to find daughters
+	for(size_t j=0; j<TPColl.size(); ++j) {
+		const TrackingParticle& tp_daughter = TPColl[j];
+		if(abs(tp_daughter.pdgId()) == 310 || tp_daughter.pdgId() == -3122){//daughter has to be a Ks or Lambda
+			
+			double daughterVx = tp_daughter.vx(); double daughterVy = tp_daughter.vy(); double daughterVz = tp_daughter.vz();	
+			tv_iterator tp_daughter_firstDecayVertex = tp_daughter.decayVertices_begin();
+			double tp_daughter_decayVx = (**tp_daughter_firstDecayVertex).position().X(); double tp_daughter_decayVy = (**tp_daughter_firstDecayVertex).position().Y(); double tp_daughter_decayVz = (**tp_daughter_firstDecayVertex).position().Z();
+
+			if( daughterVx == tpdecayVx && daughterVy == tpdecayVy && daughterVz == tpdecayVz){//daughter vertex has to match the mother decay vertex
+				std::cout << "2. found daughter of the antiS" << std::endl;
+				for(size_t k=0; k<TPColl.size(); ++k) {//loop to find the granddaughters
+					const TrackingParticle& tp_granddaughter = TPColl[k];
+
+					if(tp_granddaughter.vx() == tp_daughter_decayVx && tp_granddaughter.vy() == tp_daughter_decayVy && tp_granddaughter.vz() == tp_daughter_decayVz){
+						if(tp_granddaughter.pdgId()==pdgIdAntiProton || tp_granddaughter.pdgId()==pdgIdPosPion ||tp_granddaughter.pdgId()==pdgIdNegPion ){//found a tp that is a granddaughter of the antiS
+							 std::cout << "3. found granddaughter of the antiS" << std::endl;
+							  //now check if you have matching track to this granddaughter
+													
+							  //const reco::Track *matchedTrackPointer = nullptr;
+							  TrackingParticleRef tpr(h_TP,k);
+							  edm::Handle<reco::TrackToTrackingParticleAssociator> theAssociator;
+							  reco::SimToRecoCollection simRecCollL;
+							  reco::SimToRecoCollection const * simRecCollP=nullptr;
+							  simRecCollL = std::move(h_trackAssociator->associateSimToReco(h_generalTracks,h_TP));
+							  simRecCollP = &simRecCollL;
+							  reco::SimToRecoCollection const & simRecColl = *simRecCollP;
+
+							  if(simRecColl.find(tpr) != simRecColl.end()){
+								  auto const & rt = simRecColl[tpr];
+								  if (rt.size()!=0) {
+									    
+									    std::cout << "4. found matching track" << std::endl;
+									    //matchedTrackPointer = rt.begin()->first.get();
+									    //matchingTrackFound = true;
+									    if(abs(tp_daughter.pdgId()) == 310 && tp_granddaughter.pdgId()==pdgIdPosPion){granddaughterTrackMatched[0]=true;}
+									    else if(abs(tp_daughter.pdgId()) == 310 && tp_granddaughter.pdgId()==pdgIdNegPion){granddaughterTrackMatched[1]=true;}
+									    else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdAntiProton){granddaughterTrackMatched[2]=true;}
+									    else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdPosPion){granddaughterTrackMatched[3]=true;}
+								  }
+							  }
+							  /*}else{
+								    	    matchingTrackFound = false;
+							  }*/
+						}
+					}
+				}
+			}	
+		}	
+    	}
+  std::cout << "Ks, pi+ " << granddaughterTrackMatched[0] << std::endl; 
+  std::cout << "Ks, pi- " << granddaughterTrackMatched[1] << std::endl; 
+  std::cout << " L, p-  " << granddaughterTrackMatched[2] << std::endl; 
+  std::cout << " L, pi+ " << granddaughterTrackMatched[3] << std::endl; 
 
 }
 
