@@ -1,0 +1,1 @@
+file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/CRAB_SimSexaq_cosThetaXYCut_innerHitPosCut/crab_Step2Sexaq_15052019_v1/190515_071013/0000/output_100.root
