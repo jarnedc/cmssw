@@ -39,7 +39,7 @@ void AnalyzerAllSteps::beginJob() {
 
      TFileDirectory dir_TrackingEff_Global = dir_TrackingEff.mkdir("Global");
  
-     histos_th2i["h2_GlobalEfficiencies"] = dir_TrackingEff_Global.make<TH2I>(b+"h2_GlobalEfficiencies", ";#bar{#Lambda}: 0=no daughters RECO, 1=#{p} daug RECO, 2=#pi^{+} daug RECO, 3=#bar{p}&#pi^{+} daug RECO, 4=V0-#bar{#Lambda} RECO; Ks: 0=no daughters RECO, 1=#pi^{+} daug RECO, 2=#pi^{-} daug RECO, 3=#pi^{+}&#pi^{-} daug RECO, 4=V0-Ks RECO",5,-0.5,4.5,5,-0.5,4.5);
+     histos_th2i["h2_GlobalEfficiencies"] = dir_TrackingEff_Global.make<TH2I>(b+"h2_GlobalEfficiencies", ";#bar{#Lambda}: 0=no daughters RECO, 1=only #bar{p} daug RECO, 2=only #pi^{+} daug RECO, 3=#bar{p}&#pi^{+} daug RECO, 4=V0-#bar{#Lambda} RECO; Ks: 0=no daughters RECO, 1=only #pi^{+} daug RECO, 2=only #pi^{-} daug RECO, 3=#pi^{+}&#pi^{-} daug RECO, 4=V0-Ks RECO",5,-0.5,4.5,5,-0.5,4.5);
      histos_th1f["h_deltaR_V0Ks_momentumSumKsDaughterTracks"] = dir_TrackingEff_Global.make<TH1F>(b+"h_deltaR_V0Ks_momentumSumKsDaughterTracks", ";Daughter #bar{S} #DeltaR(RECO V0-Ks,#vec{p}_{matched RECO track daug1}+#vec{p}_{matched RECO track daug2}); #entries ",1000,0,10);
      histos_th1f["h_deltaR_V0AntiL_momentumSumAntiLDaughterTracks"] = dir_TrackingEff_Global.make<TH1F>(b+"h_deltaR_V0AntiL_momentumSumAntiLDaughterTracks", ";Daughter #bar{S} #DeltaR(RECO V0-#bar{#Lambda},#vec{p}_{matched RECO track daug1}+#vec{p}_{matched RECO track daug2}); #entries ",1000,0,10);
 
@@ -149,7 +149,7 @@ void AnalyzerAllSteps::beginJob() {
      TFileDirectory dir_GEN_antiS = dir_GEN.mkdir("GEN_antiS"); 
      histos_th1f["h_GEN_nAntiSTotal"] = dir_GEN_antiS.make<TH1F>(b+"h_GEN_nAntiSTotal", "; 0 = all #bar{S}/ 1 = interacting #bar{S}/ 2 = #bar{S} with corr grandd; #entries ",20,0,20);
      histos_th1f["h_GEN_nAntiS"] = dir_GEN_antiS.make<TH1F>(b+"h_GEN_nAntiS", "; #bar{S}/event; #entries ",20,0,20);
-     histos_th1f["h_GEN_nAntiSInteract"] = dir_GEN_antiS.make<TH1F>(b+"h_GEN_nAntiSInteract", "; #bar{S} which decay/event; #entries ",20,0,20);
+     histos_th1f["h_GEN_nAntiSInteract"] = dir_GEN_antiS.make<TH1F>(b+"h_GEN_nAntiSInteract", "; #bar{S} with 2 daughters/event; #entries ",20,0,20);
      histos_th1f["h_GEN_AntiS_pt"] = dir_GEN_antiS.make<TH1F>(b+"h_GEN_AntiS_pt", "; #bar{S} pT (GeV); #entries ",200,0,20);
      histos_th1f["h_GEN_AntiS_eta"] = dir_GEN_antiS.make<TH1F>(b+"h_GEN_AntiS_eta", "; #bar{S} #eta; #entries ",200,-10,10);
      histos_th1f["h_GEN_AntiS_phi"] = dir_GEN_antiS.make<TH1F>(b+"h_GEN_AntiS_phi", "; #bar{S} #phi (rad); #entries ",200,-4,4);
@@ -759,9 +759,10 @@ void AnalyzerAllSteps::FillHistosAntiSTracks(const TrackingParticle& tp, TVector
 									    else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdPosPion){granddaughterTrackMatched[3]=true;matchedTrackPointerAntiLNegProton=matchedTrackPointer;FillHistosAntiSAntiLPosPionDaughterTracksRECO(tp_granddaughter,beamspot);}
 								  }
 							  }
-							  FillHistosAntiSKsDaughterTracksAll(tp_granddaughter,beamspot);
-							  FillHistosAntiSAntiLAntiProtonDaughterTracksAll(tp_granddaughter,beamspot);
-							  FillHistosAntiSAntiLPosPionDaughterTracksAll(tp_granddaughter,beamspot);
+							  if(abs(tp_daughter.pdgId()) == 310 && tp_granddaughter.pdgId()==pdgIdPosPion)FillHistosAntiSKsDaughterTracksAll(tp_granddaughter,beamspot);
+							  else if(abs(tp_daughter.pdgId()) == 310 && tp_granddaughter.pdgId()==pdgIdNegPion)FillHistosAntiSKsDaughterTracksAll(tp_granddaughter,beamspot);
+							  else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdAntiProton)FillHistosAntiSAntiLAntiProtonDaughterTracksAll(tp_granddaughter,beamspot);
+							  else if(tp_daughter.pdgId() == -3122 && tp_granddaughter.pdgId()==pdgIdPosPion)FillHistosAntiSAntiLPosPionDaughterTracksAll(tp_granddaughter,beamspot);
 							  /*}else{
 								    	    matchingTrackFound = false;
 							  }*/
@@ -887,9 +888,9 @@ void AnalyzerAllSteps::FillMajorEfficiencyPlot(std::vector<bool>granddaughterTra
 			double deltaEta = sumV0Momenta.eta()-V0->eta();
 			double deltaR = sqrt(deltaPhi*deltaPhi+deltaEta*deltaEta);
 			histos_th1f["h_deltaR_V0Ks_momentumSumKsDaughterTracks"]->Fill(deltaR);
-			if(deltaR < deltaRmin) deltaR = deltaRmin;
+			if(deltaR < deltaRmin) deltaRmin = deltaR;
 		      }
-		      matchingV0KsFound = true;
+		      if(deltaRmin<0.03)matchingV0KsFound = true;
 		  }
 	}
 
@@ -905,47 +906,46 @@ void AnalyzerAllSteps::FillMajorEfficiencyPlot(std::vector<bool>granddaughterTra
 			double deltaEta = sumV0Momenta.eta()-V0->eta();
 			double deltaR = sqrt(deltaPhi*deltaPhi+deltaEta*deltaEta);
 			histos_th1f["h_deltaR_V0AntiL_momentumSumAntiLDaughterTracks"]->Fill(deltaR);
-			if(deltaR < deltaRmin) deltaR = deltaRmin;
+			if(deltaR < deltaRmin) deltaRmin = deltaR;
 		      }
-		      matchingV0AntiLFound = true;
+		      if(deltaRmin<0.03)matchingV0AntiLFound = true;
 		  }
 	}
 
-	if(!matchingV0KsFound && !matchingV0AntiLFound){//fill the lower 4*4 part of the matrix
-		if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,0.);
-		else if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,1.);
-		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,2.);
-		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,3.);
+	if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,0.);
+	if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,1.);
+	if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,2.);
+	if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,3.);
 
-		else if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,0.);
-		else if(granddaughterTrackMatched[0]  && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,1.);
-		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,2.);
-		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,3.);
+	if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,0.);
+	if(granddaughterTrackMatched[0]  && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,1.);
+	if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,2.);
+	if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,3.);
 
-		else if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,0.);
-		else if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,1.);
-		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,2.);
-		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,3.);
+	if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,0.);
+	if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,1.);
+	if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,2.);
+	if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && !granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,3.);
 
-		else if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,0.);
-		else if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,1.);
-		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,2.);
-		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,3.);
-	}
-	else if(matchingV0KsFound && !matchingV0AntiLFound){//fill the top row of the matrix
+	if(!granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,0.);
+	if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,1.);
+	if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,2.);
+	if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1] && granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,3.);
+
+	if(matchingV0KsFound && !matchingV0AntiLFound){//fill the top row of the matrix
 		if( !granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(0.,4.);
-		else if(granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,4.);
-		else if(!granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,4.);
-		else if(granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,4.);
+		if(granddaughterTrackMatched[2] && !granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(1.,4.);
+		if(!granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(2.,4.);
+		if(granddaughterTrackMatched[2] && granddaughterTrackMatched[3])histos_th2i["h2_GlobalEfficiencies"]->Fill(3.,4.);
 	}
-	else if(!matchingV0KsFound && matchingV0AntiLFound){//fill the right column of the matrix
+	if(!matchingV0KsFound && matchingV0AntiLFound){//fill the right column of the matrix
 		if( !granddaughterTrackMatched[0] && !granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,0.);
-		else if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,1.);
-		else if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,2.);
-		else if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,3.);
+		if(granddaughterTrackMatched[0] && !granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,1.);
+		if(!granddaughterTrackMatched[0] && granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,2.);
+		if(granddaughterTrackMatched[0] && granddaughterTrackMatched[1])histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,3.);
 
 	}
-	else{//this means you found both a RECO V0-Ks and RECO V0-AntiL
+	if(matchingV0KsFound && matchingV0AntiLFound){//this means you found both a RECO V0-Ks and RECO V0-AntiL
 		histos_th2i["h2_GlobalEfficiencies"]->Fill(4.,4.);
 	}
 
