@@ -72,6 +72,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
 
     bool isTpGrandDaughterAntiS(TrackingParticleCollection const & TPColl, const TrackingParticle& tp);
 
+    int getDaughterParticlesTypes(const reco::Candidate * genParticle);
     void FillHistosNonAntiSTracksRECO(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosNonAntiSTracksAll(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosAntiSTracks(const TrackingParticle& tp, TVector3 beamspot, TrackingParticleCollection const & TPColl, edm::Handle<TrackingParticleCollection> h_TP, edm::Handle< reco::TrackToTrackingParticleAssociator> h_trackAssociator, edm::Handle<View<reco::Track>> h_generalTracks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L);
@@ -96,6 +97,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     void RecoEvaluationKsAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks,  TVector3 beamspot);
     void RecoEvaluationAntiLambdaNonAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L,  TVector3 beamspot);
     void RecoEvaluationAntiLambdaAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L,  TVector3 beamspot);
+    void RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands, TVector3 beamspot);
 
     const int pdgIdAntiS = -1020000020;
     const int pdgIdKs = 310;
