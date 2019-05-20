@@ -5,6 +5,48 @@ from RecoVertex.V0Producer.generalV0Candidates_cff import *
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('python')
 
+#for MC: you want to add the extra collections so that you will be able to do the trackmatching on hits.
+collections_to_keep = cms.untracked.vstring(
+    'drop *',
+    'keep *_InitialProducer_*_*',
+    'keep recoVertexs_offlinePrimaryVertices_*_*',
+    'keep recoBeamSpot_offlineBeamSpot_*_*',
+    'keep *_genParticles_*_HLT',
+    'keep recoVertexCompositeCandidates_generalV0Candidates_*_*',
+    'keep recoTracks_lambdaKshortVertexFilter_sParticlesTracks_*',
+    'keep recoVertexCompositePtrCandidates_rMassFilter_sVertexCompositePtrCandidate_*',
+    'keep recoVertexCompositePtrCandidates_sMassFilter_sVertexCompositePtrCandidate_*',
+    'keep *_*_*_SEXAQ',
+    "keep *_genParticlesPlusGEANT_*_*",#this is for MC
+    "keep *_g4SimHits_*_*",#this is for MC
+    "keep *_simSiPixelDigis_*_*",#this is for MC
+    "keep *_simMuonRPCDigis_*_*",#this is for MC
+    "keep *_simSiStripDigis_*_*",#this is for MC
+    "keep *_mix_MergedTrackTruth_*",#this is for MC
+    "keep *_siPixelDigis_*_*",#this is for MC
+    "keep *_siStripDigis_*_*",#this is for MC
+    "keep *_siStripDigis_*_*",#this is for MC
+    "keep *_siPixelClusters_*_*",#this is for MC
+    "keep *_siStripClusters_*_*",#this is for MC
+    "keep *_generalTracks_*_*"#this is for MC
+  )
+
+#for data: do not save the extra collections as things will get heavy
+#collections_to_keep = cms.untracked.vstring(
+#   'drop *',
+#   'keep *_InitialProducer_*_*',
+#   'keep recoVertexs_offlinePrimaryVertices_*_*',
+#   'keep recoBeamSpot_offlineBeamSpot_*_*',
+#   'keep *_genParticles_*_HLT',
+#   'keep recoVertexCompositeCandidates_generalV0Candidates_*_*',
+#   'keep recoTracks_lambdaKshortVertexFilter_sParticlesTracks_*',
+#   'keep recoVertexCompositePtrCandidates_rMassFilter_sVertexCompositePtrCandidate_*',
+#   'keep recoVertexCompositePtrCandidates_sMassFilter_sVertexCompositePtrCandidate_*',
+#   'keep *_*_*_SEXAQ'
+# )
+
+
+
 ## data or MC options
 options.register(
 	'isData',True,VarParsing.multiplicity.singleton,VarParsing.varType.bool,
@@ -67,7 +109,11 @@ process.genParticlePlusGEANT = cms.EDProducer("GenPlusSimParticleProducer",
   genParticles  = cms.InputTag("genParticles") # original genParticle list
 )
 
-process.load("SexaQAnalysis.Skimming.InitialProducer_cfi")
+process.load("RecoVertex.V0Producer.generalV0Candidates_cfi")
+process.generalV0Candidates.innerHitPosCut = -1
+process.generalV0Candidates.cosThetaXYCut = 0
+
+#process.load("SexaQAnalysis.Skimming.InitialProducer_cfi")
 #process.InitialProducer = cms.EDProducer('InitialProducer')
 
 process.load("SexaQAnalysis.Skimming.LambdaKshortFilter_cfi")
@@ -92,9 +138,9 @@ process.rMassFilter.targetMass = 0
 process.sMassFilter = massFilter.clone()
 process.sMassFilter.targetMass = 0.939565
 
-#process.load("SexaQAnalysis.Skimming.InitialProducer_cff")
+process.load("SexaQAnalysis.Skimming.InitialProducer_cff")
 
-#process.load("SexaQAnalysis.TreeProducer.Treeproducer_AOD_cfi")
+process.load("SexaQAnalysis.TreeProducer.Treeproducer_AOD_cfi")
 #process.tree.genCollection = cms.InputTag("genParticlePlusGEANT")
 #process.tree.sCollection = cms.InputTag("lambdaKshortVertexFilter","sParticles")
 #process.tree.sTrackCollection = cms.InputTag("lambdaKshortVertexFilter","sParticlesTracks")
@@ -103,6 +149,7 @@ process.sMassFilter.targetMass = 0.939565
 process.p = cms.Path(
 #  process.genParticlePlusGEANT *
   process.generalV0Candidates* 
+  process.tree*
   process.nEvTotal *
   process.InitialProducer * 
   process.lambdaKshortFilter *
@@ -122,31 +169,7 @@ process.TFileService = cms.Service('TFileService',
 
 #Keep edm output file --> used in the analyzer
 process.out = cms.OutputModule("PoolOutputModule",
-  outputCommands = cms.untracked.vstring(
-     'drop *',
-
-    'keep *_InitialProducer_*_*',
-    'keep recoVertexs_offlinePrimaryVertices_*_*',
-    'keep recoBeamSpot_offlineBeamSpot_*_*',
-    'keep *_genParticles_*_HLT',
-    'keep recoVertexCompositeCandidates_generalV0Candidates_*_*',
-    'keep recoTracks_lambdaKshortVertexFilter_sParticlesTracks_*',
-    'keep recoVertexCompositePtrCandidates_rMassFilter_sVertexCompositePtrCandidate_*',
-    'keep recoVertexCompositePtrCandidates_sMassFilter_sVertexCompositePtrCandidate_*',
-    'keep *_*_*_SEXAQ',
-    "keep *_genParticlesPlusGEANT_*_*",#this is for MC
-    "keep *_g4SimHits_*_*",#this is for MC
-    "keep *_simSiPixelDigis_*_*",#this is for MC
-    "keep *_simMuonRPCDigis_*_*",#this is for MC
-    "keep *_simSiStripDigis_*_*",#this is for MC
-    "keep *_mix_MergedTrackTruth_*",#this is for MC
-    "keep *_siPixelDigis_*_*",#this is for MC
-    "keep *_siStripDigis_*_*",#this is for MC
-    "keep *_siStripDigis_*_*",#this is for MC
-    "keep *_siPixelClusters_*_*",#this is for MC
-    "keep *_siStripClusters_*_*",#this is for MC
-    "keep *_generalTracks_*_*"#this is for MC
-  ),
+  outputCommands = collections_to_keep,
    fileName = cms.untracked.string("events_skimmed.root"),
     SelectEvents = cms.untracked.PSet(
     SelectEvents = cms.vstring('p')
