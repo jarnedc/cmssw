@@ -64,6 +64,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     double openings_angle(reco::Candidate::Vector momentum1, reco::Candidate::Vector momentum2);
     double deltaR(double phi1, double eta1, double phi2, double eta2);
     double lxy(TVector3 v1, TVector3 v2);
+    double lxyz(TVector3 v1, TVector3 v2);
     TVector3 PCA_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point);
     double dxy_signed_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point);
     double std_dev_lxy(double vx, double vy, double vx_var, double vy_var, double bx_x, double bx_y, double bx_x_var, double bx_y_var);
@@ -97,7 +98,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     void RecoEvaluationKsAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks,  TVector3 beamspot);
     void RecoEvaluationAntiLambdaNonAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L,  TVector3 beamspot);
     void RecoEvaluationAntiLambdaAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L,  TVector3 beamspot);
-    void RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands, TVector3 beamspot);
+    void RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands, TVector3 beamspot, TVector3 beamspotVariance);
 
     const int pdgIdAntiS = -1020000020;
     const int pdgIdKs = 310;
@@ -106,6 +107,9 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     const int pdgIdPosPion = 211;
     const int pdgIdNegPion = -211;
 
+    const double deltaRCutV0RECOKs = 0.1;
+    const double deltaRCutV0RECOLambda = 0.1;
+    const double deltaRCutRECOAntiS = 0.1;
 
   private:
     //---- configurable parameters --------
