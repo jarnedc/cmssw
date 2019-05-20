@@ -137,5 +137,5 @@ process.out = cms.OutputModule("PoolOutputModule",
  # SelectEvents = cms.untracked.PSet(  SelectEvents = cms.vstring('p') )
 )
 
-process.output_step = cms.EndPath(process.out)
+#process.output_step = cms.EndPath(process.out)
 
