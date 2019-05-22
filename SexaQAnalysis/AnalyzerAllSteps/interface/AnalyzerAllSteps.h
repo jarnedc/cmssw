@@ -74,6 +74,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     bool isTpGrandDaughterAntiS(TrackingParticleCollection const & TPColl, const TrackingParticle& tp);
 
     int getDaughterParticlesTypes(const reco::Candidate * genParticle);
+    void FillHistosPV(reco::Vertex PrimVertex, TVector3 beamspot);
     void FillHistosNonAntiSTracksRECO(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosNonAntiSTracksAll(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosAntiSTracks(const TrackingParticle& tp, TVector3 beamspot, TrackingParticleCollection const & TPColl, edm::Handle<TrackingParticleCollection> h_TP, edm::Handle< reco::TrackToTrackingParticleAssociator> h_trackAssociator, edm::Handle<View<reco::Track>> h_generalTracks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L);
@@ -152,6 +153,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     std::map<TString, TH1F *> histos_th1f;
     std::map<TString, TH2I *> histos_th2i;
     std::map<TString, TH2F *> histos_th2f;
+    std::map<TString, TH3F *> histos_th3f;
     std::map<TString, TEfficiency *> histos_teff;
     std::map<TString, TProfile *> histos_TProfile;
 
