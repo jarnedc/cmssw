@@ -2,7 +2,7 @@ from ROOT import TFile, TH1F, TH2F, TEfficiency
 
 
 #fIn = TFile('/user/jdeclerc/Analysis/SexaQuark/CMSSW_9_4_7/src/SexaQAnalysis/AnalyzerAllSteps/test/wihtMatchingOnHits/test_TrackMatchingOnHits.root', 'read')
-fIn = TFile('/storage_mnt/storage/user/jdeclerc/CMSSW_8_0_30/src/SexaQAnalysis/AnalyzerAllSteps/test/hadd/haddStep2/combinedStep2_all.root', 'read')
+fIn = TFile('/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/CRAB_SimSexaq_cosThetaXYCut_innerHitPosCut/crab_Step2Sexaq_15052019_v1/190515_071013/combinedStep2_Sexaq_disabled_cosThetaXYCut_innerHitPosCut_22052019.root', 'read')
 fOut = TFile('AnalyzerAllStepsPlots.root','RECREATE')
 ##########################################################################################################################################################################################################################
 #add to this list all the num and denom plots of which you want to make an efficiency plot

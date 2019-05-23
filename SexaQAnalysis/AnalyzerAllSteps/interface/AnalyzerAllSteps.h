@@ -114,7 +114,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
 
   private:
     //---- configurable parameters --------
-    bool m_isData;
+    bool m_lookAtAntiS;
     int m_nEvent, m_nRun, m_nLumi;
     
     edm::Service<TFileService> m_fs;

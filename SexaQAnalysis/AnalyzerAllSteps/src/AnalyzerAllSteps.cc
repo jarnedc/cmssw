@@ -2,7 +2,7 @@
 #include <typeinfo>
 
 AnalyzerAllSteps::AnalyzerAllSteps(edm::ParameterSet const& pset):
-  m_isData(pset.getUntrackedParameter<bool>("isData")),
+  m_lookAtAntiS(pset.getUntrackedParameter<bool>("lookAtAntiS")),
   m_bsTag(pset.getParameter<edm::InputTag>("beamspot")),
   m_offlinePVTag(pset.getParameter<edm::InputTag>("offlinePV")),
   m_genParticlesTag_GEN(pset.getParameter<edm::InputTag>("genCollection_GEN")),
@@ -642,12 +642,15 @@ void AnalyzerAllSteps::analyze(edm::Event const& iEvent, edm::EventSetup const& 
       }
   }
 
+
   //loop over the RECO AntiS to plot the kinematics
   if(h_sCands.isValid()){
       for(unsigned int i = 0; i < h_sCands->size(); ++i){//loop all S candidates
 	const reco::VertexCompositeCandidate * antiS = &h_sCands->at(i);	
 	//the if below is important, if it is -1 you are looking at signal (antiS). If it is +1 you are looking at background (S).
-	if(antiS->charge()==1)FillHistosRECOAntiS(antiS, beamspot, beamspotVariance, h_genParticles, iEvent.id().event());
+	int chargeAntiProton = 1; //by default look at the background
+	if(m_lookAtAntiS) chargeAntiProton = -1;//only when the m_lookAtAntiS flag is enabled look at the antiS, which has a charge of -1 (representing the charge of the proton)
+	if(antiS->charge()==chargeAntiProton)FillHistosRECOAntiS(antiS, beamspot, beamspotVariance, h_genParticles, iEvent.id().event());
       }
   }
 
