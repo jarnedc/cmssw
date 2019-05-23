@@ -83,7 +83,6 @@ if(runningOnData==True):
 
 #run this analyer only on GEN:
 process.load("SexaQAnalysis.AnalyzerAllSteps.AnalyzerGEN_cfi")
-process.AnalyzerGEN.lookAtAntiS = lookAtAntiS
 if(runningOnData==False):
 	process.analyzerallsteps = cms.Path(process.validation*process.AnalyzerGEN*process.AnalyzerRECO)
 

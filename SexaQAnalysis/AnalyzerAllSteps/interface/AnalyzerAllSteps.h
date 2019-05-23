@@ -63,6 +63,15 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     const static int pdgIdPosPion = 211;
     const static int pdgIdNegPion = -211;
 
+    double static openings_angle(reco::Candidate::Vector momentum1, reco::Candidate::Vector momentum2);
+    double static deltaR(double phi1, double eta1, double phi2, double eta2);
+    double static lxy(TVector3 v1, TVector3 v2);
+    double static lxyz(TVector3 v1, TVector3 v2);
+    TVector3 static PCA_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point);
+    double static dxy_signed_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point);
+    double static std_dev_lxy(double vx, double vy, double vx_var, double vy_var, double bx_x, double bx_y, double bx_x_var, double bx_y_var);
+    double static XYpointingAngle(const reco::Candidate  * particle,TVector3 beamspot);
+    double static CosOpeningsAngle(TVector3 vec1, TVector3 vec2);
 
      };
 

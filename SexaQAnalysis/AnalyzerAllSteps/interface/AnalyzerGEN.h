@@ -12,19 +12,10 @@ class AnalyzerGEN : public edm::EDAnalyzer
     virtual void analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup);
     virtual void endJob();
     virtual ~AnalyzerGEN();
-    double openings_angle(reco::Candidate::Vector momentum1, reco::Candidate::Vector momentum2);
-    double deltaR(double phi1, double eta1, double phi2, double eta2);
-    double lxy(TVector3 v1, TVector3 v2);
-    double lxyz(TVector3 v1, TVector3 v2);
-    TVector3 PCA_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point);
-    double dxy_signed_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point);
-    double std_dev_lxy(double vx, double vy, double vx_var, double vy_var, double bx_x, double bx_y, double bx_x_var, double bx_y_var);
-    double XYpointingAngle(const reco::Candidate  * particle,TVector3 beamspot);
-    double CosOpeningsAngle(TVector3 vec1, TVector3 vec2);
 
     bool isTpGrandDaughterAntiS(TrackingParticleCollection const & TPColl, const TrackingParticle& tp);
-
     int getDaughterParticlesTypes(const reco::Candidate * genParticle);
+
     void FillHistosNonAntiSTracksRECO(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosNonAntiSTracksAll(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosAntiSTracks(const TrackingParticle& tp, TVector3 beamspot, TrackingParticleCollection const & TPColl, edm::Handle<TrackingParticleCollection> h_TP, edm::Handle< reco::TrackToTrackingParticleAssociator> h_trackAssociator, edm::Handle<View<reco::Track>> h_generalTracks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L);

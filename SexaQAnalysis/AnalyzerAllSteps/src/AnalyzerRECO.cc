@@ -152,7 +152,7 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 	beamspot.SetXYZ(h_bs->x0(),h_bs->y0(),h_bs->z0());
 	beamspotVariance.SetXYZ(pow(h_bs->x0Error(),2),pow(h_bs->y0Error(),2),pow(h_bs->z0Error(),2));			
   }
-  std::cout << "1" << std::endl;
+
   TVector3 FirstOfflinePV(0.,0.,0.);
   if(h_offlinePV.isValid()){ 
 	FirstOfflinePV.SetX(h_offlinePV->at(0).x()); FirstOfflinePV.SetY(h_offlinePV->at(0).y()); FirstOfflinePV.SetZ(h_offlinePV->at(0).z());
@@ -162,7 +162,6 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 	}
    }
   
-  std::cout << "2" << std::endl;
 
   //loop over the RECO Ks to plot the kinematics
   if(h_V0Ks.isValid()){
@@ -171,7 +170,6 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 	FillHistosRECOKs(Ks,beamspot);
       }
   }
-  std::cout << "3" << std::endl;
 
   //loop over the RECO AntiLambda to plot the kinematics
   if(h_V0L.isValid()){
@@ -180,7 +178,6 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 	FillHistosRECOLambda(L,beamspot);
       }
   }
-  std::cout << "4" << std::endl;
 
 
   //loop over the RECO AntiS to plot the kinematics
@@ -193,7 +190,6 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 	if(antiS->charge()==chargeAntiProton)FillHistosRECOAntiS(antiS, beamspot, beamspotVariance, iEvent.id().event());
       }
   }
-  std::cout << "5" << std::endl;
 
 
 
@@ -206,9 +202,9 @@ void AnalyzerRECO::FillHistosPV(reco::Vertex PrimVertex, TVector3 beamspot){
 
 void AnalyzerRECO::FillHistosRECOKs(const reco::VertexCompositeCandidate * RECOKs, TVector3 beamspot){
 	TVector3 KsCreationVertex(RECOKs->vx(),RECOKs->vy(),RECOKs->vz());
-	double Lxy = lxy(beamspot,KsCreationVertex);
+	double Lxy = AnalyzerAllSteps::lxy(beamspot,KsCreationVertex);
 	TVector3 KsMomentum(RECOKs->px(),RECOKs->py(),RECOKs->pz());
-	double dxy = dxy_signed_line_point(KsCreationVertex,KsMomentum,beamspot);
+	double dxy = AnalyzerAllSteps::dxy_signed_line_point(KsCreationVertex,KsMomentum,beamspot);
 	histos_th1f["h_RECO_Ks_pt"]->Fill(RECOKs->pt());	
 	histos_th1f["h_RECO_Ks_eta"]->Fill(RECOKs->eta());	
 	histos_th1f["h_RECO_Ks_phi"]->Fill(RECOKs->phi());	
@@ -219,15 +215,13 @@ void AnalyzerRECO::FillHistosRECOKs(const reco::VertexCompositeCandidate * RECOK
 	histos_th1f["h_RECO_Ks_dxy"]->Fill(dxy);
 	histos_th1f["h_RECO_Ks_m"]->Fill(RECOKs->mass());
 
-
-	
 }
 
 void AnalyzerRECO::FillHistosRECOLambda(const reco::VertexCompositeCandidate * RECOLambda, TVector3 beamspot){
 	TVector3 LambdaCreationVertex(RECOLambda->vx(),RECOLambda->vy(),RECOLambda->vz());
-	double Lxy = lxy(beamspot,LambdaCreationVertex);
+	double Lxy = AnalyzerAllSteps::lxy(beamspot,LambdaCreationVertex);
 	TVector3 LambdaMomentum(RECOLambda->px(),RECOLambda->py(),RECOLambda->pz());
-	double dxy = dxy_signed_line_point(LambdaCreationVertex,LambdaMomentum,beamspot);
+	double dxy = AnalyzerAllSteps::dxy_signed_line_point(LambdaCreationVertex,LambdaMomentum,beamspot);
 	histos_th1f["h_RECO_Lambda_pt"]->Fill(RECOLambda->pt());	
 	histos_th1f["h_RECO_Lambda_eta"]->Fill(RECOLambda->eta());	
 	histos_th1f["h_RECO_Lambda_phi"]->Fill(RECOLambda->phi());	
@@ -244,10 +238,10 @@ void AnalyzerRECO::FillHistosRECOLambda(const reco::VertexCompositeCandidate * R
 void AnalyzerRECO::FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RECOAntiS, TVector3 beamspot, TVector3 beamspotVariance, int eventId){
 
 	TVector3 AntiSCreationVertex(RECOAntiS->vx(),RECOAntiS->vy(),RECOAntiS->vz());
-	double Lxy = lxy(beamspot,AntiSCreationVertex);
-	double error_Lxy = std_dev_lxy(RECOAntiS->vx(),RECOAntiS->vy(), RECOAntiS->vertexCovariance(0,0), RECOAntiS->vertexCovariance(1,1), beamspot.X(), beamspot.Y(), beamspotVariance.X(), beamspotVariance.Y());
+	double Lxy = AnalyzerAllSteps::lxy(beamspot,AntiSCreationVertex);
+	double error_Lxy = AnalyzerAllSteps::std_dev_lxy(RECOAntiS->vx(),RECOAntiS->vy(), RECOAntiS->vertexCovariance(0,0), RECOAntiS->vertexCovariance(1,1), beamspot.X(), beamspot.Y(), beamspotVariance.X(), beamspotVariance.Y());
 	TVector3 AntiSMomentum(RECOAntiS->px(),RECOAntiS->py(),RECOAntiS->pz());
-	double dxy = dxy_signed_line_point(AntiSCreationVertex,AntiSMomentum,beamspot);
+	double dxy = AnalyzerAllSteps::dxy_signed_line_point(AntiSCreationVertex,AntiSMomentum,beamspot);
 	
 	double deltaPhiDaughters = reco::deltaPhi(RECOAntiS->daughter(0)->phi(),RECOAntiS->daughter(1)->phi());
 	double deltaEtaDaughters = RECOAntiS->daughter(0)->eta()-RECOAntiS->daughter(1)->eta();
@@ -309,98 +303,6 @@ void AnalyzerRECO::FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RE
 
 
 }
-
-double AnalyzerRECO::openings_angle(reco::Candidate::Vector momentum1, reco::Candidate::Vector momentum2){
-  double opening_angle = TMath::ACos((momentum1.Dot(momentum2))/(pow(momentum1.Mag2()*momentum2.Mag2(),0.5)));
-  return opening_angle;
-}
-
-double AnalyzerRECO::deltaR(double phi1, double eta1, double phi2, double eta2){
-	double deltaPhi = reco::deltaPhi(phi1,phi2);
-	double deltaEta = eta1-eta2;
-	return pow(deltaPhi*deltaPhi+deltaEta*deltaEta,0.5);
-}
-
-
-double AnalyzerRECO::lxy(TVector3 v1, TVector3 v2){
-	double x1 = v1.X();
-	double x2 = v2.X();
-	double y1 = v1.Y();
-	double y2 = v2.Y();
-	return sqrt(pow(x1-x2,2)+pow(y1-y2,2));
-}
-
-double AnalyzerRECO::lxyz(TVector3 v1, TVector3 v2){
-	double x1 = v1.X();
-	double x2 = v2.X();
-	double y1 = v1.Y();
-	double y2 = v2.Y();
-	double z1 = v1.Z();
-	double z2 = v2.Z();
-	return sqrt(pow(x1-x2,2)+pow(y1-y2,2)+pow(z1-z2,2));
-}
-
-
-TVector3 AnalyzerRECO::PCA_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point){
-   //first move the vector along the line to the starting point of Point_line
-   double normalise = sqrt(Vector_along_line.X()*Vector_along_line.X()+Vector_along_line.Y()*Vector_along_line.Y()+Vector_along_line.Z()*Vector_along_line.Z());
-   TVector3 n(Vector_along_line.X()/normalise,Vector_along_line.Y()/normalise,Vector_along_line.Z()/normalise);
-   TVector3 a = Point_line;
-   TVector3 p = Point;
-
-   //see https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line (Vector formulation)
-   TVector3 vector_PCA = (a-p)-((a-p)*n)*n;
-   return vector_PCA ;
-}
-
-double AnalyzerRECO::dxy_signed_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in){
-
-  //looking at XY, so put the Z component to 0 first
-  TVector3 Point_line(Point_line_in.X(),Point_line_in.Y(),0.);
-  TVector3 Vector_along_line(Vector_along_line_in.X(), Vector_along_line_in.Y(),0.);
-  TVector3 Point(Point_in.X(), Point_in.Y(), 0.);
-
-  TVector3 shortest_distance = PCA_line_point(Point_line,  Vector_along_line, Point);
-  double dxy_signed_line_point = sqrt(shortest_distance.X()*shortest_distance.X()+shortest_distance.Y()*shortest_distance.Y());
-
-  TVector3 displacement = Point_line - Point; 
-  if(displacement*Vector_along_line<0)dxy_signed_line_point = -dxy_signed_line_point;
-
-  return dxy_signed_line_point;
-}
-
-double AnalyzerRECO::std_dev_lxy(double vx, double vy, double vx_var, double vy_var, double bx_x, double bx_y, double bx_x_var, double bx_y_var){
-
-        double lxy_std_dev_nominator = pow(vx-bx_x,2)*(vx_var+bx_x_var) + pow(vy-bx_y,2)*(vy_var+bx_y_var);
-        double lxy_std_dev_denominator = pow(vx-bx_x,2) + pow(vy-bx_y,2);
-        double lxy_b_std_dev = sqrt(lxy_std_dev_nominator/lxy_std_dev_denominator);
-        return lxy_b_std_dev;
-
-}
-
-//function to return the cos of the angle between the momentum of the particle and it's displacement vector. This is for a V0 particle, so you need the V0 to decay to get it's interaction vertex
-double AnalyzerRECO::XYpointingAngle(const reco::Candidate  * particle, TVector3 beamspot){
-      double angleXY = -2;
-      if(particle->numberOfDaughters() == 2){
-	      TVector3 decayVertexParticle(particle->daughter(0)->vx(),particle->daughter(0)->vy(),particle->daughter(0)->vz());	 
-	      double dx = decayVertexParticle.X()-beamspot.X();
-	      double dy = decayVertexParticle.Y()-beamspot.Y();
-	      double px = particle->px();
-	      double py = particle->py();
-	      angleXY = (dx*px+dy*py)/(sqrt(dx*dx+dy*dy)*sqrt(px*px+py*py));
-      }
-      return angleXY;
-	
-}
-
-double AnalyzerRECO::CosOpeningsAngle(TVector3 vec1, TVector3 vec2){
-
-  double nom = vec1.X()*vec2.X()+vec1.Y()*vec2.Y()+vec1.Z()*vec2.Z();
-  double denom = sqrt(vec1.X()*vec1.X()+vec1.Y()*vec1.Y()+vec1.Z()*vec1.Z())*sqrt(vec2.X()*vec2.X()+vec2.Y()*vec2.Y()+vec2.Z()*vec2.Z());
-  return nom/denom;
-	
-}
-
 void AnalyzerRECO::endJob()
 {
 }
