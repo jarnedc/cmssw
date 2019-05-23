@@ -7,7 +7,6 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 print sys.argv
 options = VarParsing ('analysis')
 options.parseArguments()
-
 ## data or MC options
 options.register(
 	'isData',True,VarParsing.multiplicity.singleton,VarParsing.varType.bool,
@@ -18,7 +17,7 @@ options.register(
 	'flag to indicate max events to process')
 	
 	
-#options.isData==True
+options.isData==True
 
 
 process = cms.Process("SEXAQDATAANA")
@@ -41,10 +40,6 @@ else:
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvts))
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(2000)
 process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
-
-
-
-
 
 
 
@@ -75,25 +70,6 @@ process.quickTrackAssociatorByHits.SimToRecoDenominator = 'reco'
 
 
 
-
-########### configuration MultiTrackValidator ########
-#process.multiTrackValidator.associators = ['quickTrackAssociatorByHits']
-
-#process.multiTrackValidator.label = ['cutsRecoTracks']
-#process.multiTrackValidator.histoProducerAlgoBlock.useLogPt = True
-#process.multiTrackValidator.histoProducerAlgoBlock.minPt = 0.1
-#process.multiTrackValidator.histoProducerAlgoBlock.maxPt = 3000.0
-#process.multiTrackValidator.histoProducerAlgoBlock.nintPt = 40
-#process.multiTrackValidator.UseAssociators = True
-
-
-#process.load("Validation.RecoTrack.cuts_cff")
-#process.cutsRecoTracks.quality = ['highPurity']
-#process.cutsRecoTracks.ptMin    = 0.5
-#process.cutsRecoTracks.minHit   = 10
-#process.cutsRecoTracks.minRapidity  = -1.0
-#process.cutsRecoTracks.maxRapidity  = 1.0
-
 process.quickTrackAssociatorByHits.useClusterTPAssociation = True
 process.load("SimTracker.TrackerHitAssociation.tpClusterProducer_cfi")
 
@@ -102,18 +78,17 @@ process.load("SimTracker.TrackerHitAssociation.tpClusterProducer_cfi")
 process.validation = cms.Sequence(
     process.tpClusterProducer *
     process.quickTrackAssociatorByHits 
-#    process.multiTrackValidator
 )
 
 process.val = cms.Path(
-    #  process.cutsRecoTracks
      process.validation
 )
 
 
 # Analyzer
 process.load("SexaQAnalysis.AnalyzerAllSteps.AnalyzerAllSteps_cfi")
-process.AnalyzerAllSteps.isData = cms.untracked.bool(True) ##############SET BACK TO TRUE################
+process.AnalyzerAllSteps.lookAtAntiS = True
+#process.AnalyzerAllSteps.isData = cms.untracked.bool(True) ##############SET BACK TO TRUE################
 process.analyzerallsteps = cms.Path(process.AnalyzerAllSteps)
 
 process.p = cms.Schedule(
