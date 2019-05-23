@@ -111,7 +111,7 @@ process.genParticlePlusGEANT = cms.EDProducer("GenPlusSimParticleProducer",
 
 process.load("RecoVertex.V0Producer.generalV0Candidates_cfi")
 process.generalV0Candidates.innerHitPosCut = -1
-process.generalV0Candidates.cosThetaXYCut = 0
+process.generalV0Candidates.cosThetaXYCut = -1
 
 #process.load("SexaQAnalysis.Skimming.InitialProducer_cfi")
 #process.InitialProducer = cms.EDProducer('InitialProducer')
