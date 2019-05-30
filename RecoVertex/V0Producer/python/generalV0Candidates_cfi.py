@@ -56,11 +56,9 @@ generalV0Candidates = cms.EDProducer("V0Producer",
    mPiPiCut = cms.double(0.6),
    # check if either track has a hit radially inside the vertex position minus this number times the sigma of the vertex fit
    # note: Set this to -1 to disable this cut, which MUST be done if you want to run V0Producer on the AOD track collection!
-   #innerHitPosCut = cms.double(4),
-   innerHitPosCut = cms.double(-1),
+   innerHitPosCut = cms.double(4),
    # cos(angleXY) between x and p of V0 candidate >
-   #cosThetaXYCut = cms.double(0.9998),
-   cosThetaXYCut = cms.double(0.),
+   cosThetaXYCut = cms.double(0.9998),
    # cos(angleXYZ) between x and p of V0 candidate >
    cosThetaXYZCut = cms.double(-2.),
 
