@@ -1,5 +1,5 @@
 from CRABClient.UserUtilities import config
-
+trial = "L"
 config = config()
 
 pyCfgParams = ['isData=True']
@@ -15,10 +15,10 @@ config.JobType.psetName = '../treeproducer_data_cfg.py'
 #config.Data.inputDataset = '/SingleMuon/Run2016G-23Sep2016-v1/AOD'
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'EventAwareLumiBased'
-config.Data.unitsPerJob = 500000
+config.Data.unitsPerJob = 250000
 config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt'
 config.Data.runRange = ''
-config.Data.outLFNDirBase = '/store/user/jdeclerc/data_Sexaq/trialG'
+config.Data.outLFNDirBase = '/store/user/jdeclerc/data_Sexaq/trial'+trial
 config.Data.publication = False
 #config.Data.outputDatasetTag = 'allPDs_2016_multicrab'
 #config.Data.splitting = 'Automatic'
@@ -28,7 +28,7 @@ config.Site.storageSite = 'T2_BE_IIHE'
 def submit_single_run(arg1, arg2):
 
 	#config.General.requestName = 'BTagCSV_Run2016B-07Aug17_ver2-v1'
-	word1 =  arg1 + "_" + arg2
+	word1 =  arg1 + "_" + arg2 + "_trial"+trial
 	print word1
 	config.General.requestName = word1
 	config.Data.outputDatasetTag = word1
@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
     # We want to put all the CRAB project directories from the tasks we submit here into one common directory.
     # That's why we need to set this parameter (here or above in the configuration file, it does not matter, we will not overwrite it).
-    config.General.workArea = 'crab_projects16_trialG'
+    config.General.workArea = 'crab_projects16_trial'+trial
 
     def submit(config):
         try:
@@ -153,12 +153,12 @@ if __name__ == '__main__':
 #submit_single_run("SingleElectron","Run2016G-07Aug17-v1")
 #submit_single_run("SingleElectron","Run2016H-07Aug17-v1")
 submit_single_run("SingleMuon","Run2016B-07Aug17_ver2-v1")
-#submit_single_run("SingleMuon","Run2016C-07Aug17-v1")
-#submit_single_run("SingleMuon","Run2016D-07Aug17-v1")
-#submit_single_run("SingleMuon","Run2016E-07Aug17-v1")
-#submit_single_run("SingleMuon","Run2016F-07Aug17-v1")
-#submit_single_run("SingleMuon","Run2016G-07Aug17-v1")
-#submit_single_run("SingleMuon","Run2016H-07Aug17-v1")
+submit_single_run("SingleMuon","Run2016C-07Aug17-v1")
+submit_single_run("SingleMuon","Run2016D-07Aug17-v1")
+submit_single_run("SingleMuon","Run2016E-07Aug17-v1")
+submit_single_run("SingleMuon","Run2016F-07Aug17-v1")
+submit_single_run("SingleMuon","Run2016G-07Aug17-v1")
+submit_single_run("SingleMuon","Run2016H-07Aug17-v1")
 #submit_single_run("SinglePhoton","Run2016B-07Aug17_ver2-v1")
 #submit_single_run("SinglePhoton","Run2016C-07Aug17-v1")
 #submit_single_run("SinglePhoton","Run2016D-07Aug17-v1")
