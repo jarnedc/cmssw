@@ -1,0 +1,148 @@
+#include "../interface/AnalyzerAllSteps.h"
+
+
+double AnalyzerAllSteps::openings_angle(reco::Candidate::Vector momentum1, reco::Candidate::Vector momentum2){
+  double opening_angle = TMath::ACos((momentum1.Dot(momentum2))/(pow(momentum1.Mag2()*momentum2.Mag2(),0.5)));
+  return opening_angle;
+}
+
+double AnalyzerAllSteps::deltaR(double phi1, double eta1, double phi2, double eta2){
+	double deltaPhi = reco::deltaPhi(phi1,phi2);
+	double deltaEta = eta1-eta2;
+	return pow(deltaPhi*deltaPhi+deltaEta*deltaEta,0.5);
+}
+
+
+double AnalyzerAllSteps::lxy(TVector3 v1, TVector3 v2){
+	double x1 = v1.X();
+	double x2 = v2.X();
+	double y1 = v1.Y();
+	double y2 = v2.Y();
+	return sqrt(pow(x1-x2,2)+pow(y1-y2,2));
+}
+
+double AnalyzerAllSteps::lxyz(TVector3 v1, TVector3 v2){
+	double x1 = v1.X();
+	double x2 = v2.X();
+	double y1 = v1.Y();
+	double y2 = v2.Y();
+	double z1 = v1.Z();
+	double z2 = v2.Z();
+	return sqrt(pow(x1-x2,2)+pow(y1-y2,2)+pow(z1-z2,2));
+}
+
+
+
+TVector3 AnalyzerAllSteps::PCA_line_point(TVector3 Point_line, TVector3 Vector_along_line, TVector3 Point){
+   //first move the vector along the line to the starting point of Point_line
+   double normalise = sqrt(Vector_along_line.X()*Vector_along_line.X()+Vector_along_line.Y()*Vector_along_line.Y()+Vector_along_line.Z()*Vector_along_line.Z());
+   TVector3 n(Vector_along_line.X()/normalise,Vector_along_line.Y()/normalise,Vector_along_line.Z()/normalise);
+   TVector3 a = Point_line;
+   TVector3 p = Point;
+
+   //see https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line (Vector formulation)
+   TVector3 vector_PCA = (a-p)-((a-p)*n)*n;
+   return vector_PCA ;
+}
+
+//return a vector representing the dxy
+TVector3 AnalyzerAllSteps::vec_dxy_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in){
+  //looking at XY, so put the Z component to 0 first
+  TVector3 Point_line(Point_line_in.X(),Point_line_in.Y(),0.);
+  TVector3 Vector_along_line(Vector_along_line_in.X(), Vector_along_line_in.Y(),0.);
+  TVector3 Point(Point_in.X(), Point_in.Y(), 0.);
+  
+  TVector3 shortest_distance = PCA_line_point(Point_line,  Vector_along_line, Point);
+  return shortest_distance;
+	
+}
+
+
+
+double AnalyzerAllSteps::dxy_signed_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in){
+  TVector3 shortest_distance = vec_dxy_line_point(Point_line_in,Vector_along_line_in,Point_in);
+  double dxy_signed_line_point = sqrt(shortest_distance.X()*shortest_distance.X()+shortest_distance.Y()*shortest_distance.Y());
+
+  //looking at XY, so put the Z component to 0 first
+  TVector3 Point_line(Point_line_in.X(),Point_line_in.Y(),0.);
+  TVector3 Vector_along_line(Vector_along_line_in.X(), Vector_along_line_in.Y(),0.);
+  TVector3 Point(Point_in.X(), Point_in.Y(), 0.);
+
+  TVector3 displacement = Point_line - Point; 
+  if(displacement*Vector_along_line<0)dxy_signed_line_point = -dxy_signed_line_point;
+
+  return dxy_signed_line_point;
+}
+
+double AnalyzerAllSteps::dxyz_signed_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in){
+  TVector3 shortest_distance = PCA_line_point(Point_line_in,  Vector_along_line_in, Point_in);
+  double dxyz_signed_line_point = sqrt(shortest_distance.X()*shortest_distance.X()+shortest_distance.Y()*shortest_distance.Y()+shortest_distance.Z()*shortest_distance.Z());
+
+  TVector3 displacement = Point_line_in - Point_in; 
+  if(displacement*Vector_along_line_in<0)dxyz_signed_line_point = -dxyz_signed_line_point;
+
+  return dxyz_signed_line_point;
+	
+}
+
+
+
+double AnalyzerAllSteps::std_dev_lxy(double vx, double vy, double vx_var, double vy_var, double bx_x, double bx_y, double bx_x_var, double bx_y_var){
+
+        double lxy_std_dev_nominator = pow(vx-bx_x,2)*(vx_var+bx_x_var) + pow(vy-bx_y,2)*(vy_var+bx_y_var);
+        double lxy_std_dev_denominator = pow(vx-bx_x,2) + pow(vy-bx_y,2);
+        double lxy_b_std_dev = sqrt(lxy_std_dev_nominator/lxy_std_dev_denominator);
+        return lxy_b_std_dev;
+
+}
+
+//function to return the cos of the angle between the momentum of the particle and it's displacement vector. This is for a V0 particle, so you need the V0 to decay to get it's interaction vertex
+double AnalyzerAllSteps::XYpointingAngle(const reco::Candidate  * particle, TVector3 beamspot){
+      double angleXY = -2;
+      if(particle->numberOfDaughters() == 2){
+	      TVector3 decayVertexParticle(particle->daughter(0)->vx(),particle->daughter(0)->vy(),particle->daughter(0)->vz());	 
+	      double dx = decayVertexParticle.X()-beamspot.X();
+	      double dy = decayVertexParticle.Y()-beamspot.Y();
+	      double px = particle->px();
+	      double py = particle->py();
+	      angleXY = (dx*px+dy*py)/(sqrt(dx*dx+dy*dy)*sqrt(px*px+py*py));
+      }
+      return angleXY;
+	
+}
+
+double AnalyzerAllSteps::CosOpeningsAngle(TVector3 vec1, TVector3 vec2){
+
+  double nom = vec1.X()*vec2.X()+vec1.Y()*vec2.Y()+vec1.Z()*vec2.Z();
+  double denom = sqrt(vec1.X()*vec1.X()+vec1.Y()*vec1.Y()+vec1.Z()*vec1.Z())*sqrt(vec2.X()*vec2.X()+vec2.Y()*vec2.Y()+vec2.Z()*vec2.Z());
+  return nom/denom;
+	
+}
+
+
+double AnalyzerAllSteps::dz_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in){
+  //looking at Z, so put the XY component to 0 first
+//  TVector3 Point_line(0.,0., Point_line_in.Z());
+//  TVector3 Vector_along_line(0.,0., Vector_along_line_in.Z());
+//  TVector3 Point( 0., 0., Point_in.Z());
+
+//  TVector3 shortest_distance = PCA_line_point(Point_line,  Vector_along_line, Point);
+//  return shortest_distance.Z();
+  Double_t vz = Point_line_in.Z();
+  Double_t vx = Point_line_in.X();
+  Double_t vy = Point_line_in.Y();
+  Double_t px = Vector_along_line_in.X();
+  Double_t py = Vector_along_line_in.Y();
+  Double_t pz = Vector_along_line_in.Z(); 
+  Double_t pt = sqrt(px*px+py*py);
+  //from: https://github.com/cms-sw/cmssw/blob/master/DataFormats/TrackReco/interface/TrackBase.h#L764-L767
+  return (vz - Point_in.Z()) - ((vx - Point_in.X()) * px + (vy - Point_in.Y()) * py) / pt * pz / pt;
+             
+}
+
+double AnalyzerAllSteps::sgn(double input){
+  double output = 1;
+  if(input < 0.) output = -1;
+  return output;
+
+}   
