@@ -17,7 +17,7 @@ class AnalyzerRECO : public edm::EDAnalyzer
     void FillHistosPV(reco::Vertex PrimVertex, TVector3 beamspot);
     void FillHistosRECOKs(const reco::VertexCompositeCandidate * RECOKs, TVector3 beamspot);
     void FillHistosRECOLambda(const reco::VertexCompositeCandidate * RECOAntiLambda, TVector3 beamspot);
-    void FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RECOAntiS, TVector3 beamspot,TVector3 beamspotVariance, int eventId);
+    void FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RECOAntiS, TVector3 beamspot,TVector3 beamspotVariance, int eventId, edm::Handle<vector<reco::Vertex>> h_offlinePV);
 
 
   private:

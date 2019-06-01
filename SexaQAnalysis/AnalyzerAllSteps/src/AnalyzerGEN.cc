@@ -314,6 +314,7 @@ void AnalyzerGEN::beginJob() {
 
      TFileDirectory dir_GENRECO_RECO_AntiS = dir_GENRECO_AntiS.mkdir("GENRECO_RECO_AntiS");
      histos_th1f["h_GENRECO_RECO_AntiS_pt"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_pt", "; #bar{S} pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_GENRECO_RECO_AntiS_pz"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_pz", "; #bar{S} pz (GeV); #entries ",200,-50,50);
      histos_th1f["h_GENRECO_RECO_AntiS_eta"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_eta", "; #bar{S} #eta; #entries ",200,-10,10);
      histos_th1f["h_GENRECO_RECO_AntiS_phi"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_phi", "; #bar{S} #phi (rad); #entries ",200,-4,4);
      histos_th2f["h2_GENRECO_RECO_AntiS_vx_vy"] = dir_GENRECO_RECO_AntiS.make<TH2F>(b+"h2_GENRECO_RECO_AntiS_vx_vy", "; #bar{S} vx (cm); #bar{S} vy (cm)",400,-200,200,400,-200,200);
@@ -326,6 +327,8 @@ void AnalyzerGEN::beginJob() {
      histos_th1f["h_GENRECO_RECO_AntiS_dz"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_dz", "; #bar{S} dz(beamspot) (cm); #entries ",1000,-50,50);
      histos_th1f["h_GENRECO_RECO_AntiS_deltaRDaughters"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_deltaRDaughters", "; #DeltaR(Ks,#bar{#Lambda}); #entries ",100,0,10);
      histos_th1f["h_GENRECO_RECO_AntiS_openingsAngleDaughters"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_openingsAngleDaughters", "; 3D Openings Angle(Ks,#bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_GENRECO_RECO_AntiS_pt_Ks"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_pt_Ks", "; Ks pt; #entries ",100,0,10);
+     histos_th1f["h_GENRECO_RECO_AntiS_pt_AntiL"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_pt_AntiL", "; #bar{#Lambda} pt; #entries ",100,0,10);
 
      TFileDirectory dir_GENRECO_All_AntiS = dir_GENRECO_AntiS.mkdir("GENRECO_All_AntiS");
      histos_th1f["h_GENRECO_All_AntiS_pt"] = dir_GENRECO_All_AntiS.make<TH1F>(b+"h_GENRECO_All_AntiS_pt", "; #bar{S} pT (GeV); #entries ",200,0,20);
@@ -365,10 +368,13 @@ void AnalyzerGEN::beginJob() {
      histos_th1f["h_RECOSignal_AntiS_vertexNormalizedChi2"] = dir_RECOSignal_BackgroundDiscriminatingCuts.make<TH1F>(b+"h_RECOSignal_AntiS_vertexNormalizedChi2",";#Chi^{2}/ndof #bar{S} interaction vertex fit;#Entries",300,0,15);
      histos_th2f["h2_RECOSignal_AntiS_deltaPhi_deltaEta"] = dir_RECOSignal_BackgroundDiscriminatingCuts.make<TH2F>(b+"h2_RECOSignal_AntiS_deltaPhi_deltaEta","; #Delta#phi(Ks, #bar{#Lambda}); #Delta#eta(Ks, #bar{#Lambda});#Entries",80,-4,4,80,-4,4);
      histos_th2f["h2_RECOSignal_AntiS_openings_angle_vs_deltaEta"] = dir_RECOSignal_BackgroundDiscriminatingCuts.make<TH2F>(b+"h2_RECOSignal_AntiS_openings_angle_vs_deltaEta","; 3D openings angle (Ks, #bar{#Lambda}); |#Delta#eta(Ks, #bar{#Lambda})|;#Entries",40,0,4,40,0,4);
+     histos_th1f["h_RECOSignal_AntiS_dxyAntiSPVmin"] = dir_RECOSignal_BackgroundDiscriminatingCuts.make<TH1F>(b+"h_RECOSignal_AntiS_dxyAntiSPVmin","; dxy (#bar{S},PV) for PV with smallest dz;#Entries",200,-10,10);
+     histos_th1f["h_RECOSignal_AntiS_dzAntiSPVmin"] = dir_RECOSignal_BackgroundDiscriminatingCuts.make<TH1F>(b+"h_RECOSignal_AntiS_dzAntiSPVmin",";  dz (#bar{S},PV) for PV with smallest dz;#Entries",200,-10,10);
 
      TFileDirectory dir_RECOSignal_AntiS_cutFlows = dir_GENRECO_AntiS.mkdir("RECOSignal_AntiS_cutFlows");
-     histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"] = dir_RECOSignal_AntiS_cutFlows.make<TH1F>(b+"h_RECOSignal_AntiS_BackgroundCuts_cutFlow", "; 0=all,1=#sigma(lxy)<0.1,2=Lxy>1.9,3=m>0,4=#DeltaR(daug0,daug1)>1,5=#DeltaR(daug0,daug1)<6,6=|dxy_{daug0}|>1 and |dxy_{daug1}|>1,7=|dz_{daug0}|>10 and |dz_{daug1}|>10,8=both dxy and dz; #entries ",10,0,10);
+     histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"] = dir_RECOSignal_AntiS_cutFlows.make<TH1F>(b+"h_RECOSignal_AntiS_BackgroundCuts_cutFlow", "; see code for definitions",20,0,20);
 
+	
      TFileDirectory dir_GENRECO_AntiS_accuracy = dir_GENRECO_AntiS.mkdir("GENRECO_AntiS_accuracy");
      histos_th1f["h_RECOAcc_AntiS_pt"] = dir_GENRECO_AntiS_accuracy.make<TH1F>(b+"h_RECOAcc_AntiS_pt", "; #bar{S}: pt_{GEN}-pt_{RECO} ; #entries ",1000,-5,5);
      histos_th1f["h_RECOAcc_AntiS_phi"] = dir_GENRECO_AntiS_accuracy.make<TH1F>(b+"h_RECOAcc_AntiS_phi", "; #bar{S}: #phi_{GEN}-#phi_{RECO}; #entries ",200,-1,1);
@@ -518,7 +524,7 @@ void AnalyzerGEN::analyze(edm::Event const& iEvent, edm::EventSetup const& iSetu
 			if(genParticle->daughter(0)->numberOfDaughters()==2 && genParticle->daughter(1)->numberOfDaughters()==2 && daughterParticlesTypes == 3){
 				int graddaughters0ParticlesTypes = getDaughterParticlesTypes(genParticle->daughter(0));
 				int graddaughters1ParticlesTypes = getDaughterParticlesTypes(genParticle->daughter(1));
-				if(genParticleIsAntiS && ((graddaughters0ParticlesTypes == 1 && graddaughters1ParticlesTypes == 2) || (graddaughters1ParticlesTypes == 1 && graddaughters0ParticlesTypes == 2))) RecoEvaluationAntiS(genParticle,h_sCands,beamspot, beamspotVariance);
+				if(genParticleIsAntiS && ((graddaughters0ParticlesTypes == 1 && graddaughters1ParticlesTypes == 2) || (graddaughters1ParticlesTypes == 1 && graddaughters0ParticlesTypes == 2))) RecoEvaluationAntiS(genParticle,h_sCands,beamspot, beamspotVariance, h_offlinePV);
 			}
 		}
       }//for(unsigned int i = 0; i < h_genParticles->size(); ++i)
@@ -1127,20 +1133,22 @@ void AnalyzerGEN::RecoEvaluationAntiLambdaAntiS(const reco::Candidate  * genPart
 }
 
 
-void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands, TVector3 beamspot, TVector3 beamspotVariance){
+void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV){
   const reco::Candidate  * GENAntiS = genParticle;   
   
   if(h_sCands.isValid()){
-      double deltaRmin = 999.;
-      const reco::VertexCompositeCandidate * bestRECOAntiS = nullptr;
-      for(unsigned int i = 0; i < h_sCands->size(); ++i){//loop all AntiS RECO candidates
-	const reco::VertexCompositeCandidate * AntiS = &h_sCands->at(i);	
-	double deltaPhi = reco::deltaPhi(AntiS->phi(),genParticle->phi());
-	double deltaEta = AntiS->eta() - genParticle->eta();
-	double deltaR = pow(deltaPhi*deltaPhi+deltaEta*deltaEta,0.5);
-	if(deltaR < deltaRmin){ deltaRmin = deltaR; bestRECOAntiS = AntiS;}
-      }
+        double deltaRmin = 999.;
+        const reco::VertexCompositeCandidate * bestRECOAntiS = nullptr;
+        for(unsigned int i = 0; i < h_sCands->size(); ++i){//loop all AntiS RECO candidates
+		const reco::VertexCompositeCandidate * AntiS = &h_sCands->at(i);	
+		double deltaPhi = reco::deltaPhi(AntiS->phi(),genParticle->phi());
+		double deltaEta = AntiS->eta() - genParticle->eta();
+		double deltaR = pow(deltaPhi*deltaPhi+deltaEta*deltaEta,0.5);
+		if(deltaR < deltaRmin){ deltaRmin = deltaR; bestRECOAntiS = AntiS;}
+        }
 	histos_th1f["h_GENRECO_AntiS_deltaRmin"]->Fill(deltaRmin);
+
+	
 
 	//calculate some kinmatic variables for the GEN antiS	
 	TVector3 GENAntiSCreationVertex(GENAntiS->vx(),GENAntiS->vy(),GENAntiS->vz());
@@ -1184,6 +1192,9 @@ void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm:
 	//dxy and dz of the AntiS itself
 	double RECO_dxy_antiS = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex,RECOAntiSMomentumVertex,beamspot);
 	double RECO_dz_antiS = AnalyzerAllSteps::dz_line_point(RECOAntiSInteractionVertex,RECOAntiSMomentumVertex,beamspot);
+	std::cout << "dxy AntiS to beamspot: " << RECO_dxy_antiS << std::endl;
+	std::cout << "dz AntiS to beamspot: " << RECO_dxy_antiS << std::endl;
+	
 
 	//calculate the sign of the dot product between the displacement vector and the dxy vector for both the Ks and the Lambda
 	double signLxyDotdxy_daughter0 = AnalyzerAllSteps::sgn(AnalyzerAllSteps::vec_dxy_line_point(RECOAntiSInteractionVertex, RECOAntiSDaug0Momentum,beamspot)*RECOAntiSInteractionVertex);
@@ -1192,9 +1203,21 @@ void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm:
 	double signPtDotdxy_daughter0 = AnalyzerAllSteps::sgn(AnalyzerAllSteps::vec_dxy_line_point(RECOAntiSInteractionVertex, RECOAntiSDaug0Momentum,beamspot)*RECOAntiSDaug0Momentum);
 	double signPtDotdxy_daughter1 = AnalyzerAllSteps::sgn(AnalyzerAllSteps::vec_dxy_line_point(RECOAntiSInteractionVertex, RECOAntiSDaug1Momentum,beamspot)*RECOAntiSDaug1Momentum);
 
+	//loop over all PVs and find the one which minimises the dxy of the antiS
+	double dzAntiSPVmin = 999.;
+	TVector3  bestPVdzAntiS;
+	for(unsigned int i = 0; i < h_offlinePV->size(); ++i){
+		TVector3 PV(h_offlinePV->at(i).x(),h_offlinePV->at(i).y(),h_offlinePV->at(i).z());
+		double dzAntiSPV = AnalyzerAllSteps::dz_line_point(RECOAntiSInteractionVertex,RECOAntiSMomentumVertex,PV);
+		if(abs(dzAntiSPV) < abs(dzAntiSPVmin)) {dzAntiSPVmin = dzAntiSPV; bestPVdzAntiS = PV;}
+	}
+	
+	double dxyAntiSPVmin = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex,RECOAntiSMomentumVertex,bestPVdzAntiS);
+	
 	if(deltaRmin<deltaRCutRECOAntiS){//matched
 		//kinematics of the matched GEN particles	
 		histos_th1f["h_GENRECO_RECO_AntiS_pt"]->Fill(GENAntiS->pt());	
+		histos_th1f["h_GENRECO_RECO_AntiS_pz"]->Fill(GENAntiS->pz());	
 		histos_th1f["h_GENRECO_RECO_AntiS_eta"]->Fill(GENAntiS->eta());	
 		histos_th1f["h_GENRECO_RECO_AntiS_phi"]->Fill(GENAntiS->phi());	
 		histos_th2f["h2_GENRECO_RECO_AntiS_vx_vy"]->Fill(GENAntiS->vx(),GENAntiS->vy());
@@ -1207,6 +1230,8 @@ void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm:
 		histos_th1f["h_GENRECO_RECO_AntiS_dz"]->Fill(GENdz);
 		histos_th1f["h_GENRECO_RECO_AntiS_deltaRDaughters"]->Fill(RECODeltaRDaughters);	
 		histos_th1f["h_GENRECO_RECO_AntiS_openingsAngleDaughters"]->Fill(RECOOpeningsAngleDaughters);	
+		histos_th1f["h_GENRECO_RECO_AntiS_pt_Ks"]->Fill(GENAntiS->daughter(0)->pt());	
+		histos_th1f["h_GENRECO_RECO_AntiS_pt_AntiL"]->Fill(GENAntiS->daughter(1)->pt());	
 		
 		
 		//so now if you found a RECO antiS compare it to the GEN antiS. Compare parameters such as GEN vs RECO pt, GEN vs RECO interaction vertex, ...
@@ -1246,18 +1271,50 @@ void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm:
 			
 		histos_th2f["h2_RECOSignal_AntiS_deltaPhi_deltaEta"]->Fill(RECODeltaPhiDaughters, RECODeltaEtaDaughters);
 		histos_th2f["h2_RECOSignal_AntiS_openings_angle_vs_deltaEta"]->Fill(RECODeltaEtaDaughters,RECOOpeningsAngleDaughters);
-		
+
+		histos_th1f["h_RECOSignal_AntiS_dxyAntiSPVmin"]->Fill(dxyAntiSPVmin);
+		histos_th1f["h_RECOSignal_AntiS_dzAntiSPVmin"]->Fill(dzAntiSPVmin);
+	
+			
 
 		//for these RECO antiS which for sure are signal plot how much yo will cut on the signal using the bkg cuts
 		histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(0);
-		if(RECOErrorLxy_interactionVertex < 0.1) histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(1);
-		if(RECOLxy_interactionVertex>1.9)histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(2);
-		if(bestRECOAntiSmass > 0.)histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(3);
-		if(RECODeltaRDaughters > 1.)histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(4);
-		if(RECODeltaRDaughters < 6.)histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(5);
-		if(abs(RECO_dxy_daughter0) > 1 && abs(RECO_dxy_daughter1) > 1)histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(6);
-		if(abs(RECO_dz_daughter0) > 10 && abs(RECO_dz_daughter1) > 10)histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(7);
-	   	if(abs(RECO_dxy_daughter0) > 1 && abs(RECO_dxy_daughter1) > 1 && abs(RECO_dz_daughter0) > 10 && abs(RECO_dz_daughter1) > 10)histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(8);		
+		if(RECOLxy_interactionVertex>AnalyzerAllSteps::MinLxyCut)				histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(1);
+		if(RECOErrorLxy_interactionVertex < AnalyzerAllSteps::MaxErrorLxyCut) 			histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(2);
+		if(bestRECOAntiSmass > AnalyzerAllSteps::MinErrorMassCut)				histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(3);
+		if(abs(RECODeltaPhiDaughters) > AnalyzerAllSteps::MinAbsDeltaPhiDaughtersCut)		histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(4);
+		if(abs(RECODeltaPhiDaughters) < AnalyzerAllSteps::MaxAbsDeltaPhiDaughtersCut)		histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(5);
+		if(RECO_dxy_antiS/RECOLxy_interactionVertex > AnalyzerAllSteps::MinDxyOverLxyCut)	histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(6);
+		if(RECO_dxy_antiS/RECOLxy_interactionVertex < AnalyzerAllSteps::MaxDxyOverLxyCut)	histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(7);
+		if(bestRECOAntiS->vertexNormalizedChi2() < AnalyzerAllSteps::MaxNormChi2Cut)		histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(8);
+	   	if(RECOOpeningsAngleDaughters<AnalyzerAllSteps::MaxOpeningsAngleCut)			histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(9);		
+	   	if(abs(RECODeltaEtaDaughters)<AnalyzerAllSteps::MaxAbsDeltaEtaDaughCut)			histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(10);
+		if(RECO_dxy_daughter0>AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || RECO_dxy_daughter0<AnalyzerAllSteps::DxyKsExclusionRangeMinCut)histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(11);
+		if(bestRECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut)			histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(12);
+		if(abs(dzAntiSPVmin)<AnalyzerAllSteps::dzAntiSPVminCut)					histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(13);
+		if(abs(bestRECOAntiS->vz())>AnalyzerAllSteps::vzAntiSInteractionVertexCut)		histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(14);
+		if(abs(bestRECOAntiS->eta())>AnalyzerAllSteps::antiSEtaCut)				histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(15);
+		if(RECO_dxy_daughter1>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || RECO_dxy_daughter1<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut) histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(16);
+
+		if(	RECOLxy_interactionVertex>AnalyzerAllSteps::MinLxyCut && 
+			RECOErrorLxy_interactionVertex < AnalyzerAllSteps::MaxErrorLxyCut &&  
+			bestRECOAntiSmass > AnalyzerAllSteps::MinErrorMassCut && 
+			abs(RECODeltaPhiDaughters) > AnalyzerAllSteps::MinAbsDeltaPhiDaughtersCut && 
+			abs(RECODeltaPhiDaughters) < AnalyzerAllSteps::MaxAbsDeltaPhiDaughtersCut && 
+			RECO_dxy_antiS/RECOLxy_interactionVertex > AnalyzerAllSteps::MinDxyOverLxyCut && 
+			RECO_dxy_antiS/RECOLxy_interactionVertex < AnalyzerAllSteps::MaxDxyOverLxyCut && 
+			bestRECOAntiS->vertexNormalizedChi2() < AnalyzerAllSteps::MaxNormChi2Cut && 
+			RECOOpeningsAngleDaughters < AnalyzerAllSteps::MaxOpeningsAngleCut && 
+			abs(RECODeltaEtaDaughters) < AnalyzerAllSteps::MaxAbsDeltaEtaDaughCut && 
+			(RECO_dxy_daughter0 > AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || RECO_dxy_daughter0 < AnalyzerAllSteps::DxyKsExclusionRangeMinCut) && 
+			bestRECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut &&
+			abs(dzAntiSPVmin) < AnalyzerAllSteps::dzAntiSPVminCut &&
+			abs(bestRECOAntiS->vz())>AnalyzerAllSteps::vzAntiSInteractionVertexCut && 
+			abs(bestRECOAntiS->eta())>AnalyzerAllSteps::antiSEtaCut &&
+			(RECO_dxy_daughter1>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || RECO_dxy_daughter1<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut))histos_th1f["h_RECOSignal_AntiS_BackgroundCuts_cutFlow"]->Fill(17);	
+
+
+
 	}
 
 	histos_th1f["h_GENRECO_All_AntiS_pt"]->Fill(GENAntiS->pt());	
