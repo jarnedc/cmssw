@@ -27,6 +27,9 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load("RecoVertex.V0Producer.generalV0Candidates_cfi")
 process.generalV0Candidates.innerHitPosCut = -1
 process.generalV0Candidates.cosThetaXYCut = -1
+process.generalV0Candidates.kShortMassCut = 0.03
+process.generalV0Candidates.lambdaMassCut = 0.015
+
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
