@@ -66,7 +66,7 @@ static const G4int resetprescale = 100;
 G4SQInelasticProcess::G4SQInelasticProcess(const G4String& processName)
  : G4HadronicProcess(processName, fHadronic)
 {
-  SetProcessSubType(fHadronInelastic);  // Default unless subclass changes
+  SetProcessSubType(fHadronInelastic);	// Default unless subclass changes
   
   theTotalResult = new G4ParticleChange();
   theTotalResult->SetSecondaryWeightByProcess(true);
@@ -81,8 +81,6 @@ G4SQInelasticProcess::G4SQInelasticProcess(const G4String& processName)
 
   AddDataSet(new G4HadronInelasticDataSet());
   theParticle = G4SQ::SQ();
-
-  enableAlongStepDoIt = true;
 
 }
 
@@ -125,7 +123,7 @@ void G4SQInelasticProcess::RegisterMe( G4HadronicInteraction *a )
     ed << "Unrecoverable error in " << GetProcessName()
        << " to register " << a->GetModelName() << G4endl;
     G4Exception("G4SQInelasticProcess::RegisterMe", "had001", FatalException,
-                ed);
+		ed);
   }
   G4HadronicProcessStore::Instance()->RegisterInteraction(this, a);
 }
@@ -150,21 +148,9 @@ void G4SQInelasticProcess::BuildPhysicsTable(const G4ParticleDefinition& p)
     aR.Report(ed);
     ed << " hadronic initialisation fails" << G4endl;
     G4Exception("G4SQInelasticProcess::BuildPhysicsTable", "had000", 
-                FatalException,ed);
+		FatalException,ed);
   }
   G4HadronicProcessStore::Instance()->PrintInfo(&p);
-}
-
-
-void G4SQInelasticProcess::StartTracking(G4Track * aTrack) {
-  std::cout << "=== STARTTRACK "
-            << aTrack->GetMomentum().rho()/GeV << " "
-            << aTrack->GetMomentum().eta() << " "
-            << aTrack->GetPosition().rho()/centimeter << " " 
-            << aTrack->GetPosition().z()/centimeter << std::endl;
-  posini = aTrack->GetPosition();
-  nreset = 0;
-  ninter = 0;
 }
 
 
@@ -175,7 +161,7 @@ GetMeanFreePath(const G4Track &aTrack, G4double, G4ForceCondition *)
   {
     theLastCrossSection = aScaleFactor*
       theCrossSectionDataStore->GetCrossSection(aTrack.GetDynamicParticle(),
-                                                aTrack.GetMaterial());
+						aTrack.GetMaterial());
   }
   catch(G4HadronicException aR)
   {
@@ -184,64 +170,12 @@ GetMeanFreePath(const G4Track &aTrack, G4double, G4ForceCondition *)
     DumpState(aTrack,"GetMeanFreePath",ed);
     ed << " Cross section is not available" << G4endl;
     G4Exception("G4SQInelasticProcess::GetMeanFreePath", "had002", FatalException,
-                ed);
+		ed);
   }
   G4double res = DBL_MAX;
   if( theLastCrossSection > 0.0 ) { res = 1.0/theLastCrossSection; }
 
-
-//std::cout << "=== MFP along=" << isAlongStepDoItIsEnabled() << " "
-//          << aTrack.GetPosition().rho()/centimeter << " " 
-//          << aTrack.GetPosition().z()/centimeter << std::endl;
-//G4Track * mytr = const_cast<G4Track *>(&aTrack);
-//if (aTrack.GetPosition().r()>20*centimeter)
-//  aParticleChange.ProposePosition(0,0,0);
-//  mytr->SetPosition(G4ThreeVector(0,0,0));
-
   return res;
-}
-
-
-G4double
-G4SQInelasticProcess::AlongStepGetPhysicalInteractionLength(
-  const G4Track& track,
-  G4double previousStepSize,
-  G4double currentMinimumStep,
-  G4double& proposedSafety,
-  G4GPILSelection* selection) {
-
-std::cout << "LL ALONG INTL " << previousStepSize/centimeter << " " << currentMinimumStep/centimeter << std::endl;
-
-  return .1*centimeter;
-}
-
-
-G4VParticleChange*
-G4SQInelasticProcess::AlongStepDoIt(const G4Track& aTrack, const G4Step& aStep)
-{
-
-  std::cout << "=== ALONGSTEP "
-            << aTrack.GetPosition().r()/centimeter << " " 
-            << aTrack.GetPosition().z()/centimeter << std::endl;
-
-  theTotalResult->Clear();
-  theTotalResult->Initialize(aTrack);
-  theTotalResult->ProposeTrackStatus(fAlive);
-  if (aTrack.GetPosition().rho()>100*centimeter)
-    aParticleChange.ProposePosition(0,0,0);
-  return theTotalResult;
-
-}
-
-
-G4double G4SQInelasticProcess::GetContinuousStepLimit(const G4Track& aTrack,
-                           G4double  previousStepSize,
-                           G4double  currentMinimumStep,
-                           G4double& currentSafety) {
-std::cout << "ALONG STEP : " << aTrack.GetPosition().r()/centimeter
-  << previousStepSize/mm << " " << currentMinimumStep/mm
-  << std::endl;
-  return 1.*mm;
 }
 
 
@@ -250,32 +184,14 @@ G4SQInelasticProcess::PostStepDoIt(const G4Track& aTrack, const G4Step& aStep)
 {
 
 
-//std::cout << "=== RESETTEST "
-//          << aTrack.GetPosition().rho()/centimeter << " " 
-//          << aTrack.GetPosition().z()/centimeter << std::endl;
-G4Track * mytr = const_cast<G4Track *>(&aTrack);
-if (fabs(mytr->GetMomentum().eta())<4 &&  // require not too forward
-    (mytr->GetPosition().rho()>100*centimeter || // require to be "outside" the tracker
-     fabs(mytr->GetPosition().z())>300*centimeter) &&
-    nreset < 100*resetprescale) { // don't reset too many times
-  std::cout << "=== RESET " << nreset%100 + 1 << " ! from " << mytr->GetPosition()
-            << " to " << posini << std::endl;
-  ++nreset;
-  mytr->SetPosition(posini);
-}
-
   // if primary is not Alive then do nothing
   theTotalResult->Clear();
   theTotalResult->Initialize(aTrack);
   theTotalResult->ProposeWeight(aTrack.GetWeight());
   if(aTrack.GetTrackStatus() != fAlive) { return theTotalResult; }
 
-++ninter;
-// check if we should prescale
-if (ninter % resetprescale) return theTotalResult;
-// ok we pass the prescale, now go on to do the real interaction
-ninter = 0; // reset interaction counting (just to make sure)
 
+std::cout << "=== Interaction!?" << std::endl;
 
   // Find cross section at end of step and check if <= 0
   //
@@ -287,8 +203,8 @@ ninter = 0; // reset interaction counting (just to make sure)
   try
   {
      anElement = theCrossSectionDataStore->SampleZandA(aParticle,
-                                                       aMaterial,
-                                                       targetNucleus);
+						       aMaterial,
+						       targetNucleus);
   }
   catch(G4HadronicException & aR)
   {
@@ -297,7 +213,7 @@ ninter = 0; // reset interaction counting (just to make sure)
     DumpState(aTrack,"SampleZandA",ed);
     ed << " PostStepDoIt failed on element selection" << G4endl;
     G4Exception("G4SQInelasticProcess::PostStepDoIt", "had003", FatalException,
-                ed);
+		ed);
   }
 
   // check only for charged particles
@@ -311,12 +227,13 @@ ninter = 0; // reset interaction counting (just to make sure)
   // Next check for illegal track status
   //
   if (aTrack.GetTrackStatus() != fAlive && aTrack.GetTrackStatus() != fSuspend) {
+std::cout << "=== SL track status not ok: " << aTrack.GetTrackStatus() << std::endl;
     if (aTrack.GetTrackStatus() == fStopAndKill ||
         aTrack.GetTrackStatus() == fKillTrackAndSecondaries ||
         aTrack.GetTrackStatus() == fPostponeToNextEvent) {
       G4ExceptionDescription ed;
       ed << "G4SQInelasticProcess: track in unusable state - "
-         << aTrack.GetTrackStatus() << G4endl;
+	 << aTrack.GetTrackStatus() << G4endl;
       ed << "G4SQInelasticProcess: returning unchanged track " << G4endl;
       DumpState(aTrack,"PostStepDoIt",ed);
       G4Exception("G4SQInelasticProcess::PostStepDoIt", "had004", JustWarning, ed);
@@ -349,7 +266,7 @@ ninter = 0; // reset interaction counting (just to make sure)
     DumpState(aTrack,"ChooseHadronicInteraction",ed);
     ed << " No HadronicInteraction found out" << G4endl;
     G4Exception("G4SQInelasticProcess::PostStepDoIt", "had005", FatalException,
-                ed);
+		ed);
   }
 
   // Initialize the hadronic projectile from the track
@@ -375,20 +292,20 @@ ninter = 0; // reset interaction counting (just to make sure)
       aR.Report(ed);
       ed << "Call for " << theInteraction->GetModelName() << G4endl;
       ed << "Target element "<<anElement->GetName()<<"  Z= "
-         << targetNucleus.GetZ_asInt()
-         << "  A= " << targetNucleus.GetA_asInt() << G4endl;
+	 << targetNucleus.GetZ_asInt()
+	 << "  A= " << targetNucleus.GetA_asInt() << G4endl;
       DumpState(aTrack,"ApplyYourself",ed);
       ed << " ApplyYourself failed" << G4endl;
       G4Exception("G4SQInelasticProcess::PostStepDoIt", "had006", FatalException,
-                  ed);
+		  ed);
     }
 
 
 
       std::cout << "Call for " << theInteraction->GetModelName() << std::endl;
       std::cout << "Target element "<<anElement->GetName()<<"  Z= "
-         << targetNucleus.GetZ_asInt()
-         << "  A= " << targetNucleus.GetA_asInt() << std::endl;
+	 << targetNucleus.GetZ_asInt()
+	 << "  A= " << targetNucleus.GetA_asInt() << std::endl;
 
 std::cout << "$$$--- " << result->GetNumberOfSecondaries() << " " <<
   result->GetMomentumChange() << " " 
@@ -409,12 +326,12 @@ std::cout << "In tracker volume? "
       G4ExceptionDescription ed;
       ed << "Call for " << theInteraction->GetModelName() << G4endl;
       ed << "Target element "<<anElement->GetName()<<"  Z= "
-         << targetNucleus.GetZ_asInt()
-         << "  A= " << targetNucleus.GetA_asInt() << G4endl;
+	 << targetNucleus.GetZ_asInt()
+	 << "  A= " << targetNucleus.GetA_asInt() << G4endl;
       DumpState(aTrack,"ApplyYourself",ed);
       ed << " ApplyYourself does not completed after 100 attempts" << G4endl;
       G4Exception("G4SQInelasticProcess::PostStepDoIt", "had006", FatalException,
-                  ed);
+		  ed);
     }
   }
   while(!result);
@@ -473,6 +390,7 @@ G4SQInelasticProcess::FillResult(G4HadFinalState * aR, const G4Track & aT)
   if(aR->GetStatusChange() == stopAndKill) {
     theTotalResult->ProposeTrackStatus(fStopAndKill);
     theTotalResult->ProposeEnergy( 0.0 );
+std::cout << "=== SL track proposed to stop and kill" << std::endl;
 
     // check its final energy
   } else if(0.0 == efinal) {
@@ -480,7 +398,9 @@ G4SQInelasticProcess::FillResult(G4HadFinalState * aR, const G4Track & aT)
     if(aT.GetParticleDefinition()->GetProcessManager()
        ->GetAtRestProcessVector()->size() > 0)
          { aParticleChange.ProposeTrackStatus(fStopButAlive); }
-    else { aParticleChange.ProposeTrackStatus(fStopAndKill); }
+    else { aParticleChange.ProposeTrackStatus(fStopAndKill); 
+std::cout << "=== SL track proposed to stop and kill (2)" << std::endl;
+}
 
     // primary is not killed apply rotation and Lorentz transformation
   } else  {
@@ -526,16 +446,16 @@ G4SQInelasticProcess::FillResult(G4HadFinalState * aR, const G4Track & aT)
       G4Track* track = new G4Track(aR->GetSecondary(i)->GetParticle(),
                                    time, aT.GetPosition());
       G4double newWeight = weight*aR->GetSecondary(i)->GetWeight();
-        // G4cout << "#### ParticleDebug "
-        // <<GetProcessName()<<" "
-        // <<aR->GetSecondary(i)->GetParticle()->GetDefinition()->GetParticleName()<<" "
-        // <<aScaleFactor<<" "
-        // <<XBiasSurvivalProbability()<<" "
-        // <<XBiasSecondaryWeight()<<" "
-        // <<aT.GetWeight()<<" "
-        // <<aR->GetSecondary(i)->GetWeight()<<" "
-        // <<aR->GetSecondary(i)->GetParticle()->Get4Momentum()<<" "
-        // <<G4endl;
+	// G4cout << "#### ParticleDebug "
+	// <<GetProcessName()<<" "
+	// <<aR->GetSecondary(i)->GetParticle()->GetDefinition()->GetParticleName()<<" "
+	// <<aScaleFactor<<" "
+	// <<XBiasSurvivalProbability()<<" "
+	// <<XBiasSecondaryWeight()<<" "
+	// <<aT.GetWeight()<<" "
+	// <<aR->GetSecondary(i)->GetWeight()<<" "
+	// <<aR->GetSecondary(i)->GetParticle()->Get4Momentum()<<" "
+	// <<G4endl;
       track->SetWeight(newWeight);
       track->SetTouchableHandle(aT.GetTouchableHandle());
       theTotalResult->AddSecondary(track);
@@ -568,13 +488,13 @@ void G4SQInelasticProcess::BiasCrossSectionByFactor(G4double aScale)
     {
       G4ExceptionDescription ed;
       G4Exception("G4SQInelasticProcess::BiasCrossSectionByFactor", "had009", FatalException, ed,
-                  "Cross-section biasing available only for gamma and electro nuclear reactions.");
+		  "Cross-section biasing available only for gamma and electro nuclear reactions.");
     }
   if(aScale<100)
     {
       G4ExceptionDescription ed;
       G4Exception("G4SQInelasticProcess::BiasCrossSectionByFactor", "had010", JustWarning,ed,
-                  "Cross-section bias readjusted to be above safe limit. New value is 100");
+		  "Cross-section bias readjusted to be above safe limit. New value is 100");
       aScaleFactor = 100.;
     }
 }
@@ -595,10 +515,10 @@ std::cout << "%%% SL checkresult: " << theModel << std::endl;
       nuclearMass = G4NucleiProperties::GetNuclearMass(aNucleus.GetA_asInt(),
                                                        aNucleus.GetZ_asInt());
       if (result->GetStatusChange() != stopAndKill) {
-        // Interaction didn't complete, returned "do nothing" state          => reset nucleus
+       	// Interaction didn't complete, returned "do nothing" state          => reset nucleus
         //  or  the primary survived the interaction (e.g. electro-nuclear ) => keep  nucleus
          finalE=result->GetLocalEnergyDeposit() +
-                aPro.GetDefinition()->GetPDGMass() + result->GetEnergyChange();
+		aPro.GetDefinition()->GetPDGMass() + result->GetEnergyChange();
 std::cout << "%%% SL interaction not complete: " << finalE << std::endl;
          if( nSec == 0 ){
             // Since there are no secondaries, there is no recoil nucleus.
@@ -617,13 +537,13 @@ std::cout << "%%% SL sec: "
 std::cout << "%%% SL TOT E: " << nuclearMass / GeV << " " << aPro.GetTotalEnergy() / GeV << " " << finalE / GeV << std::endl;
 std::cout << "%%% SL deltaE: " << deltaE / GeV << std::endl;
 
-      std::pair<G4double, G4double> checkLevels = theModel->GetFatalEnergyCheckLevels();        // (relative, absolute)
+      std::pair<G4double, G4double> checkLevels = theModel->GetFatalEnergyCheckLevels();	// (relative, absolute)
       if (std::abs(deltaE) > checkLevels.second && std::abs(deltaE) > checkLevels.first*aPro.GetKineticEnergy()){
          // do not delete result, this is a pointer to a data member;
 // SL SL SL tmp switchoff         result=0;
          G4ExceptionDescription desc;
          desc << "Warning: Bad energy non-conservation detected, will "
-              << (epReportLevel<0 ? "abort the event" : "re-sample the interaction") << G4endl
+              << (epReportLevel<0 ? "abort the event" :	"re-sample the interaction") << G4endl
               << " Process / Model: " <<  GetProcessName()<< " / " << theModel->GetModelName() << G4endl
               << " Primary: " << aPro.GetDefinition()->GetParticleName()
               << " (" << aPro.GetDefinition()->GetPDGEncoding() << "),"
@@ -720,7 +640,7 @@ G4SQInelasticProcess::CheckEnergyMomentumConservation(const G4Track& aTrack,
   G4bool relPass = true;
   G4String relResult = "pass";
   if (  std::abs(relative) > checkLevels.first
-         || std::abs(relative_mom) > checkLevels.first) {
+	 || std::abs(relative_mom) > checkLevels.first) {
     relPass = false;
     relResult = checkRelative ? "fail" : "N/A";
   }
@@ -754,18 +674,18 @@ G4SQInelasticProcess::CheckEnergyMomentumConservation(const G4Track& aTrack,
   //  negative -1.., as above, but send output to stderr
 
   if(   std::abs(epReportLevel) == 4
-        ||      ( std::abs(epReportLevel) == 3 && ! conservationPass ) ){
+	||	( std::abs(epReportLevel) == 3 && ! conservationPass ) ){
       Myout << " Process: " << processName << " , Model: " <<  modelName << G4endl;
       Myout << " Primary: " << aTrack.GetParticleDefinition()->GetParticleName()
             << " (" << aTrack.GetParticleDefinition()->GetPDGEncoding() << "),"
             << " E= " <<  aTrack.GetDynamicParticle()->Get4Momentum().e()
-            << ", target nucleus (" << aNucleus.GetZ_asInt() << ","
-            << aNucleus.GetA_asInt() << ")" << G4endl;
+	    << ", target nucleus (" << aNucleus.GetZ_asInt() << ","
+	    << aNucleus.GetA_asInt() << ")" << G4endl;
       Myout_notempty=true;
   }
   if (  std::abs(epReportLevel) == 4
-         || std::abs(epReportLevel) == 2
-         || ! conservationPass ){
+	 || std::abs(epReportLevel) == 2
+	 || ! conservationPass ){
 
       Myout << "   "<< relResult  <<" relative, limit " << checkLevels.first << ", values E/T(0) = "
              << relative << " p/p(0)= " << relative_mom  << G4endl;
@@ -784,8 +704,8 @@ G4SQInelasticProcess::CheckEnergyMomentumConservation(const G4Track& aTrack,
 
 
 void G4SQInelasticProcess::DumpState(const G4Track& aTrack,
-                                  const G4String& method,
-                                  G4ExceptionDescription& ed)
+				  const G4String& method,
+				  G4ExceptionDescription& ed)
 {
   ed << "Unrecoverable error in the method " << method << " of "
      << GetProcessName() << G4endl;

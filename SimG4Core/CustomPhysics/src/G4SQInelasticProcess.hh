@@ -66,8 +66,8 @@ class G4SQInelasticProcess : public G4HadronicProcess
   // get cross section per element
   inline
   G4double GetElementCrossSection(const G4DynamicParticle * part, 
-                                  const G4Element * elm, 
-                                  const G4Material* mat = 0)
+				  const G4Element * elm, 
+				  const G4Material* mat = 0)
   {
     G4double x = theCrossSectionDataStore->GetCrossSection(part, elm, mat);
     if(x < 0.0) { x = 0.0; }
@@ -77,23 +77,13 @@ class G4SQInelasticProcess : public G4HadronicProcess
   // obsolete method to get cross section per element
   inline
   G4double GetMicroscopicCrossSection(const G4DynamicParticle * part, 
-                                      const G4Element * elm, 
-                                      const G4Material* mat = 0)
+				      const G4Element * elm, 
+				      const G4Material* mat = 0)
   { return GetElementCrossSection(part, elm, mat); }
-
-  virtual G4double AlongStepGetPhysicalInteractionLength(
-    const G4Track& track,
-    G4double previousStepSize,
-    G4double currentMinimumStep,
-    G4double& proposedSafety,
-    G4GPILSelection* selection);
-
-  virtual G4VParticleChange* AlongStepDoIt(const G4Track& aTrack,
-                                           const G4Step& aStep);
 
   // generic PostStepDoIt recommended for all derived classes
   virtual G4VParticleChange* PostStepDoIt(const G4Track& aTrack, 
-                                          const G4Step& aStep);
+					  const G4Step& aStep);
 
   // initialisation of physics tables and G4SQInelasticProcessStore
   virtual void PreparePhysicsTable(const G4ParticleDefinition&);
@@ -113,11 +103,9 @@ class G4SQInelasticProcess : public G4HadronicProcess
   inline G4EnergyRangeManager *GetManagerPointer()
   { return &theEnergyRangeManager; }
           
-  virtual void StartTracking(G4Track*);
-
   // get inverse cross section per volume
   G4double GetMeanFreePath(const G4Track &aTrack, G4double, 
-                           G4ForceCondition *);
+			   G4ForceCondition *);
 
   // access to the target nucleus
   inline const G4Nucleus* GetTargetNucleus() const
@@ -131,19 +119,12 @@ class G4SQInelasticProcess : public G4HadronicProcess
  
 protected:    
 
-  // This pure virtual function is used to calculate step limit
-  // for AlongStep in the derived processes  
-  virtual G4double GetContinuousStepLimit(const G4Track& aTrack,
-                           G4double  previousStepSize,
-                           G4double  currentMinimumStep,
-                           G4double& currentSafety);
-
   // generic method to choose secondary generator 
   // recommended for all derived classes
   inline G4HadronicInteraction* ChooseHadronicInteraction(
       G4double kineticEnergy, G4Material* aMaterial, G4Element* anElement)
   { return theEnergyRangeManager.GetHadronicInteraction(kineticEnergy,
-                                                        aMaterial,anElement);
+							aMaterial,anElement);
   }
 
   // access to the target nucleus
@@ -199,8 +180,8 @@ protected:
 
   // Check the result for catastrophic energy non-conservation
   G4HadFinalState* CheckResult(const G4HadProjectile& thePro,
-                               const G4Nucleus& targetNucleus, 
-                               G4HadFinalState* result) const;
+			       const G4Nucleus& targetNucleus, 
+			       G4HadFinalState* result) const;
 
   // Check 4-momentum balance
   void CheckEnergyMomentumConservation(const G4Track&, const G4Nucleus&);
@@ -250,9 +231,7 @@ private:
   G4bool   xBiasOn;
   G4double theLastCrossSection;
 
-  G4int nreset, ninter;
-  G4ThreeVector posini;
-
 };
  
 #endif
+ 

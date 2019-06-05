@@ -90,7 +90,7 @@ G4SQ* G4SQ::SQDefinition(double mass)
 
 G4SQ*  G4SQ::SQ()
 { 
-  return Definition(2*GeV); // will use correct mass if instance exists
+  return Definition(1.8*GeV); // will use correct mass if instance exists
 }
 
 

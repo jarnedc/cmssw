@@ -75,14 +75,14 @@ G4double G4SQInelasticCrossSection::GetElementCrossSection(
   if(aPart->GetKineticEnergy() <= 0.0) { return 0.0; }
 
   // get the atomic weight (to estimate nr neutrons)
-  G4double A = nist->GetAtomicMassAmu(Z);
+  //G4double A = nist->GetAtomicMassAmu(Z);
   // increase the passed number of neutrons, so that we can mimic
   // a flat interaction probability as a function of neutron density
   // in the detector
   // it's a hack, but it's much more efficient than running millions
   // of events with a very low cross section
-  G4double coeff = 1e20;
-  const_cast<G4DynamicParticle*>(aPart)->SetMagneticMoment(aPart->GetMagneticMoment()+coeff*(A-Z));
+  //G4double coeff = 1e20;
+  //const_cast<G4DynamicParticle*>(aPart)->SetMagneticMoment(aPart->GetMagneticMoment()+coeff*(A-Z));
   // now calculate the cross section
   G4double baseXS = 1.*millibarn; //40. * millibarn;
   // the following scaled xsection makes that we get instead of an exponential
