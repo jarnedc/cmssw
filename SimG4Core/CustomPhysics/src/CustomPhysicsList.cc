@@ -21,6 +21,13 @@
 #include "SimG4Core/CustomPhysics/interface/FullModelHadronicProcess.hh"
 #include "SimG4Core/CustomPhysics/interface/ToyModelHadronicProcess.hh"
 
+#include "SimG4Core/CustomPhysics/src/G4QGSPSIMPBuilder.hh"
+#include "SimG4Core/CustomPhysics/src/G4SIMPInelasticProcess.hh"
+#include "SimG4Core/CustomPhysics/src/G4SQInelasticProcess.hh"
+#include "SimG4Core/CustomPhysics/src/G4SQLoopProcess.hh"
+#include "SimG4Core/CustomPhysics/src/G4SQNeutronAnnih.hh"
+#include "SimG4Core/CustomPhysics/src/G4SQInelasticCrossSection.hh"
+
 using namespace CLHEP;
  
 
@@ -55,6 +62,50 @@ void CustomPhysicsList::addCustomPhysics(){
 
   while((*aParticleIterator)()) {
     G4ParticleDefinition* particle = aParticleIterator->value();
+
+    if (particle->GetParticleType() == "simp") {
+
+std::cout << "=== SL === " 
+          << particle->GetParticleType() << " "
+          << particle->GetParticleName() << std::endl;
+
+      G4ProcessManager* pmanager = particle->GetProcessManager();
+      if(pmanager) {
+        G4SIMPInelasticProcess * simpInelPr = new G4SIMPInelasticProcess();
+        G4QGSPSIMPBuilder * theQGSPSIMPB = new G4QGSPSIMPBuilder(false); // false -> no QuasiElastic (not adapted for SIMP - crashes)
+        theQGSPSIMPB->SetMinEnergy(12.0*MeV); // normally this is GeV, but that
+                 // leads to crashes with the massive SIMPs
+	theQGSPSIMPB->Build(simpInelPr);
+        pmanager->AddDiscreteProcess(simpInelPr);
+      }
+      else  edm::LogInfo("CustomPhysics") << "   No pmanager";
+
+    } else if (particle->GetParticleName() == "sexaq" || particle->GetParticleName() == "anti_sexaq") {
+
+std::cout << "=-= SL sexaq FTW! =-= " 
+          << particle->GetParticleType() << " "
+          << particle->GetParticleName() << std::endl;
+
+      G4ProcessManager* pmanager = particle->GetProcessManager();
+      if(pmanager) {
+        G4SQInelasticProcess * sqInelPr = new G4SQInelasticProcess();
+	G4SQNeutronAnnih * sqModel = new G4SQNeutronAnnih();
+	sqInelPr->RegisterMe(sqModel);
+	G4SQInelasticCrossSection * sqInelXS = new G4SQInelasticCrossSection();
+	sqInelPr->AddDataSet(sqInelXS);
+        pmanager->AddDiscreteProcess(sqInelPr);
+
+	G4SQLoopProcess * sqLoopPr = new G4SQLoopProcess();
+	pmanager->AddContinuousProcess(sqLoopPr);
+      }
+      else  edm::LogInfo("CustomPhysics") << "   No pmanager";
+
+    } else {
+
+std::cout << "=-= SL =-= " 
+          << particle->GetParticleType() << " "
+          << particle->GetParticleName() << std::endl;
+
     if(CustomParticleFactory::isCustomParticle(particle)) {
       CustomParticle* cp = dynamic_cast<CustomParticle*>(particle);
       edm::LogInfo("CustomPhysics") << particle->GetParticleName()
@@ -69,6 +120,7 @@ void CustomPhysicsList::addCustomPhysics(){
 				      << cp->GetSpectator()->GetPDGMass()/GeV
 				      <<" GeV.";
       }
+
       G4ProcessManager* pmanager = particle->GetProcessManager();
       if(pmanager) {
 	if(particle->GetPDGCharge() != 0.0) {
@@ -84,8 +136,10 @@ void CustomPhysicsList::addCustomPhysics(){
 	  }
 	}
       }
-      else      LogDebug("CustomPhysics") << "   No pmanager";
+      else  edm::LogInfo("CustomPhysics") << "   No pmanager";
+
     }
+   }
   }
 }
 
