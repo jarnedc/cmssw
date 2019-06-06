@@ -27,11 +27,12 @@ class AnalyzerGEN : public edm::EDAnalyzer
     void FillHistosAntiSAntiLPosPionDaughterTracksAll(const TrackingParticle& tp, TVector3 beamspot); 
     void FillMajorEfficiencyPlot(std::vector<bool>granddaughterTrackMatched,const reco::Track *matchedTrackPointerKsPosPion,const reco::Track *matchedTrackPointerKsNegPion,const reco::Track *matchedTrackPointerAntiLPosPion,const reco::Track *matchedTrackPointerAntiLNegProton, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L);
 
-    void FillHistosGENAntiS(const reco::Candidate * , TVector3 beamspot);
-    void FillHistosGENKsNonAntiS(const reco::Candidate *, TVector3 beamspot );
-    void FillHistosGENAntiLambdaNonAntiS(const reco::Candidate *,TVector3 beamspot );
-    void FillHistosGENKsAntiS(const reco::Candidate *, TVector3 beamspot );
-    void FillHistosGENAntiLambdaAntiS(const reco::Candidate *,TVector3 beamspot );
+    void FillHistosGENAntiS(const reco::Candidate * Candidate, TVector3 beamspot);
+    void FillHistosGENInteractingAntiS(const reco::Candidate * Candidate, TVector3 beamspot);
+    void FillHistosGENKsNonAntiS(const reco::Candidate *Candidate, TVector3 beamspot );
+    void FillHistosGENAntiLambdaNonAntiS(const reco::Candidate *Candidate,TVector3 beamspot );
+    void FillHistosGENKsAntiS(const reco::Candidate *Candidate, TVector3 beamspot );
+    void FillHistosGENAntiLambdaAntiS(const reco::Candidate *Candidate,TVector3 beamspot );
     void RecoEvaluationKsNonAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks,  TVector3 beamspot);
     void RecoEvaluationKsAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks,  TVector3 beamspot);
     void RecoEvaluationAntiLambdaNonAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L,  TVector3 beamspot);

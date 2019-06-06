@@ -200,7 +200,7 @@ bool LambdaKshortVertexFilter::filter(edm::Event & iEvent, edm::EventSetup const
       const Point KshortDaughterPoint(kshortKinFittedVertex.at(k)->position().x(),kshortKinFittedVertex.at(k)->position().y(),kshortKinFittedVertex.at(k)->position().z()); 
      
      LeafCandidate KshortDaughter(0,  KshortDaughterP, KshortDaughterPoint);
-    
+
      //add daughters to the S
      theSparticleVertexCompositeCandidate.addDaughter(LambdaDaughter);
      theSparticleVertexCompositeCandidate.addDaughter(KshortDaughter);
