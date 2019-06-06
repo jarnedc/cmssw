@@ -60,22 +60,24 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     static constexpr double MinLxyCut = 1.9;
     static constexpr double MaxErrorLxyCut = 0.1;
     static constexpr double MinErrorMassCut = 0.;
+    static constexpr double MaxNormChi2Cut = 4.;
 
     static constexpr double MinAbsDeltaPhiDaughtersCut = 1.;
     static constexpr double MaxAbsDeltaPhiDaughtersCut = 3.;
-    static constexpr double MinDxyOverLxyCut = 0.;
-    static constexpr double MaxDxyOverLxyCut = 0.1;
-    static constexpr double MaxNormChi2Cut = 4.;
     static constexpr double MaxOpeningsAngleCut = 1.2;
     static constexpr double MaxAbsDeltaEtaDaughCut = 1.5;
+    static constexpr double MinDxyOverLxyCut = 0.;
+    static constexpr double MaxDxyOverLxyCut = 0.1;
+
     static constexpr double DxyKsExclusionRangeMinCut = 0.;
     static constexpr double DxyKsExclusionRangeMaxCut = 0.2;
-    static constexpr double MinLambdaPtCut = 1.5;
-    static constexpr double dzAntiSPVminCut = 2.;
-    static constexpr double vzAntiSInteractionVertexCut = 5.;
-    static constexpr double antiSEtaCut = 1.5;
     static constexpr double DxyAntiLExclusionRangeMinCut = 0.;
     static constexpr double DxyAntiLExclusionRangeMaxCut = 0.2;
+
+    static constexpr double MinLambdaPtCut = 1.2;//zero background: 1.5
+    static constexpr double dzAntiSPVminCut = 2.;
+    static constexpr double vzAntiSInteractionVertexCut = 4.;//zero background: 5
+    static constexpr double antiSEtaCut = 1.3;//zero background: 1.5
 	
 
     //some pdgIds

@@ -53,100 +53,147 @@ void AnalyzerRECO::beginJob() {
      histos_th1f["h_RECO_Lambda_deltaRMin_GEN_Lambda"] = dir_RECO_Lambda.make<TH1F>(b+"h_RECO_Lambda_deltaRMin_GEN_Lambda", "; #DeltaR_{min} (#bar{#Lambda} or or #Lambda GEN, #bar{#Lambda} or #Lambda RECO); #entries ",1000,0,10);
 
      TFileDirectory dir_RECO_AntiS = dir_RECO.mkdir("RECO_AntiS");
-     TFileDirectory dir_RECO_AntiS_Kinematics = dir_RECO_AntiS.mkdir("RECO_AntiS_Kinematics");
-     histos_th1f["h_RECO_AntiS_pt"] = dir_RECO_AntiS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_pt", "; #bar{S} pT (GeV); #entries ",200,0,20);
-     histos_th1f["h_RECO_AntiS_eta"] = dir_RECO_AntiS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_eta", "; #bar{S} #eta; #entries ",200,-10,10);
-     histos_th1f["h_RECO_AntiS_phi"] = dir_RECO_AntiS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_phi", "; #bar{S} #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_RECO_AntiS_vx_vy"] = dir_RECO_AntiS_Kinematics.make<TH2F>(b+"h2_RECO_AntiS_vx_vy", "; #bar{S} vx (cm); #bar{S} vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_RECO_AntiS_vx_vz"] = dir_RECO_AntiS_Kinematics.make<TH2F>(b+"h2_RECO_AntiS_vx_vz", "; #bar{S} vx (cm); #bar{S} vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_RECO_AntiS_vz"] = dir_RECO_AntiS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_vz", "; #bar{S} vz(Ks vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_RECO_AntiS_dxy"] = dir_RECO_AntiS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_dxy", "; #bar{S} dxy(beamspot) (cm); #entries ",400,-20,20);
-     histos_th1f["h_RECO_AntiS_m"] = dir_RECO_AntiS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_m", "; #bar{S} m (GeV); #entries ",200,0,20);
+     TFileDirectory dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics = dir_RECO_AntiS.mkdir("RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics");
+     histos_th1f["h_RECO_AntiS_pt"] = dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_pt", "; #bar{S} pT (GeV); #entries ",200,0,20);
+     histos_th1f["h_RECO_AntiS_phi"] = dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_phi", "; #bar{S} #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_RECO_AntiS_vx_vy"] = dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics.make<TH2F>(b+"h2_RECO_AntiS_vx_vy", "; #bar{S} vx (cm); #bar{S} vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_RECO_AntiS_vx_vz"] = dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics.make<TH2F>(b+"h2_RECO_AntiS_vx_vz", "; #bar{S} vx (cm); #bar{S} vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_RECO_AntiS_dxy"] = dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_dxy", "; #bar{S} dxy(beamspot) (cm); #entries ",400,-20,20);
+     histos_th1f["h_RECO_AntiS_m"] = dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_m", "; #bar{S} m (GeV); #entries ",200,0,20);
+     histos_th1f["h_RECO_AntiS_deltaRDaughters"] = dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics.make<TH1F>(b+"h_RECO_AntiS_deltaRDaughters", "; #bar{S} #DeltaR (Ks,#bar{#Lambda}); #entries ",100,0,10);
     
      TFileDirectory dir_RECO_AntiS_cut_variables_distributions = dir_RECO_AntiS.mkdir("RECO_AntiS_cut_variables_distributions");
      histos_th1f["h_RECO_AntiS_lxy"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_lxy", "; #bar{S} lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,200);
      histos_th1f["h_RECO_AntiS_error_lxy"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_error_lxy", "; #bar{S} error lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,10);
-     histos_th1f["h_RECO_AntiS_deltaRDaughters"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_deltaRDaughters", "; #bar{S} #DeltaR (Ks,#bar{#Lambda}); #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_mass"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_mass", "; S or #bar{S} mass (GeV); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_vertex_chi2_ndof"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_vertex_chi2_ndof", "; S or #bar{S} vertex #chi{^2}/ndof; #entries ",200,0,20);
      histos_th1f["h_RECO_AntiS_deltaPhiDaughters"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_deltaPhiDaughters", "; #bar{S} #Delta#Phi (Ks,#bar{#Lambda}); #entries ",100,-5,5);
      histos_th1f["h_RECO_AntiS_openingsAngleDaughters"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_openingsAngleDaughters", ";S or #bar{S} openings angle (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
-     histos_th2f["h2_RECO_AntiS_corr_dxy_daughters"] = dir_RECO_AntiS_cut_variables_distributions.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_daughters", "; dxy Ks; dxy #bar{#Lambda}",100,-10,10,100,-10,10);
-     histos_th2f["h2_RECO_AntiS_corr_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions.make<TH2F>(b+"h2_RECO_AntiS_corr_dz_daughters", "; dz Ks; dz #bar{#Lambda}",200,-100,100,200,-100,100);
-     histos_th1f["h_RECO_AntiS_dxy"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_dxy", ";dxy S or #bar{S}; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_deltaEtaDaughters"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_deltaEtaDaughters", ";S or #bar{S} #Delta#Eta (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
      histos_th1f["h_RECO_AntiS_dxy_over_lxy"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy", ";dxy S or #bar{S}/lxy interaction vertex; #entries ",100,-10,10);
-     histos_th1f["h_RECO_AntiS_dz"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_dz", ";dxy S or #bar{S}; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_Ks", ";dxy Ks/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_AntiL", ";dxy #Lambda or #bar{#Lambda}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_pt_AntiL"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_pt_AntiL", ";pt #Lambda or #bar{#Lambda} (GeV); #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_dzPVmin"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_dzPVmin", "; S or #bar{S} min dz(PV); #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_vz"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_vz", "; vz S or #bar{S} interaction vertex; #entries ",2000,-100,100);
+     histos_th1f["h_RECO_AntiS_eta"] = dir_RECO_AntiS_cut_variables_distributions.make<TH1F>(b+"h_RECO_AntiS_eta", "; #bar{S} #eta; #entries ",200,-10,10);
+
+     TFileDirectory dir_RECO_AntiS_cut_variables_distributions_L1 = dir_RECO_AntiS.mkdir("RECO_AntiS_cut_variables_distributions_L1");
+     histos_th1f["h_RECO_AntiS_lxy_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_lxy_L1", "; #bar{S} lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_RECO_AntiS_error_lxy_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_error_lxy_L1", "; #bar{S} error lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_mass_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_mass_L1", "; S or #bar{S} mass (GeV); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_vertex_chi2_ndof_L1", "; S or #bar{S} vertex #chi{^2}/ndof; #entries ",200,0,20);
+     histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_deltaPhiDaughters_L1", "; #bar{S} #Delta#Phi (Ks,#bar{#Lambda}); #entries ",100,-5,5);
+     histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_openingsAngleDaughters_L1", ";S or #bar{S} openings angle (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_deltaEtaDaughters_L1", ";S or #bar{S} #Delta#Eta (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_L1", ";dxy S or #bar{S}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_Ks_L1", ";dxy Ks/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_AntiL_L1", ";dxy #Lambda or #bar{#Lambda}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_pt_AntiL_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_pt_AntiL_L1", ";pt #Lambda or #bar{#Lambda} (GeV); #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_dzPVmin_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_dzPVmin_L1", "; S or #bar{S} min dz(PV); #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_vz_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_vz_L1", "; vz S or #bar{S} interaction vertex; #entries ",2000,-100,100);
+     histos_th1f["h_RECO_AntiS_eta_L1"] = dir_RECO_AntiS_cut_variables_distributions_L1.make<TH1F>(b+"h_RECO_AntiS_eta_L1", "; #bar{S} #eta; #entries ",200,-10,10);
+
+     TFileDirectory dir_RECO_AntiS_cut_variables_distributions_L2 = dir_RECO_AntiS.mkdir("RECO_AntiS_cut_variables_distributions_L2");
+     histos_th1f["h_RECO_AntiS_lxy_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_lxy_L2", "; #bar{S} lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_RECO_AntiS_error_lxy_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_error_lxy_L2", "; #bar{S} error lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_mass_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_mass_L2", "; S or #bar{S} mass (GeV); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_vertex_chi2_ndof_L2", "; S or #bar{S} vertex #chi{^2}/ndof; #entries ",200,0,20);
+     histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_deltaPhiDaughters_L2", "; #bar{S} #Delta#Phi (Ks,#bar{#Lambda}); #entries ",100,-5,5);
+     histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_openingsAngleDaughters_L2", ";S or #bar{S} openings angle (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_deltaEtaDaughters_L2", ";S or #bar{S} #Delta#Eta (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_L2", ";dxy S or #bar{S}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_Ks_L2", ";dxy Ks/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_AntiL_L2", ";dxy #Lambda or #bar{#Lambda}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_pt_AntiL_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_pt_AntiL_L2", ";pt #Lambda or #bar{#Lambda} (GeV); #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_dzPVmin_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_dzPVmin_L2", "; S or #bar{S} min dz(PV); #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_vz_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_vz_L2", "; vz S or #bar{S} interaction vertex; #entries ",2000,-100,100);
+     histos_th1f["h_RECO_AntiS_eta_L2"] = dir_RECO_AntiS_cut_variables_distributions_L2.make<TH1F>(b+"h_RECO_AntiS_eta_L2", "; #bar{S} #eta; #entries ",200,-10,10);
+
+     TFileDirectory dir_RECO_AntiS_cut_variables_distributions_L3 = dir_RECO_AntiS.mkdir("RECO_AntiS_cut_variables_distributions_L3");
+     histos_th1f["h_RECO_AntiS_lxy_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_lxy_L3", "; #bar{S} lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_RECO_AntiS_error_lxy_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_error_lxy_L3", "; #bar{S} error lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_mass_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_mass_L3", "; S or #bar{S} mass (GeV); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_vertex_chi2_ndof_L3", "; S or #bar{S} vertex #chi{^2}/ndof; #entries ",200,0,20);
+     histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_deltaPhiDaughters_L3", "; #bar{S} #Delta#Phi (Ks,#bar{#Lambda}); #entries ",100,-5,5);
+     histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_openingsAngleDaughters_L3", ";S or #bar{S} openings angle (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_deltaEtaDaughters_L3", ";S or #bar{S} #Delta#Eta (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_L3", ";dxy S or #bar{S}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_Ks_L3", ";dxy Ks/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_AntiL_L3", ";dxy #Lambda or #bar{#Lambda}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_pt_AntiL_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_pt_AntiL_L3", ";pt #Lambda or #bar{#Lambda} (GeV); #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_dzPVmin_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_dzPVmin_L3", "; S or #bar{S} min dz(PV); #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_vz_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_vz_L3", "; vz S or #bar{S} interaction vertex; #entries ",2000,-100,100);
+     histos_th1f["h_RECO_AntiS_eta_L3"] = dir_RECO_AntiS_cut_variables_distributions_L3.make<TH1F>(b+"h_RECO_AntiS_eta_L3", "; #bar{S} #eta; #entries ",200,-10,10);
 
 
-     TFileDirectory dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass = dir_RECO_AntiS.mkdir("RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass");
-     histos_th1f["h_RECO_AntiS_RECO_dxy_antiS_cut_lxy_error_lxy_mass"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass.make<TH1F>(b+"h_RECO_AntiS_RECO_dxy_antiS_cut_lxy_error_lxy_mass",";dxy S or #bar{S};#Entries",100,-10,10);
-     histos_th1f["h_RECO_AntiS_RECO_dxy_over_lxy_antiS_cut_lxy_error_lxy_mass"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass.make<TH1F>(b+"h_RECO_AntiS_RECO_dxy_over_lxy_antiS_cut_lxy_error_lxy_mass",";dxy S or #bar{S}/lxy interaction vertex;#Entries",1000,-10,10);
-     histos_th2f["h2_RECO_AntiS_RECO_dxy_vs_dxy_over_lxy_antiS_cut_lxy_error_lxy_mass"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass.make<TH2F>(b+"h2_RECO_AntiS_RECO_dxy_vs_dxy_over_lxy_antiS_cut_lxy_error_lxy_mass",";dxy S or #bar{S}/lxy interaction vertex; dxy S or #bar{S};#Entries",200,-10,10,200,-10,10);
-     histos_th1f["h_RECO_AntiS_RECO_dz_antiS_cut_lxy_error_lxy_mass"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass.make<TH1F>(b+"h_RECO_AntiS_RECO_dz_antiS_cut_lxy_error_lxy_mass",";dz S or #bar{S};#Entries",100,-10,10);
-     histos_th1f["h_RECO_AntiS_RECO_mass_antiS_cut_lxy_error_lxy_mass"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass.make<TH1F>(b+"h_RECO_AntiS_RECO_mass_antiS_cut_lxy_error_lxy_mass",";mass S or #bar{S};#Entries",1000,0,10);
-     histos_th1f["h_RECO_AntiS_dxyAntiSPVmin"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass.make<TH1F>(b+"h_RECO_AntiS_dxyAntiSPVmin","; min dxy (#bar{S},PV);#Entries",400,-2,2);
-     histos_th1f["h_RECO_AntiS_dzAntiSPVmin"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass.make<TH1F>(b+"h_RECO_AntiS_dzAntiSPVmin",";  dz (#bar{S},PV) for min dxy (#bar{S},PV);#Entries",400,-2,2);
+     TFileDirectory dir_RECO_AntiS_cut_variables_distributions_L4 = dir_RECO_AntiS.mkdir("RECO_AntiS_cut_variables_distributions_L4");
+     histos_th1f["h_RECO_AntiS_lxy_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_lxy_L4", "; #bar{S} lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_RECO_AntiS_error_lxy_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_error_lxy_L4", "; #bar{S} error lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_mass_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_mass_L4", "; S or #bar{S} mass (GeV); #entries ",200,0,10);
+     histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_vertex_chi2_ndof_L4", "; S or #bar{S} vertex #chi{^2}/ndof; #entries ",200,0,20);
+     histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_deltaPhiDaughters_L4", "; #bar{S} #Delta#Phi (Ks,#bar{#Lambda}); #entries ",100,-5,5);
+     histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_openingsAngleDaughters_L4", ";S or #bar{S} openings angle (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_deltaEtaDaughters_L4", ";S or #bar{S} #Delta#Eta (Ks,#Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_L4", ";dxy S or #bar{S}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_Ks_L4", ";dxy Ks/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_dxy_over_lxy_AntiL_L4", ";dxy #Lambda or #bar{#Lambda}/lxy interaction vertex; #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_pt_AntiL_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_pt_AntiL_L4", ";pt #Lambda or #bar{#Lambda} (GeV); #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_dzPVmin_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_dzPVmin_L4", "; S or #bar{S} min dz(PV); #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_vz_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_vz_L4", "; vz S or #bar{S} interaction vertex; #entries ",2000,-100,100);
+     histos_th1f["h_RECO_AntiS_eta_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4.make<TH1F>(b+"h_RECO_AntiS_eta_L4", "; #bar{S} #eta; #entries ",200,-10,10);
 
 
+     TFileDirectory dir_RECO_AntiS_cut_variables_distributions_L4_extraplots = dir_RECO_AntiS.mkdir("dir_RECO_AntiS_cut_variables_distributions_L4_extraplot");
+     histos_th1f["h_RECO_AntiS_corr_dxy_Ks_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_corr_dxy_Ks_extraplots_L4", ";dxy(Ks); #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_corr_dz_Ks_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_corr_dz_Ks_extraplots_L4", ";dz(Ks); #entries ",1000,-100,100);
+     histos_th1f["h_RECO_AntiS_corr_dxy_AntiL_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_corr_dxy_AntiL_extraplots_L4", ";dxy(#Lambda or #bar{#Lambda});  #entries ",100,-10,10);
+     histos_th1f["h_RECO_AntiS_corr_dz_AntiL_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_corr_dz_AntiL_extraplots_L4", ";dz(#Lambda or #bar{#Lambda}); #entries ",1000,-100,100);
+     histos_th2f["h2_RECO_AntiS_corr_dxy_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_daughters_extraplots_L4", ";dxy(Ks)/lxy(Ks); dxy(#Lambda or #bar{#Lambda})/lxy(#Lambda or #bar{#Lambda}); #entries ",100,-10,10,100,-10,10);
+     histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdLxydxy_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_sign_dotProdLxydxy_daughters_extraplots_L4",";|dxy(Ks).|sign(#vec{lxy(Ks)}.#vec{dxy(Ks)});  |dxy(#bar{#Lambda} or #Lambda).|sign(#vec{lxy(#bar{#Lambda} or #Lambda)}.#vec{dxy(#bar{#Lambda} or #Lambda)})  ;#Entries",100,-10,10,100,-10,10);
+     histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdptdxy_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_sign_dotProdptdxy_daughters_extraplots_L4",";|dxy(Ks).|sign(#vec{pt(Ks)}.#vec{dxy(Ks)});  |dxy(#bar{#Lambda} or #Lambda).|sign(#vec{pt(#bar{#Lambda} or #Lambda)}.#vec{dxy(#bar{#Lambda} or #Lambda)})  ;#Entries",100,-10,10,100,-10,10);
 
-     TFileDirectory dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh = dir_RECO_AntiS.mkdir("RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh");
-     histos_th1f["h_RECO_AntiS_corr_dxy_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_corr_dxy_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxy(Ks); #entries ",100,-10,10);
-     histos_th1f["h_RECO_AntiS_corr_dz_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_corr_dz_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dz(Ks); #entries ",1000,-100,100);
-     histos_th1f["h_RECO_AntiS_corr_dxy_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_corr_dxy_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxy(#Lambda or #bar{#Lambda});  #entries ",100,-10,10);
-     histos_th1f["h_RECO_AntiS_corr_dz_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_corr_dz_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dz(#Lambda or #bar{#Lambda}); #entries ",1000,-100,100);
+     histos_th2f["h2_RECO_AntiS_corr_dxy_over_lxy_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_over_lxy_daughters_extraplots_L4", ";dxy(Ks)/lxy(Ks); dxy(#Lambda or #bar{#Lambda})/lxy(#Lambda or #bar{#Lambda}); #entries ",100,-10,10,100,-10,10);
+     histos_th2f["h2_RECO_AntiS_corr_dz_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_corr_dz_daughters_extraplots_L4", ";dz(Ks); dz(#Lambda or #bar{#Lambda}); #entries ",200,-100,100,200,-100,100);
+     histos_th2f["h2_RECO_AntiS_corr_dxyz_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_corr_dxyz_daughters_extraplots_L4", ";dxyz(Ks); dxyz(#Lambda or #bar{#Lambda}); #entries ",200,-100,100,200,-100,100);
 
+     histos_th2f["h2_RECO_AntiS_dxy_Ks_vs_lxy_Ks_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_dxy_Ks_vs_lxy_Ks_extraplots_L4", ";lxy(Ks); dxy(Ks); #entries ",200,-100,100,200,-10,10);
+     histos_th2f["h2_RECO_AntiS_dxy_AntiL_vs_lxy_AntiL_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_dxy_AntiL_vs_lxy_AntiL_extraplots_L4", ";lxy(#Lambda or #bar{#Lambda}); dxy(#Lambda or #bar{#Lambda}); #entries ",200,-100,100,200,-10,10);
 
-
-
-     histos_th2f["h2_RECO_AntiS_corr_dxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxy(Ks)/lxy(Ks); dxy(#Lambda or #bar{#Lambda})/lxy(#Lambda or #bar{#Lambda}); #entries ",100,-10,10,100,-10,10);
-     histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdLxydxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_sign_dotProdLxydxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh",";|dxy(Ks).|sign(#vec{lxy(Ks)}.#vec{dxy(Ks)});  |dxy(#bar{#Lambda} or #Lambda).|sign(#vec{lxy(#bar{#Lambda} or #Lambda)}.#vec{dxy(#bar{#Lambda} or #Lambda)})  ;#Entries",100,-10,10,100,-10,10);
-     histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdptdxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_sign_dotProdptdxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh",";|dxy(Ks).|sign(#vec{pt(Ks)}.#vec{dxy(Ks)});  |dxy(#bar{#Lambda} or #Lambda).|sign(#vec{pt(#bar{#Lambda} or #Lambda)}.#vec{dxy(#bar{#Lambda} or #Lambda)})  ;#Entries",100,-10,10,100,-10,10);
-
-     histos_th2f["h2_RECO_AntiS_corr_dxy_over_lxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_corr_dxy_over_lxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxy(Ks)/lxy(Ks); dxy(#Lambda or #bar{#Lambda})/lxy(#Lambda or #bar{#Lambda}); #entries ",100,-10,10,100,-10,10);
-     histos_th2f["h2_RECO_AntiS_corr_dz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_corr_dz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dz(Ks); dz(#Lambda or #bar{#Lambda}); #entries ",200,-100,100,200,-100,100);
-     histos_th2f["h2_RECO_AntiS_corr_dxyz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_corr_dxyz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxyz(Ks); dxyz(#Lambda or #bar{#Lambda}); #entries ",200,-100,100,200,-100,100);
-
-     histos_th2f["h2_RECO_AntiS_dxy_Ks_vs_lxy_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_dxy_Ks_vs_lxy_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";lxy(Ks); dxy(Ks); #entries ",200,-100,100,200,-10,10);
-     histos_th2f["h2_RECO_AntiS_dxy_AntiL_vs_lxy_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_dxy_AntiL_vs_lxy_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";lxy(#Lambda or #bar{#Lambda}); dxy(#Lambda or #bar{#Lambda}); #entries ",200,-100,100,200,-10,10);
-
-     histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_Ks_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_dxy_Ks_dz_Ks_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxy(Ks); dz(Ks); #entries ",100,-10,10,200,-100,100);
-     histos_th2f["h2_RECO_AntiS_dxy_L_dz_L_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_dxy_L_dz_L_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxy(#Lambda or #bar{#Lambda}); dz(#Lambda or #bar{#Lambda}); #entries ",100,-10,10,200,-100,100);
-     histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_L_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_dxy_Ks_dz_L_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxy(Ks); dz(#Lambda or #bar{#Lambda}); #entries ",100,-10,10,200,-100,100);
-     histos_th2f["h2_RECO_AntiS_dxy_L_dz_Ks_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_dxy_L_dz_Ks_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";dxy(#Lambda or #bar{#Lambda}); dz(Ks); #entries ",100,-10,10,200,-100,100);
+     histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_Ks_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_dxy_Ks_dz_Ks_daughters_extraplots_L4", ";dxy(Ks); dz(Ks); #entries ",100,-10,10,200,-100,100);
+     histos_th2f["h2_RECO_AntiS_dxy_L_dz_L_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_dxy_L_dz_L_daughters_extraplots_L4", ";dxy(#Lambda or #bar{#Lambda}); dz(#Lambda or #bar{#Lambda}); #entries ",100,-10,10,200,-100,100);
+     histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_L_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_dxy_Ks_dz_L_daughters_extraplots_L4", ";dxy(Ks); dz(#Lambda or #bar{#Lambda}); #entries ",100,-10,10,200,-100,100);
+     histos_th2f["h2_RECO_AntiS_dxy_L_dz_Ks_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_dxy_L_dz_Ks_daughters_extraplots_L4", ";dxy(#Lambda or #bar{#Lambda}); dz(Ks); #entries ",100,-10,10,200,-100,100);
 
 
-     histos_th1f["h_RECO_AntiS_relDiff_RECO_dxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_relDiff_RECO_dxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh",";#frac{|dxy(Ks)|-|dxy(#bar{#Lambda})|}{|dxy(Ks)|+|dxy(#bar{#Lambda})|};#Entries",500,-10,10);
-     histos_th1f["h_RECO_AntiS_relDiff_RECO_dz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_relDiff_RECO_dz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh",";#frac{|dz(Ks)|-|dz(#bar{#Lambda})|}{|dz(Ks)|+|dz(#bar{#Lambda})|};#Entries",500,-10,10);
-     histos_th1f["h_RECO_AntiS_relDiff_RECO_dxyz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_relDiff_RECO_dxyz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh",";#frac{|dxyz(Ks)|-|dxyz(#bar{#Lambda})|}{|dxyz(Ks)|+|dxyz(#bar{#Lambda})|};#Entries",500,-10,10);
-     histos_th1f["h_RECO_AntiS_RECO_vertexNormalizedChi2_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_RECO_vertexNormalizedChi2_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh",";#Chi^{2}/ndof S or #bar{S} interaction vertex;#Entries",300,0,15);
-     histos_th2f["h2_RECO_AntiS_deltaPhiDeltaEta_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_deltaPhiDeltaEta_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh",";#Delta #Phi(Ks,#Lambda or #bar{Lambda}); #Delta #eta(Ks,#Lambda or #bar{Lambda});#Entries",80,-4,4,80,-4,4);
-     histos_th1f["h_RECO_AntiS_openingsAngleDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_openingsAngleDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";openings angle(Ks, #Lambda or #bar{#Lambda}); #entries ",80,-4,4);
-     histos_th2f["h2_RECO_AntiS_deltaEta_openingsAngleDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH2F>(b+"h2_RECO_AntiS_deltaEta_openingsAngleDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";|#Delta#eta(Ks, #Lambda or #bar{#Lambda})|;openings angle(Ks, #Lambda or #bar{Lambda}); #entries ",40,0,4,40,0,4);
-     histos_th1f["h_RECO_AntiS_deltaRDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_deltaRDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";#DeltaR(Ks, #Lambda or #bar{#Lambda}); #entries ",100,0,10);
-     histos_th1f["h_RECO_AntiS_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";pt S or #bar{S}; #entries ",100,0,10);
-     histos_th1f["h_RECO_AntiS_Ks_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_Ks_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";pt Ks; #entries ",100,0,10);
-     histos_th1f["h_RECO_AntiS_AntiL_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_AntiL_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";pt #Lambda or #bar{Lambda}; #entries ",100,0,10);
-     histos_th1f["h_RECO_AntiS_mass_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh.make<TH1F>(b+"h_RECO_AntiS_mass_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";mass S or #bar{S}; #entries ",2000,0,20);
-
-
-     TFileDirectory dir_RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_daughters= dir_RECO_AntiS.mkdir("RECO_AntiS_cut_variables_distributions_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_daughters");
-
-     TFileDirectory dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters= dir_RECO_AntiS.mkdir("RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters");
-     histos_th1f["h_RECO_AntiS_eta_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_eta_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; #bar{S} #eta; #entries ",200,-10,10);
-     histos_th1f["h_RECO_AntiS_phi_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_phi_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; #bar{S} #phi (rad); #entries ",200,-4,4);
-     histos_th2f["h2_RECO_AntiS_vx_vy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH2F>(b+"h2_RECO_AntiS_vx_vy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; #bar{S} vx (cm); #bar{S} vy (cm)",400,-200,200,400,-200,200);
-     histos_th2f["h2_RECO_AntiS_vx_vz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH2F>(b+"h2_RECO_AntiS_vx_vz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; #bar{S} vx (cm); #bar{S} vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_RECO_AntiS_lxy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_lxy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; #bar{S} lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,200);
-     histos_th1f["h_RECO_AntiS_vz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_vz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; #bar{S} vz(Ks vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_RECO_AntiS_dxy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_dxy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; #bar{S} dxy(beamspot) (cm); #entries ",400,-20,20);
-     histos_th1f["h_RECO_AntiS_deltaR_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_deltaR_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; #DeltaR(Ks, #Lambda or #bar{Lambda}) ; #entries ",100,0,10);
-     histos_th1f["h_RECO_AntiS_mass_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_mass_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters", "; S or #bar{S} mass (GeV); #entries ",2000,0,20);
-     histos_th1f["h_RECO_AntiS_dxyAntiSPVmin_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_dxyAntiSPVmin_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", "; S or #bar{S} dxy(PV with smallest dz)  (GeV); #entries ",200,-10,10);
-     histos_th1f["h_RECO_AntiS_dzAntiSPVmin_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_dzAntiSPVmin_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", "; S or #bar{S} dz(PV with smallest dz)  (GeV); #entries ",200,-10,10);
-     histos_th1f["h_RECO_AntiS_dzAntiSPVmin_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_dzAntiSPVmin_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", "; S or #bar{S} dz(PV with smallest dz)  (GeV); #entries ",200,-10,10);
-     histos_th1f["h_RECO_AntiS_pz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"] = dir_RECO_AntiS_kinematics_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters.make<TH1F>(b+"h_RECO_AntiS_pz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh", ";pz S or #bar{S}; #entries ",200,-50,50);
+     histos_th1f["h_RECO_AntiS_relDiff_RECO_dxy_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_relDiff_RECO_dxy_daughters_extraplots_L4",";#frac{|dxy(Ks)|-|dxy(#bar{#Lambda})|}{|dxy(Ks)|+|dxy(#bar{#Lambda})|};#Entries",500,-10,10);
+     histos_th1f["h_RECO_AntiS_relDiff_RECO_dz_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_relDiff_RECO_dz_daughters_extraplots_L4",";#frac{|dz(Ks)|-|dz(#bar{#Lambda})|}{|dz(Ks)|+|dz(#bar{#Lambda})|};#Entries",500,-10,10);
+     histos_th1f["h_RECO_AntiS_relDiff_RECO_dxyz_daughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_relDiff_RECO_dxyz_daughters_extraplots_L4",";#frac{|dxyz(Ks)|-|dxyz(#bar{#Lambda})|}{|dxyz(Ks)|+|dxyz(#bar{#Lambda})|};#Entries",500,-10,10);
+     histos_th1f["h_RECO_AntiS_RECO_vertexNormalizedChi2_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_RECO_vertexNormalizedChi2_extraplots_L4",";#Chi^{2}/ndof S or #bar{S} interaction vertex;#Entries",300,0,15);
+     histos_th2f["h2_RECO_AntiS_deltaPhiDeltaEta_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_deltaPhiDeltaEta_extraplots_L4",";#Delta #Phi(Ks,#Lambda or #bar{Lambda}); #Delta #eta(Ks,#Lambda or #bar{Lambda});#Entries",80,-4,4,80,-4,4);
+     histos_th1f["h_RECO_AntiS_openingsAngleDaughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_openingsAngleDaughters_extraplots_L4", ";openings angle(Ks, #Lambda or #bar{#Lambda}); #entries ",80,-4,4);
+     histos_th2f["h2_RECO_AntiS_deltaEta_openingsAngleDaughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_deltaEta_openingsAngleDaughters_extraplots_L4", ";|#Delta#eta(Ks, #Lambda or #bar{#Lambda})|;openings angle(Ks, #Lambda or #bar{Lambda}); #entries ",40,0,4,40,0,4);
+     histos_th1f["h_RECO_AntiS_deltaRDaughters_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_deltaRDaughters_extraplots_L4", ";#DeltaR(Ks, #Lambda or #bar{#Lambda}); #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_pt_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_pt_extraplots_L4", ";pt S or #bar{S}; #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_Ks_pt_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_Ks_pt_extraplots_L4", ";pt Ks; #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_AntiL_pt_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_AntiL_pt_extraplots_L4", ";pt #Lambda or #bar{Lambda}; #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_mass_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_mass_extraplots_L4", ";mass S or #bar{S}; #entries ",2000,0,20);
+     histos_th1f["h_RECO_AntiS_eta_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_eta_extraplots_L4_dxy_dz_daughters", "; #bar{S} #eta; #entries ",200,-10,10);
+     histos_th1f["h_RECO_AntiS_phi_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_phi_extraplots_L4_dxy_dz_daughters", "; #bar{S} #phi (rad); #entries ",200,-4,4);
+     histos_th2f["h2_RECO_AntiS_vx_vy_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_vx_vy_extraplots_L4_dxy_dz_daughters", "; #bar{S} vx (cm); #bar{S} vy (cm)",400,-200,200,400,-200,200);
+     histos_th2f["h2_RECO_AntiS_vx_vz_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH2F>(b+"h2_RECO_AntiS_vx_vz_extraplots_L4_dxy_dz_daughters", "; #bar{S} vx (cm); #bar{S} vz (cm)",400,-200,200,800,-400,400);
+     histos_th1f["h_RECO_AntiS_lxy_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_lxy_extraplots_L4_dxy_dz_daughters", "; #bar{S} lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,200);
+     histos_th1f["h_RECO_AntiS_vz_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_vz_extraplots_L4_dxy_dz_daughters", "; #bar{S} vz(Ks vertex) (cm); #entries ",600,-300,300);
+     histos_th1f["h_RECO_AntiS_dxy_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_dxy_extraplots_L4_dxy_dz_daughters", "; #bar{S} dxy(beamspot) (cm); #entries ",400,-20,20);
+     histos_th1f["h_RECO_AntiS_deltaR_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_deltaR_extraplots_L4_dxy_dz_daughters", "; #DeltaR(Ks, #Lambda or #bar{Lambda}) ; #entries ",100,0,10);
+     histos_th1f["h_RECO_AntiS_mass_extraplots_L4_dxy_dz_daughters"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_mass_extraplots_L4_dxy_dz_daughters", "; S or #bar{S} mass (GeV); #entries ",2000,0,20);
+     histos_th1f["h_RECO_AntiS_dxyAntiSPVmin_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_dxyAntiSPVmin_extraplots_L4", "; S or #bar{S} dxy(PV with smallest dz)  (GeV); #entries ",200,-10,10);
+     histos_th1f["h_RECO_AntiS_dzAntiSPVmin_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_dzAntiSPVmin_extraplots_L4", "; S or #bar{S} dz(PV with smallest dz)  (GeV); #entries ",200,-10,10);
+     histos_th1f["h_RECO_AntiS_dzAntiSPVmin_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_dzAntiSPVmin_extraplots_L4", "; S or #bar{S} dz(PV with smallest dz)  (GeV); #entries ",200,-10,10);
+     histos_th1f["h_RECO_AntiS_pz_extraplots_L4"] = dir_RECO_AntiS_cut_variables_distributions_L4_extraplots.make<TH1F>(b+"h_RECO_AntiS_pz_extraplots_L4", ";pz S or #bar{S}; #entries ",200,-50,50);
  
      TFileDirectory dir_RECO_AntiS_cutFlows = dir_RECO_AntiS.mkdir("RECO_AntiS_cutFlows");
-     histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"] = dir_RECO_AntiS_cutFlows.make<TH1F>(b+"h_RECO_AntiS_BackgroundCuts_cutFlow", "; 0=all,1=#sigma(lxy)<0.1,2=Lxy>1.9,3=m>0,4=#DeltaR(daug0,daug1)>1,5=#DeltaR(daug0,daug1)<6,6=|dxy_{daug0}|>1 and |dxy_{daug1}|>1,7=|dz_{daug0}|>10 and |dz_{daug1}|>10,8=0<dxy(S or #bar{S})<0.4); #entries ",10,0,10); 
-     histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow_cut_lxy_error_lxy_mass"] = dir_RECO_AntiS_cutFlows.make<TH1F>(b+"h_RECO_AntiS_BackgroundCuts_cutFlow_cut_lxy_error_lxy_mass", "; 0=all surviving lxy, #sigma(lxy), #DeltaR, m cut,1=0 && 0<dxy(S or #bar{S})<0.4 ,2= 1 && |dxy_{daug0}|>0.2 and |dxy_{daug1}|>0.2,3= 2 && |dz_{daug0}|>5 and |dz_{daug1}|>5; #entries ",10,0,10); 
+     histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"] = dir_RECO_AntiS_cutFlows.make<TH1F>(b+"h_RECO_AntiS_BackgroundCuts_cutFlow", "; see code for definitions; #entries ",20,0,20); 
 
      TFileDirectory dir_RECO_AntiS_deltaRInvestigation = dir_RECO_AntiS.mkdir("RECO_AntiS_deltaRInvestigation");
      histos_th1f["h_RECO_AntiS_deltaR_cut_error_lxy"] = dir_RECO_AntiS_deltaRInvestigation.make<TH1F>(b+"h_RECO_AntiS_deltaR_cut_error_lxy", "; #Delta R(Ks, #Lambda or #bar{#Lambda}); #entries ",100,0,10); 
@@ -304,7 +351,7 @@ void AnalyzerRECO::FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RE
 
 	//calculate dxy and dz for the antiS itself
 	double dxy_AntiS = AnalyzerAllSteps::dxy_signed_line_point(AntiSInteractionVertex,AntiSMomentumVertex,beamspot);
-	double dz_AntiS = AnalyzerAllSteps::dz_line_point(AntiSInteractionVertex,AntiSMomentumVertex,beamspot);
+	//double dz_AntiS = AnalyzerAllSteps::dz_line_point(AntiSInteractionVertex,AntiSMomentumVertex,beamspot);
 
 	//calculate the dxy of the antiS with respect to the PV which gives the best match:
 	double dzAntiSPVmin = 999.;
@@ -328,145 +375,212 @@ void AnalyzerRECO::FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RE
 	double signPtDotdxy_daughter0 = AnalyzerAllSteps::sgn(AnalyzerAllSteps::vec_dxy_line_point(AntiSInteractionVertex, AntiSDaug0Momentum,beamspot)*AntiSDaug0Momentum);
 	double signPtDotdxy_daughter1 = AnalyzerAllSteps::sgn(AnalyzerAllSteps::vec_dxy_line_point(AntiSInteractionVertex, AntiSDaug1Momentum,beamspot)*AntiSDaug1Momentum);
 
-	//plot kinematics of *all* the RECO S candidates
+	//plot kinematics of *all* the RECO S candidates, this is before the background cuts
 	histos_th1f["h_RECO_AntiS_pt"]->Fill(RECOAntiS->pt());	
-	histos_th1f["h_RECO_AntiS_eta"]->Fill(RECOAntiS->eta());	
 	histos_th1f["h_RECO_AntiS_phi"]->Fill(RECOAntiS->phi());	
 	histos_th2f["h2_RECO_AntiS_vx_vy"]->Fill(RECOAntiS->vx(),RECOAntiS->vy());
 	histos_th2f["h2_RECO_AntiS_vx_vz"]->Fill(RECOAntiS->vx(),RECOAntiS->vz());
-	histos_th1f["h_RECO_AntiS_vz"]->Fill(RECOAntiS->vz());	
 	histos_th1f["h_RECO_AntiS_dxy"]->Fill(dxy);	
 	histos_th1f["h_RECO_AntiS_m"]->Fill(massAntiS);
-
-	//the stuff we cut on for *all* the RECO S candidates:
-	histos_th1f["h_RECO_AntiS_lxy"]->Fill(Lxy);	
-	histos_th1f["h_RECO_AntiS_error_lxy"]->Fill(error_Lxy);
 	histos_th1f["h_RECO_AntiS_deltaRDaughters"]->Fill(deltaRDaughters);
-	histos_th1f["h_RECO_AntiS_deltaPhiDaughters"]->Fill(deltaPhiDaughters);
-	histos_th1f["h_RECO_AntiS_openingsAngleDaughters"]->Fill(openingsAngleDaughters);
-	histos_th2f["h2_RECO_AntiS_corr_dxy_daughters"]->Fill(dxy_daughter0,dxy_daughter1);
-	histos_th2f["h2_RECO_AntiS_corr_dz_daughters"]->Fill(dz_daughter0,dz_daughter1);
-
-	//fill a cut flow histogram
-	histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(0);	
-	if(error_Lxy < 0.1) histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(1);
-	if(Lxy>1.9)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(2);
-	if(massAntiS > 0.)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(3);
-	if(deltaRDaughters > 1.)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(4);
-	if(deltaRDaughters < 6.)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(5);
-	if(abs(dxy_daughter0) > 1 && abs(dxy_daughter1) > 1)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(6);
-	if(abs(dz_daughter0) > 10 && abs(dz_daughter1) > 10)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(7);
-	if(dxy_AntiS > 0 && dxy_AntiS < 0.4)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(8);
 
 	//try to find out which of the fundamental background cuts get rid of the deltaR=0 peak--> it appears to be the M>0 cut
 	if(error_Lxy < 0.1) histos_th1f["h_RECO_AntiS_deltaR_cut_error_lxy"]->Fill(deltaRDaughters);	
 	if(Lxy < 1.9) histos_th1f["h_RECO_AntiS_deltaR_cut_lxy"]->Fill(deltaRDaughters);	
 	if(massAntiS > 0.) histos_th1f["h_RECO_AntiS_deltaR_cut_mass"]->Fill(deltaRDaughters);
 
+
+	//Fill a cut flow histogram:
+    	histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(0);
+	if(Lxy > AnalyzerAllSteps::MinLxyCut)                               histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(1);
+	if(error_Lxy < AnalyzerAllSteps::MaxErrorLxyCut)                    histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(2);
+	if(massAntiS > AnalyzerAllSteps::MinErrorMassCut)                               histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(3);
+	if(RECOAntiS->vertexNormalizedChi2() < AnalyzerAllSteps::MaxNormChi2Cut)        histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(4);
+
+	if(abs(deltaPhiDaughters) > AnalyzerAllSteps::MinAbsDeltaPhiDaughtersCut)           histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(5);
+	if(abs(deltaPhiDaughters) < AnalyzerAllSteps::MaxAbsDeltaPhiDaughtersCut)           histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(6);
+	if(openingsAngleDaughters < AnalyzerAllSteps::MaxOpeningsAngleCut)                  histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(7);
+	if(abs(deltaEtaDaughters)<AnalyzerAllSteps::MaxAbsDeltaEtaDaughCut)                 histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(8);
+	if(dxy_AntiS/Lxy > AnalyzerAllSteps::MinDxyOverLxyCut)       histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(9);
+	if(dxy_AntiS/Lxy < AnalyzerAllSteps::MaxDxyOverLxyCut)       histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(10);
+
+	if(dxy_daughter0/Lxy>AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter0/Lxy<AnalyzerAllSteps::DxyKsExclusionRangeMinCut)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(11);
+	if(dxy_daughter1/Lxy>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter1/Lxy<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut) histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(12);
+
+	if(RECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut)                 histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(13);
+	if(abs(dzAntiSPVmin)<AnalyzerAllSteps::dzAntiSPVminCut)                         histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(14);
+	if(abs(RECOAntiS->vz())>AnalyzerAllSteps::vzAntiSInteractionVertexCut)              histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(15);
+	if(abs(RECOAntiS->eta())>AnalyzerAllSteps::antiSEtaCut)                             histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(16);
+
+	if(     Lxy>AnalyzerAllSteps::MinLxyCut &&
+		error_Lxy < AnalyzerAllSteps::MaxErrorLxyCut &&
+		massAntiS > AnalyzerAllSteps::MinErrorMassCut &&
+		RECOAntiS->vertexNormalizedChi2() < AnalyzerAllSteps::MaxNormChi2Cut &&
+
+		abs(deltaPhiDaughters) > AnalyzerAllSteps::MinAbsDeltaPhiDaughtersCut &&
+		abs(deltaPhiDaughters) < AnalyzerAllSteps::MaxAbsDeltaPhiDaughtersCut &&
+		openingsAngleDaughters < AnalyzerAllSteps::MaxOpeningsAngleCut &&
+		abs(deltaEtaDaughters) < AnalyzerAllSteps::MaxAbsDeltaEtaDaughCut &&
+		dxy_AntiS/Lxy > AnalyzerAllSteps::MinDxyOverLxyCut &&
+		dxy_AntiS/Lxy < AnalyzerAllSteps::MaxDxyOverLxyCut &&
+
+		(dxy_daughter0/Lxy > AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter0/Lxy < AnalyzerAllSteps::DxyKsExclusionRangeMinCut) &&
+		(dxy_daughter1/Lxy>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter1/Lxy<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut) &&
+
+		RECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut &&
+		abs(dzAntiSPVmin) < AnalyzerAllSteps::dzAntiSPVminCut &&
+		abs(RECOAntiS->vz())>AnalyzerAllSteps::vzAntiSInteractionVertexCut &&
+		abs(RECOAntiS->eta())>AnalyzerAllSteps::antiSEtaCut)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(17);	
+
 	
 	//start investigating background discriminating variables
 	//the stuff we cut on for *all* the RECO S candidates:
 	histos_th1f["h_RECO_AntiS_lxy"]->Fill(Lxy);	
 	histos_th1f["h_RECO_AntiS_error_lxy"]->Fill(error_Lxy);
-	histos_th1f["h_RECO_AntiS_deltaRDaughters"]->Fill(deltaRDaughters);
+	histos_th1f["h_RECO_AntiS_mass"]->Fill(massAntiS);
+	histos_th1f["h_RECO_AntiS_vertex_chi2_ndof"]->Fill(RECOAntiS->vertexNormalizedChi2());
 	histos_th1f["h_RECO_AntiS_deltaPhiDaughters"]->Fill(deltaPhiDaughters);
 	histos_th1f["h_RECO_AntiS_openingsAngleDaughters"]->Fill(openingsAngleDaughters);
-	histos_th2f["h2_RECO_AntiS_corr_dxy_daughters"]->Fill(dxy_daughter0,dxy_daughter1);
-	histos_th2f["h2_RECO_AntiS_corr_dz_daughters"]->Fill(dz_daughter0,dz_daughter1);
-	histos_th1f["h_RECO_AntiS_dxy"]->Fill(dxy_AntiS);
+	histos_th1f["h_RECO_AntiS_deltaEtaDaughters"]->Fill(deltaEtaDaughters);
 	histos_th1f["h_RECO_AntiS_dxy_over_lxy"]->Fill(dxy_AntiS/Lxy);
-	histos_th1f["h_RECO_AntiS_dz"]->Fill(dz_AntiS);
+	histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks"]->Fill(dxy_daughter0/Lxy);
+        histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL"]->Fill(dxy_daughter1/Lxy);
+	histos_th1f["h_RECO_AntiS_pt_AntiL"]->Fill(RECOAntiS->daughter(1)->pt());
+	histos_th1f["h_RECO_AntiS_dzPVmin"]->Fill(dzAntiSPVmin);
+	histos_th1f["h_RECO_AntiS_vz"]->Fill(RECOAntiS->vz());
+	histos_th1f["h_RECO_AntiS_eta"]->Fill(RECOAntiS->eta());
+		
 
 	//now start applying the background cuts and see what is important, start with the "fundamental" background cuts
-	if(	Lxy > AnalyzerAllSteps::MinLxyCut && 
-		error_Lxy < AnalyzerAllSteps::MaxErrorLxyCut && 
-		massAntiS > AnalyzerAllSteps::MinErrorMassCut){
+	if(	
+	Lxy > AnalyzerAllSteps::MinLxyCut && 
+	error_Lxy < AnalyzerAllSteps::MaxErrorLxyCut && 
+	massAntiS > AnalyzerAllSteps::MinErrorMassCut &&
+	RECOAntiS->vertexNormalizedChi2() < AnalyzerAllSteps::MaxNormChi2Cut
+	){
+		histos_th1f["h_RECO_AntiS_lxy_L1"]->Fill(Lxy);     
+		histos_th1f["h_RECO_AntiS_error_lxy_L1"]->Fill(error_Lxy);
+		histos_th1f["h_RECO_AntiS_mass_L1"]->Fill(massAntiS);
+		histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L1"]->Fill(RECOAntiS->vertexNormalizedChi2());
+		histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L1"]->Fill(deltaPhiDaughters);
+		histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L1"]->Fill(openingsAngleDaughters);
+		histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L1"]->Fill(deltaEtaDaughters);
+		histos_th1f["h_RECO_AntiS_dxy_over_lxy_L1"]->Fill(dxy_AntiS/Lxy);
+		histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L1"]->Fill(dxy_daughter0/Lxy);
+		histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L1"]->Fill(dxy_daughter1/Lxy);
+		histos_th1f["h_RECO_AntiS_pt_AntiL_L1"]->Fill(RECOAntiS->daughter(1)->pt());
+		histos_th1f["h_RECO_AntiS_dzPVmin_L1"]->Fill(dzAntiSPVmin);
+		histos_th1f["h_RECO_AntiS_vz_L1"]->Fill(RECOAntiS->vz());
+		histos_th1f["h_RECO_AntiS_eta_L1"]->Fill(RECOAntiS->eta());
 
-                histos_th1f["h_RECO_AntiS_RECO_dxy_antiS_cut_lxy_error_lxy_mass"]->Fill(dxy_AntiS);
-                histos_th1f["h_RECO_AntiS_RECO_dxy_over_lxy_antiS_cut_lxy_error_lxy_mass"]->Fill(dxy_AntiS/Lxy);
-                histos_th2f["h2_RECO_AntiS_RECO_dxy_vs_dxy_over_lxy_antiS_cut_lxy_error_lxy_mass"]->Fill(dxy_AntiS/Lxy,dxy_AntiS);
-                histos_th1f["h_RECO_AntiS_RECO_dz_antiS_cut_lxy_error_lxy_mass"]->Fill(dz_AntiS);
-                histos_th1f["h_RECO_AntiS_RECO_mass_antiS_cut_lxy_error_lxy_mass"]->Fill(massAntiS);
+		if(	
+		abs(deltaPhiDaughters) > AnalyzerAllSteps::MinAbsDeltaPhiDaughtersCut && 
+		abs(deltaPhiDaughters) < AnalyzerAllSteps::MaxAbsDeltaPhiDaughtersCut && 
+		openingsAngleDaughters < AnalyzerAllSteps::MaxOpeningsAngleCut &&
+		abs(deltaEtaDaughters) < AnalyzerAllSteps::MaxAbsDeltaEtaDaughCut &&
+		dxy_AntiS/Lxy > AnalyzerAllSteps::MinDxyOverLxyCut && 
+		dxy_AntiS/Lxy < AnalyzerAllSteps::MaxDxyOverLxyCut 
+		){			
+			histos_th1f["h_RECO_AntiS_lxy_L2"]->Fill(Lxy);     
+			histos_th1f["h_RECO_AntiS_error_lxy_L2"]->Fill(error_Lxy);
+			histos_th1f["h_RECO_AntiS_mass_L2"]->Fill(massAntiS);
+			histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L2"]->Fill(RECOAntiS->vertexNormalizedChi2());
+			histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L2"]->Fill(deltaPhiDaughters);
+			histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L2"]->Fill(openingsAngleDaughters);
+			histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L2"]->Fill(deltaEtaDaughters);
+			histos_th1f["h_RECO_AntiS_dxy_over_lxy_L2"]->Fill(dxy_AntiS/Lxy);
+			histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L2"]->Fill(dxy_daughter0/Lxy);
+			histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L2"]->Fill(dxy_daughter1/Lxy);
+			histos_th1f["h_RECO_AntiS_pt_AntiL_L2"]->Fill(RECOAntiS->daughter(1)->pt());
+			histos_th1f["h_RECO_AntiS_dzPVmin_L2"]->Fill(dzAntiSPVmin);
+			histos_th1f["h_RECO_AntiS_vz_L2"]->Fill(RECOAntiS->vz());
+			histos_th1f["h_RECO_AntiS_eta_L2"]->Fill(RECOAntiS->eta());
 
-		histos_th1f["h_RECO_AntiS_dxyAntiSPVmin"]->Fill(dxyAntiSPVmin);
-                histos_th1f["h_RECO_AntiS_dzAntiSPVmin"]->Fill(dzAntiSPVmin);
+			if(
+			(dxy_daughter0 > AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter0 < AnalyzerAllSteps::DxyKsExclusionRangeMinCut) &&
+			(dxy_daughter1>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter1<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut)
+			){
+				histos_th1f["h_RECO_AntiS_lxy_L3"]->Fill(Lxy);     
+				histos_th1f["h_RECO_AntiS_error_lxy_L3"]->Fill(error_Lxy);
+				histos_th1f["h_RECO_AntiS_mass_L3"]->Fill(massAntiS);
+				histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L3"]->Fill(RECOAntiS->vertexNormalizedChi2());
+				histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L3"]->Fill(deltaPhiDaughters);
+				histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L3"]->Fill(openingsAngleDaughters);
+				histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L3"]->Fill(deltaEtaDaughters);
+				histos_th1f["h_RECO_AntiS_dxy_over_lxy_L3"]->Fill(dxy_AntiS/Lxy);
+				histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L3"]->Fill(dxy_daughter0/Lxy);
+				histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L3"]->Fill(dxy_daughter1/Lxy);
+				histos_th1f["h_RECO_AntiS_pt_AntiL_L3"]->Fill(RECOAntiS->daughter(1)->pt());
+				histos_th1f["h_RECO_AntiS_dzPVmin_L3"]->Fill(dzAntiSPVmin);
+				histos_th1f["h_RECO_AntiS_vz_L3"]->Fill(RECOAntiS->vz());
+				histos_th1f["h_RECO_AntiS_eta_L3"]->Fill(RECOAntiS->eta());
 
-		//fill a cut flow histogram after the "fundamental" background cuts:
-		histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow_cut_lxy_error_lxy_mass"]->Fill(0);
-
-		//now cut on the dxy of the S/antiS, with this cut you keep almost all the signal, but you cut strongly on background (background can have large dxy because it are random overlaps). Cut also on the deltaPhi. The m>0 cut cuts away the deltaR peak at 0, buuuuut there is this strange correlation in deltaphi-deltaeta where you have this band at deltaphi = 0 at high deltaeta, which is most likely attributated to the Ks and Lambdas from different vertices. 
-		if(	abs(deltaPhiDaughters) > AnalyzerAllSteps::MinAbsDeltaPhiDaughtersCut && 
-			abs(deltaPhiDaughters) < AnalyzerAllSteps::MaxAbsDeltaPhiDaughtersCut && 
-			dxy_AntiS/Lxy > AnalyzerAllSteps::MinDxyOverLxyCut && 
-			dxy_AntiS/Lxy < AnalyzerAllSteps::MaxDxyOverLxyCut && 
-			RECOAntiS->vertexNormalizedChi2() < AnalyzerAllSteps::MaxNormChi2Cut && 
-			openingsAngleDaughters < AnalyzerAllSteps::MaxOpeningsAngleCut && 
-			abs(deltaEtaDaughters) < AnalyzerAllSteps::MaxAbsDeltaEtaDaughCut && 
-			(dxy_daughter0 > AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter0 < AnalyzerAllSteps::DxyKsExclusionRangeMinCut) && 
-			RECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut &&
-			abs(dzAntiSPVmin)<AnalyzerAllSteps::dzAntiSPVminCut &&
-			abs(RECOAntiS->vz()) > AnalyzerAllSteps::vzAntiSInteractionVertexCut &&
-			abs(RECOAntiS->eta())> AnalyzerAllSteps::antiSEtaCut &&
-			(dxy_daughter1>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter1<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut)){
-
-
-			//if not all background is gone yet, you can still cut on the dxy and dz of the Ks and Lambda, so investigate how they look:
-			histos_th1f["h_RECO_AntiS_corr_dxy_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxy_daughter0);
-			histos_th1f["h_RECO_AntiS_corr_dz_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dz_daughter0);
-			histos_th1f["h_RECO_AntiS_corr_dxy_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxy_daughter1);
-			histos_th1f["h_RECO_AntiS_corr_dz_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dz_daughter1);
-
-			histos_th2f["h2_RECO_AntiS_corr_dxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxy_daughter0,dxy_daughter1);
-			histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdLxydxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(abs(dxy_daughter0)*signLxyDotdxy_daughter0,abs(dxy_daughter1)*signLxyDotdxy_daughter1);
-			histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdptdxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(abs(dxy_daughter0)*signPtDotdxy_daughter0,abs(dxy_daughter1)*signPtDotdxy_daughter1);
-			histos_th2f["h2_RECO_AntiS_corr_dxy_over_lxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxy_daughter0/Lxy,dxy_daughter1/Lxy);
-			histos_th2f["h2_RECO_AntiS_corr_dz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dz_daughter0,dz_daughter1);
-			histos_th2f["h2_RECO_AntiS_corr_dxyz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxyz_daughter0,dxyz_daughter1);
-
-			histos_th2f["h2_RECO_AntiS_dxy_Ks_vs_lxy_Ks_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(Lxy,dxy_daughter0);
-			histos_th2f["h2_RECO_AntiS_dxy_AntiL_vs_lxy_AntiL_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(Lxy,dxy_daughter1);
-			
-			
-			histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_Ks_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxy_daughter0,dz_daughter0);
-			histos_th2f["h2_RECO_AntiS_dxy_L_dz_L_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxy_daughter1,dz_daughter1);
-			histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_L_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxy_daughter0,dz_daughter1);
-			histos_th2f["h2_RECO_AntiS_dxy_L_dz_Ks_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxy_daughter1,dz_daughter0);
-			
-
-			histos_th1f["h_RECO_AntiS_relDiff_RECO_dxy_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(relDiff_dxy_daughters);
-			histos_th1f["h_RECO_AntiS_relDiff_RECO_dz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(relDiff_dz_daughters);
-			histos_th1f["h_RECO_AntiS_relDiff_RECO_dxyz_daughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(relDiff_dxyz_daughters);
-			histos_th1f["h_RECO_AntiS_RECO_vertexNormalizedChi2_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(RECOAntiS->vertexNormalizedChi2());
-			histos_th2f["h2_RECO_AntiS_deltaPhiDeltaEta_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(deltaPhiDaughters,deltaEtaDaughters);
-			histos_th1f["h_RECO_AntiS_openingsAngleDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(openingsAngleDaughters);
-			histos_th2f["h2_RECO_AntiS_deltaEta_openingsAngleDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(abs(deltaEtaDaughters),openingsAngleDaughters);
-			histos_th1f["h_RECO_AntiS_deltaRDaughters_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(deltaRDaughters);
-			//look at the momenta of what is remaining:			
-			histos_th1f["h_RECO_AntiS_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(RECOAntiS->pt());
-			histos_th1f["h_RECO_AntiS_Ks_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(RECOAntiS->daughter(0)->pt());
-			histos_th1f["h_RECO_AntiS_AntiL_pt_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(RECOAntiS->daughter(1)->pt());
-
-			histos_th1f["h_RECO_AntiS_mass_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(massAntiS);
-
-			
-		
-			histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow_cut_lxy_error_lxy_mass"]->Fill(1);
-
-			histos_th1f["h_RECO_AntiS_eta_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(RECOAntiS->eta());	
-			histos_th1f["h_RECO_AntiS_phi_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(RECOAntiS->phi());	
-			histos_th2f["h2_RECO_AntiS_vx_vy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(RECOAntiS->vx(),RECOAntiS->vy());
-			histos_th2f["h2_RECO_AntiS_vx_vz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(RECOAntiS->vx(),RECOAntiS->vz());
-			histos_th1f["h_RECO_AntiS_lxy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(Lxy);	
-			histos_th1f["h_RECO_AntiS_vz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(RECOAntiS->vz());	
-			histos_th1f["h_RECO_AntiS_dxy_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(dxy);	
-			histos_th1f["h_RECO_AntiS_deltaR_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(deltaRDaughters);	
-			histos_th1f["h_RECO_AntiS_mass_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh_dxy_dz_daughters"]->Fill(massAntiS);
-
-			histos_th1f["h_RECO_AntiS_dxyAntiSPVmin_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dxyAntiSPVmin);
-                	histos_th1f["h_RECO_AntiS_dzAntiSPVmin_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(dzAntiSPVmin);
-			histos_th1f["h_RECO_AntiS_pz_cut_lxy_error_lxy_mass_dxy_over_lxy_deltaphiDaugh_Chi2Vertex_deltaetaDaugh_openingsangleDaugh"]->Fill(RECOAntiS->pz());
+				if(
+				RECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut &&
+				abs(dzAntiSPVmin)<AnalyzerAllSteps::dzAntiSPVminCut &&
+				abs(RECOAntiS->vz()) > AnalyzerAllSteps::vzAntiSInteractionVertexCut &&
+				abs(RECOAntiS->eta())> AnalyzerAllSteps::antiSEtaCut
+				){
 
 
+					histos_th1f["h_RECO_AntiS_lxy_L4"]->Fill(Lxy);     
+					histos_th1f["h_RECO_AntiS_error_lxy_L4"]->Fill(error_Lxy);
+					histos_th1f["h_RECO_AntiS_mass_L4"]->Fill(massAntiS);
+					histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L4"]->Fill(RECOAntiS->vertexNormalizedChi2());
+					histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L4"]->Fill(deltaPhiDaughters);
+					histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L4"]->Fill(openingsAngleDaughters);
+					histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L4"]->Fill(deltaEtaDaughters);
+					histos_th1f["h_RECO_AntiS_dxy_over_lxy_L4"]->Fill(dxy_AntiS/Lxy);
+					histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L4"]->Fill(dxy_daughter0/Lxy);
+					histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L4"]->Fill(dxy_daughter1/Lxy);
+					histos_th1f["h_RECO_AntiS_pt_AntiL_L4"]->Fill(RECOAntiS->daughter(1)->pt());
+					histos_th1f["h_RECO_AntiS_dzPVmin_L4"]->Fill(dzAntiSPVmin);
+					histos_th1f["h_RECO_AntiS_vz_L4"]->Fill(RECOAntiS->vz());
+					histos_th1f["h_RECO_AntiS_eta_L4"]->Fill(RECOAntiS->eta());
+
+					//if not all background is gone yet, you can try to find something in the variables below to cut on
+					histos_th1f["h_RECO_AntiS_corr_dxy_Ks_extraplots_L4"]->Fill(dxy_daughter0);
+					histos_th1f["h_RECO_AntiS_corr_dz_Ks_extraplots_L4"]->Fill(dz_daughter0);
+					histos_th1f["h_RECO_AntiS_corr_dxy_AntiL_extraplots_L4"]->Fill(dxy_daughter1);
+					histos_th1f["h_RECO_AntiS_corr_dz_AntiL_extraplots_L4"]->Fill(dz_daughter1);
+					histos_th2f["h2_RECO_AntiS_corr_dxy_daughters_extraplots_L4"]->Fill(dxy_daughter0,dxy_daughter1);
+					histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdLxydxy_daughters_extraplots_L4"]->Fill(abs(dxy_daughter0)*signLxyDotdxy_daughter0,abs(dxy_daughter1)*signLxyDotdxy_daughter1);
+					histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdptdxy_daughters_extraplots_L4"]->Fill(abs(dxy_daughter0)*signPtDotdxy_daughter0,abs(dxy_daughter1)*signPtDotdxy_daughter1);
+					histos_th2f["h2_RECO_AntiS_corr_dxy_over_lxy_daughters_extraplots_L4"]->Fill(dxy_daughter0/Lxy,dxy_daughter1/Lxy);
+					histos_th2f["h2_RECO_AntiS_corr_dz_daughters_extraplots_L4"]->Fill(dz_daughter0,dz_daughter1);
+					histos_th2f["h2_RECO_AntiS_corr_dxyz_daughters_extraplots_L4"]->Fill(dxyz_daughter0,dxyz_daughter1);
+					histos_th2f["h2_RECO_AntiS_dxy_Ks_vs_lxy_Ks_extraplots_L4"]->Fill(Lxy,dxy_daughter0);
+					histos_th2f["h2_RECO_AntiS_dxy_AntiL_vs_lxy_AntiL_extraplots_L4"]->Fill(Lxy,dxy_daughter1);
+					histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_Ks_daughters_extraplots_L4"]->Fill(dxy_daughter0,dz_daughter0);
+					histos_th2f["h2_RECO_AntiS_dxy_L_dz_L_daughters_extraplots_L4"]->Fill(dxy_daughter1,dz_daughter1);
+					histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_L_daughters_extraplots_L4"]->Fill(dxy_daughter0,dz_daughter1);
+					histos_th2f["h2_RECO_AntiS_dxy_L_dz_Ks_daughters_extraplots_L4"]->Fill(dxy_daughter1,dz_daughter0);
+					histos_th1f["h_RECO_AntiS_relDiff_RECO_dxy_daughters_extraplots_L4"]->Fill(relDiff_dxy_daughters);
+					histos_th1f["h_RECO_AntiS_relDiff_RECO_dz_daughters_extraplots_L4"]->Fill(relDiff_dz_daughters);
+					histos_th1f["h_RECO_AntiS_relDiff_RECO_dxyz_daughters_extraplots_L4"]->Fill(relDiff_dxyz_daughters);
+					histos_th1f["h_RECO_AntiS_RECO_vertexNormalizedChi2_extraplots_L4"]->Fill(RECOAntiS->vertexNormalizedChi2());
+					histos_th2f["h2_RECO_AntiS_deltaPhiDeltaEta_extraplots_L4"]->Fill(deltaPhiDaughters,deltaEtaDaughters);
+					histos_th1f["h_RECO_AntiS_openingsAngleDaughters_extraplots_L4"]->Fill(openingsAngleDaughters);
+					histos_th2f["h2_RECO_AntiS_deltaEta_openingsAngleDaughters_extraplots_L4"]->Fill(abs(deltaEtaDaughters),openingsAngleDaughters);
+					histos_th1f["h_RECO_AntiS_deltaRDaughters_extraplots_L4"]->Fill(deltaRDaughters);
+					histos_th1f["h_RECO_AntiS_pt_extraplots_L4"]->Fill(RECOAntiS->pt());
+					histos_th1f["h_RECO_AntiS_Ks_pt_extraplots_L4"]->Fill(RECOAntiS->daughter(0)->pt());
+					histos_th1f["h_RECO_AntiS_AntiL_pt_extraplots_L4"]->Fill(RECOAntiS->daughter(1)->pt());
+					histos_th1f["h_RECO_AntiS_mass_extraplots_L4"]->Fill(massAntiS);
+					histos_th1f["h_RECO_AntiS_eta_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->eta());	
+					histos_th1f["h_RECO_AntiS_phi_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->phi());	
+					histos_th2f["h2_RECO_AntiS_vx_vy_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->vx(),RECOAntiS->vy());
+					histos_th2f["h2_RECO_AntiS_vx_vz_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->vx(),RECOAntiS->vz());
+					histos_th1f["h_RECO_AntiS_lxy_extraplots_L4_dxy_dz_daughters"]->Fill(Lxy);	
+					histos_th1f["h_RECO_AntiS_vz_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->vz());	
+					histos_th1f["h_RECO_AntiS_dxy_extraplots_L4_dxy_dz_daughters"]->Fill(dxy);	
+					histos_th1f["h_RECO_AntiS_deltaR_extraplots_L4_dxy_dz_daughters"]->Fill(deltaRDaughters);	
+					histos_th1f["h_RECO_AntiS_mass_extraplots_L4_dxy_dz_daughters"]->Fill(massAntiS);
+					histos_th1f["h_RECO_AntiS_dxyAntiSPVmin_extraplots_L4"]->Fill(dxyAntiSPVmin);
+					histos_th1f["h_RECO_AntiS_dzAntiSPVmin_extraplots_L4"]->Fill(dzAntiSPVmin);
+					histos_th1f["h_RECO_AntiS_pz_extraplots_L4"]->Fill(RECOAntiS->pz());
+			}
+		}
 
 		}
 	}
