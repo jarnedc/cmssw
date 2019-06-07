@@ -1,7 +1,7 @@
 from WMCore.Configuration import Configuration
 
-day = "22052019"
-version = "v2"
+day = "02062019"
+version = "v1"
 
 config = Configuration()
 config.section_('General')
@@ -15,12 +15,12 @@ config.JobType.psetName = 'SUS-RunIISummer16DR80Premix-00068_IIDD_cfg.py'
 
 config.section_('Data') 
 config.Data.unitsPerJob = 1 
-config.Data.totalUnits = 7000
+config.Data.totalUnits = 6995
 config.Data.publication = False 
 config.Data.splitting = 'FileBased' 
 config.Data.outLFNDirBase = '/store/user/jdeclerc/crmc_Sexaq/Step2' 
 config.Data.userInputFiles = open('/storage_mnt/storage/user/jdeclerc/CMSSW_8_0_30/src/STEP2_Sexaq/crabSlimmedFEVT/inputFiles.txt').readlines() 
-config.Data.outputPrimaryDataset = "CRAB_SimSexaq_background_completely_disabled_cosThetaXYCut_innerHitPosCut"
+config.Data.outputPrimaryDataset = "CRAB_SimSexaq_withSLooping"
 
 config.section_('User') 
 config.User.voGroup = 'becms'

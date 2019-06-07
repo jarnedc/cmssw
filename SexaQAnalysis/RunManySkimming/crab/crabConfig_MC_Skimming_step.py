@@ -1,7 +1,7 @@
 from WMCore.Configuration import Configuration
 
-day = "23052019"
-version = "v1"
+day = "25052019"
+version = "v2"
 
 config = Configuration()
 config.section_('General')
@@ -14,7 +14,7 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'treeproducer_data_cfg.py' 
 
 config.section_('Data') 
-config.Data.unitsPerJob = 35 
+config.Data.unitsPerJob = 35
 config.Data.totalUnits = 7000
 config.Data.publication = False 
 config.Data.splitting = 'FileBased' 

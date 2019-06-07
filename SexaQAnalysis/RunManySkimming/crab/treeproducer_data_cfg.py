@@ -73,7 +73,7 @@ process.load('Configuration/EventContent/EventContent_cff')
 from Configuration.AlCa.GlobalTag import GlobalTag
 
 if(options.isData==True):
-    process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_2016SeptRepro_v7', '')
+    process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_2016SeptRepro_v7', '') #was using 80X_dataRun2_2016SeptRepro_v7 before trialM, now changed to this one according to: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 else:
     process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_miniAODv2_v1', '')
 
@@ -141,7 +141,7 @@ process.rMassFilter.targetMass = 0
 process.sMassFilter = massFilter.clone()
 process.sMassFilter.targetMass = 0.939565
 
-process.load("SexaQAnalysis.Skimming.InitialProducer_cff")
+process.load("SexaQAnalysis.Skimming.InitialProducer_cfi")
 
 process.load("SexaQAnalysis.TreeProducer.Treeproducer_AOD_cfi")
 #process.tree.genCollection = cms.InputTag("genParticlePlusGEANT")
