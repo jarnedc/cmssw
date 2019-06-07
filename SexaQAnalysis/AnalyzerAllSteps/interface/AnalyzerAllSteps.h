@@ -56,6 +56,11 @@ using namespace std;
 class AnalyzerAllSteps : public edm::EDAnalyzer
  {
   public:
+    static constexpr double deltaRCutV0RECOKs = 0.1;
+    static constexpr double deltaRCutV0RECOLambda = 0.1;
+    static constexpr double deltaRCutRECOAntiS = 0.1;
+
+
     //definition of the background cuts
     static constexpr double MinLxyCut = 1.9;
     static constexpr double MaxErrorLxyCut = 0.1;
@@ -101,6 +106,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     double static CosOpeningsAngle(TVector3 vec1, TVector3 vec2);
     double static dz_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in);
     double static sgn(double input);
+    int static getDaughterParticlesTypes(const reco::Candidate * genParticle);
      };
 
 #endif

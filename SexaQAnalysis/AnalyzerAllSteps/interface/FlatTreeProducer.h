@@ -1,20 +1,22 @@
-#ifndef FlatTreeProducerDATA_h
-#define FlatTreeProducerDATA_h
+#ifndef FlatTreeProducer_h
+#define FlatTreeProducer_h
  
 #include "AnalyzerAllSteps.h"
 using namespace edm;
 using namespace std; 
-class FlatTreeProducerDATA : public edm::EDAnalyzer
+class FlatTreeProducer : public edm::EDAnalyzer
  {
   public:
-    explicit FlatTreeProducerDATA(edm::ParameterSet const& cfg);
-    virtual ~FlatTreeProducerDATA();
+    explicit FlatTreeProducer(edm::ParameterSet const& cfg);
+    virtual ~FlatTreeProducer();
     static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
-    void FillRECOAntiS(const reco::VertexCompositeCandidate * RECOAntiS, TVector3 beamspot,TVector3 beamspotVariance, int eventId, edm::Handle<vector<reco::Vertex>> h_offlinePV);
+    void FindRecoAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV);
+    void FillBranches(const reco::VertexCompositeCandidate * antiS, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV);    
 
   private:
     bool m_lookAtAntiS;
+    bool m_runningOnData; 
 
     virtual void beginJob();
     virtual void analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup);
@@ -31,6 +33,9 @@ class FlatTreeProducerDATA : public edm::EDAnalyzer
  
     edm::InputTag m_bsTag;
     edm::InputTag m_offlinePVTag;
+    edm::InputTag m_genParticlesTag_GEN;
+    edm::InputTag m_genParticlesTag_SIM_GEANT;
+    edm::InputTag m_generalTracksTag;
     edm::InputTag m_sCandsTag;
     edm::InputTag m_V0KsTag;
     edm::InputTag m_V0LTag;
@@ -38,6 +43,9 @@ class FlatTreeProducerDATA : public edm::EDAnalyzer
 
     edm::EDGetTokenT<reco::BeamSpot> m_bsToken;
     edm::EDGetTokenT<vector<reco::Vertex>> m_offlinePVToken;
+    edm::EDGetTokenT<vector<reco::GenParticle>> m_genParticlesToken_GEN; 
+    edm::EDGetTokenT<vector<reco::GenParticle>> m_genParticlesToken_SIM_GEANT; 
+    edm::EDGetTokenT<View<reco::Track>> m_generalTracksToken;
     edm::EDGetTokenT<vector<reco::VertexCompositeCandidate> > m_sCandsToken;
     edm::EDGetTokenT<vector<reco::VertexCompositeCandidate> > m_V0KsToken;
     edm::EDGetTokenT<vector<reco::VertexCompositeCandidate> > m_V0LToken;

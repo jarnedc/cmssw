@@ -2,8 +2,8 @@ import sys
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 
-runningOnData = True #this flag is used for choosing whether you want to produce trees for data or for MC.  
-lookAtAntiS = False  #This flag should be False if you are running on data unless you want to unblind. If you are running on MC it should be True as you want to see the signal.
+runningOnData = False #this flag is used for choosing whether you want to produce trees for data or for MC.  
+lookAtAntiS =   True  #This flag should be False if you are running on data unless you want to unblind. If you are running on MC it should be True as you want to see the signal.
 
 options = VarParsing ('analysis')
 options.parseArguments()
@@ -45,25 +45,13 @@ process.source = cms.Source("PoolSource",
 
 
 
-process.load("SexaQAnalysis.AnalyzerAllSteps.FlatTreeProducerDATA_cfi")
-process.FlatTreeProducerDATA.lookAtAntiS = lookAtAntiS
-if(runningOnData==True):
-	process.FlatTreeProducer = cms.Path(process.FlatTreeProducerDATA)
-
-
-#process.load("SexaQAnalysis.AnalyzerAllSteps.AnalyzerRECO_cfi")
-#process.AnalyzerRECO.lookAtAntiS = lookAtAntiS
-#if(runningOnData==True):
-#	process.analyzerallsteps = cms.Path(process.AnalyzerRECO)
-#
-##run this analyer only on GEN:
-#process.load("SexaQAnalysis.AnalyzerAllSteps.AnalyzerGEN_cfi")
-#if(runningOnData==False):
-#	process.analyzerallsteps = cms.Path(process.validation*process.AnalyzerGEN*process.AnalyzerRECO)
-#
+process.load("SexaQAnalysis.AnalyzerAllSteps.FlatTreeProducer_cfi")
+process.FlatTreeProducer.runningOnData = runningOnData
+process.FlatTreeProducer.lookAtAntiS = lookAtAntiS
+process.flattreeproducer = cms.Path(process.FlatTreeProducer)
 
 process.p = cms.Schedule(
-  process.FlatTreeProducer
+  process.flattreeproducer
 )
 
 

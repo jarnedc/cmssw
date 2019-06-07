@@ -558,7 +558,7 @@ void AnalyzerGEN::analyze(edm::Event const& iEvent, edm::EventSetup const& iSetu
 		//now start looking at the RECO efficiencies of daughters and antiS, you can do this based on deltaR, becaused these particles are not charged. For all of these you want however that at least they have the correct daughters and for the antiS the correct granddaughters:
 		if(genParticle->numberOfDaughters()==2){
 			if(genParticleIsAntiS){histos_th1f["h_GEN_nAntiSTotal"]->Fill(1);nAntiSInteractThisEvent++;}			
-			int daughterParticlesTypes = getDaughterParticlesTypes(genParticle);
+			int daughterParticlesTypes = AnalyzerAllSteps::getDaughterParticlesTypes(genParticle);
 			//for Ks
 			if(genParticleIsKs && !genParticleMotherIsAntiS && daughterParticlesTypes == 1)RecoEvaluationKsNonAntiS(genParticle,h_V0Ks,beamspot);
 			if(genParticleIsKs && genParticleMotherIsAntiS && daughterParticlesTypes == 1)RecoEvaluationKsAntiS(genParticle,h_V0Ks,beamspot);
@@ -568,8 +568,8 @@ void AnalyzerGEN::analyze(edm::Event const& iEvent, edm::EventSetup const& iSetu
 			//for antiS
 			if(genParticle->daughter(0)->numberOfDaughters()==2 && genParticle->daughter(1)->numberOfDaughters()==2 && daughterParticlesTypes == 3){
 				FillHistosGENInteractingAntiS(genParticle, beamspot);
-				int graddaughters0ParticlesTypes = getDaughterParticlesTypes(genParticle->daughter(0));
-				int graddaughters1ParticlesTypes = getDaughterParticlesTypes(genParticle->daughter(1));
+				int graddaughters0ParticlesTypes = AnalyzerAllSteps::getDaughterParticlesTypes(genParticle->daughter(0));
+				int graddaughters1ParticlesTypes = AnalyzerAllSteps::getDaughterParticlesTypes(genParticle->daughter(1));
 				if(genParticleIsAntiS && ((graddaughters0ParticlesTypes == 1 && graddaughters1ParticlesTypes == 2) || (graddaughters1ParticlesTypes == 1 && graddaughters0ParticlesTypes == 2))){histos_th1f["h_GEN_nAntiSTotal"]->Fill(2); RecoEvaluationAntiS(genParticle,h_sCands,beamspot, beamspotVariance, h_offlinePV);}
 			}
 		}
@@ -812,7 +812,7 @@ void AnalyzerGEN::FillMajorEfficiencyPlot(std::vector<bool>granddaughterTrackMat
 			double deltaR = sqrt(deltaPhi*deltaPhi+deltaEta*deltaEta);
 			if(deltaR < deltaRmin) deltaRmin = deltaR;
 		      }
-		      if(deltaRmin<deltaRCutV0RECOKs)matchingV0KsFound = true;
+		      if(deltaRmin<AnalyzerAllSteps::deltaRCutV0RECOKs)matchingV0KsFound = true;
 		  }
 		  histos_th1f["h_deltaRmin_V0Ks_momentumSumKsDaughterTracks"]->Fill(deltaRmin);
 	}
@@ -830,7 +830,7 @@ void AnalyzerGEN::FillMajorEfficiencyPlot(std::vector<bool>granddaughterTrackMat
 			double deltaR = sqrt(deltaPhi*deltaPhi+deltaEta*deltaEta);
 			if(deltaR < deltaRmin) deltaRmin = deltaR;
 		      }
-		      if(deltaRmin<deltaRCutV0RECOLambda)matchingV0AntiLFound = true;
+		      if(deltaRmin<AnalyzerAllSteps::deltaRCutV0RECOLambda)matchingV0AntiLFound = true;
 		  }
 		histos_th1f["h_deltaRmin_V0AntiL_momentumSumAntiLDaughterTracks"]->Fill(deltaRmin);
 	}
@@ -1069,7 +1069,7 @@ void AnalyzerGEN::RecoEvaluationKsNonAntiS(const reco::Candidate  * genParticle,
 	TVector3 KsMomentum(GENKsNonAntiS->px(),GENKsNonAntiS->py(),GENKsNonAntiS->pz());
 	double dxy = AnalyzerAllSteps::dxy_signed_line_point(KsCreationVertex,KsMomentum,beamspot);
 
-	if(deltaRmin<deltaRCutV0RECOKs){//matched
+	if(deltaRmin<AnalyzerAllSteps::deltaRCutV0RECOKs){//matched
 		
 		histos_th1f["h_GENRECO_RECO_KsNonAntiS_pt"]->Fill(GENKsNonAntiS->pt());	
 		histos_th1f["h_GENRECO_RECO_KsNonAntiS_eta"]->Fill(GENKsNonAntiS->eta());	
@@ -1115,7 +1115,7 @@ void AnalyzerGEN::RecoEvaluationKsAntiS(const reco::Candidate  * genParticle, ed
 	TVector3 KsMomentum(GENKsAntiS->px(),GENKsAntiS->py(),GENKsAntiS->pz());
 	double dxy = AnalyzerAllSteps::dxy_signed_line_point(KsCreationVertex,KsMomentum,beamspot);
 
-	if(deltaRmin<deltaRCutV0RECOKs){//matched
+	if(deltaRmin<AnalyzerAllSteps::deltaRCutV0RECOKs){//matched
 		
 		histos_th1f["h_GENRECO_RECO_KsAntiS_pt"]->Fill(GENKsAntiS->pt());	
 		histos_th1f["h_GENRECO_RECO_KsAntiS_eta"]->Fill(GENKsAntiS->eta());	
@@ -1161,7 +1161,7 @@ void AnalyzerGEN::RecoEvaluationAntiLambdaNonAntiS(const reco::Candidate  * genP
 	TVector3 AntiLambdaMomentum(GENAntiLambdaNonAntiS->px(),GENAntiLambdaNonAntiS->py(),GENAntiLambdaNonAntiS->pz());
 	double dxy = AnalyzerAllSteps::dxy_signed_line_point(AntiLambdaCreationVertex,AntiLambdaMomentum,beamspot);
 
-	if(deltaRmin<deltaRCutV0RECOLambda){//matched
+	if(deltaRmin<AnalyzerAllSteps::deltaRCutV0RECOLambda){//matched
 		
 		histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_pt"]->Fill(GENAntiLambdaNonAntiS->pt());	
 		histos_th1f["h_GENRECO_RECO_AntiLambdaNonAntiS_eta"]->Fill(GENAntiLambdaNonAntiS->eta());	
@@ -1208,7 +1208,7 @@ void AnalyzerGEN::RecoEvaluationAntiLambdaAntiS(const reco::Candidate  * genPart
 	TVector3 AntiLambdaMomentum(GENAntiLambdaAntiS->px(),GENAntiLambdaAntiS->py(),GENAntiLambdaAntiS->pz());
 	double dxy = AnalyzerAllSteps::dxy_signed_line_point(AntiLambdaCreationVertex,AntiLambdaMomentum,beamspot);
 
-	if(deltaRmin<deltaRCutV0RECOLambda){//matched
+	if(deltaRmin<AnalyzerAllSteps::deltaRCutV0RECOLambda){//matched
 		
 		histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_pt"]->Fill(GENAntiLambdaAntiS->pt());	
 		histos_th1f["h_GENRECO_RECO_AntiLambdaAntiS_eta"]->Fill(GENAntiLambdaAntiS->eta());	
@@ -1317,7 +1317,7 @@ void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm:
 	
 	double dxyAntiSPVmin = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex,RECOAntiSMomentumVertex,bestPVdzAntiS);
 	
-	if(deltaRmin<deltaRCutRECOAntiS){//matched
+	if(deltaRmin<AnalyzerAllSteps::deltaRCutRECOAntiS){//matched
 		//kinematics of the matched GEN particles	
 		histos_th1f["h_GENRECO_RECO_AntiS_pt"]->Fill(GENAntiS->pt());	
 		histos_th1f["h_GENRECO_RECO_AntiS_pz"]->Fill(GENAntiS->pz());	
@@ -1492,17 +1492,6 @@ bool AnalyzerGEN::isTpGrandDaughterAntiS(TrackingParticleCollection const & TPCo
 
 }
 
-int AnalyzerGEN::getDaughterParticlesTypes(const reco::Candidate * genParticle){
-	int pdgIdDaug0 = genParticle->daughter(0)->pdgId();
-	int pdgIdDaug1 = genParticle->daughter(1)->pdgId();
-	int returnCode = -1;
-	if(abs(pdgIdDaug0) == AnalyzerAllSteps::pdgIdPosPion && abs(pdgIdDaug1) == AnalyzerAllSteps::pdgIdPosPion)returnCode = 1;//this is the correct decay mode for Ks to be RECO
-	else if((pdgIdDaug0 == AnalyzerAllSteps::pdgIdAntiProton && pdgIdDaug1 == AnalyzerAllSteps::pdgIdPosPion) || (pdgIdDaug1 == AnalyzerAllSteps::pdgIdAntiProton && pdgIdDaug0 == AnalyzerAllSteps::pdgIdPosPion))returnCode = 2;//this is the correct decay mode for an antiLambda to get RECO
-	else if((pdgIdDaug0 == AnalyzerAllSteps::pdgIdKs && pdgIdDaug1 == AnalyzerAllSteps::pdgIdAntiLambda) ||(pdgIdDaug1 == AnalyzerAllSteps::pdgIdKs && pdgIdDaug0 == AnalyzerAllSteps::pdgIdAntiLambda)) returnCode = 3;//this is the correct decay mode for an antiS
-
-	return returnCode;
-
-}
 
 
 void AnalyzerGEN::endJob()

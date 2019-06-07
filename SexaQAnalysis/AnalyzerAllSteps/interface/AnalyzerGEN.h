@@ -14,7 +14,6 @@ class AnalyzerGEN : public edm::EDAnalyzer
     virtual ~AnalyzerGEN();
 
     bool isTpGrandDaughterAntiS(TrackingParticleCollection const & TPColl, const TrackingParticle& tp);
-    int getDaughterParticlesTypes(const reco::Candidate * genParticle);
 
     void FillHistosNonAntiSTracksRECO(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosNonAntiSTracksAll(const TrackingParticle& tp, TVector3 beamspot);
@@ -39,9 +38,6 @@ class AnalyzerGEN : public edm::EDAnalyzer
     void RecoEvaluationAntiLambdaAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L,  TVector3 beamspot);
     void RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV);
 
-    const double deltaRCutV0RECOKs = 0.1;
-    const double deltaRCutV0RECOLambda = 0.1;
-    const double deltaRCutRECOAntiS = 0.1;
 
   private:
     //---- configurable parameters --------

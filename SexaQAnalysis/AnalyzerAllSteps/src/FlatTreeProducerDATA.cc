@@ -41,10 +41,15 @@ void FlatTreeProducerDATA::beginJob() {
 	_tree->Branch("_S_daughters_deltaphi",&_S_daughters_deltaphi);
 	_tree->Branch("_S_daughters_deltaeta",&_S_daughters_deltaeta);
 	_tree->Branch("_S_daughters_openingsangle",&_S_daughters_openingsangle);
+	_tree->Branch("_S_eta",&_S_eta);
 
 	_tree->Branch("_S_dxy",&_S_dxy);
 	_tree->Branch("_Ks_dxy",&_Ks_dxy);
 	_tree->Branch("_Lambda_dxy",&_Lambda_dxy);
+
+	_tree->Branch("_S_dxy_over_lxy",&_S_dxy_over_lxy);
+	_tree->Branch("_Ks_dxy_over_lxy",&_Ks_dxy_over_lxy);
+	_tree->Branch("_Lambda_dxy_over_lxy",&_Lambda_dxy_over_lxy);
 
 	_tree->Branch("_S_dz",&_S_dz);
 	_tree->Branch("_Ks_dz",&_Ks_dz);
@@ -198,10 +203,15 @@ void FlatTreeProducerDATA::FillRECOAntiS(const reco::VertexCompositeCandidate * 
 	_S_daughters_deltaphi.push_back(deltaPhiDaughters);
 	_S_daughters_deltaeta.push_back(deltaEtaDaughters);
 	_S_daughters_openingsangle.push_back(openingsAngleDaughters);
+	_S_eta.push_back(RECOAntiS->eta());
 
 	_S_dxy.push_back(dxy_AntiS);
 	_Ks_dxy.push_back(dxy_daughter0);
 	_Lambda_dxy.push_back(dxy_daughter1);
+
+	_S_dxy_over_lxy.push_back(dxy_AntiS/Lxy);
+	_Ks_dxy_over_lxy.push_back(dxy_daughter0/Lxy);
+	_Lambda_dxy_over_lxy.push_back(dxy_daughter1/Lxy);
 
 	_S_dz.push_back(dz_AntiS);
 	_Ks_dz.push_back(dz_daughter0);
@@ -281,10 +291,11 @@ FlatTreeProducerDATA::Init()
 	_S_daughters_deltaphi.clear();
 	_S_daughters_deltaeta.clear();
 	_S_daughters_openingsangle.clear();
+	_S_eta.clear();
 
-	_S_dxy.clear();
-	_Ks_dxy.clear();
-	_Lambda_dxy.clear();
+	_S_dxy_over_lxy.clear();
+	_Ks_dxy_over_lxy.clear();
+	_Lambda_dxy_over_lxy.clear();
 
 	_S_dz.clear();
 	_Ks_dz.clear();

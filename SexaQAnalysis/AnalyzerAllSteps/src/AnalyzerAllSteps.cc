@@ -145,4 +145,16 @@ double AnalyzerAllSteps::sgn(double input){
   if(input < 0.) output = -1;
   return output;
 
+}
+
+int AnalyzerAllSteps::getDaughterParticlesTypes(const reco::Candidate * genParticle){
+        int pdgIdDaug0 = genParticle->daughter(0)->pdgId();
+        int pdgIdDaug1 = genParticle->daughter(1)->pdgId();
+        int returnCode = -1;
+        if(abs(pdgIdDaug0) == AnalyzerAllSteps::pdgIdPosPion && abs(pdgIdDaug1) == AnalyzerAllSteps::pdgIdPosPion)returnCode = 1;//this is the correct decay mode for Ks to be RECO
+        else if((pdgIdDaug0 == AnalyzerAllSteps::pdgIdAntiProton && pdgIdDaug1 == AnalyzerAllSteps::pdgIdPosPion) || (pdgIdDaug1 == AnalyzerAllSteps::pdgIdAntiProton && pdgIdDaug0 == AnalyzerAllSteps::pdgIdPosPion))returnCode = 2;//this is the correct decay mode for an antiLambda to get RECO
+        else if((pdgIdDaug0 == AnalyzerAllSteps::pdgIdKs && pdgIdDaug1 == AnalyzerAllSteps::pdgIdAntiLambda) ||(pdgIdDaug1 == AnalyzerAllSteps::pdgIdKs && pdgIdDaug0 == AnalyzerAllSteps::pdgIdAntiLambda)) returnCode = 3;//this is the correct decay mode for an antiS
+
+        return returnCode;
+
 }   
