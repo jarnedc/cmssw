@@ -45,7 +45,7 @@ process.source = cms.Source("PoolSource",
 
 
 
-process.load("SexaQAnalysis.FlatTreeProducer.FlatTreeProducerDATA_cfi")
+process.load("SexaQAnalysis.AnalyzerAllSteps.FlatTreeProducerDATA_cfi")
 process.FlatTreeProducerDATA.lookAtAntiS = lookAtAntiS
 if(runningOnData==True):
 	process.FlatTreeProducer = cms.Path(process.FlatTreeProducerDATA)

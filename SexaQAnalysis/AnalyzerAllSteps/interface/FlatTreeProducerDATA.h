@@ -1,7 +1,7 @@
 #ifndef FlatTreeProducerDATA_h
 #define FlatTreeProducerDATA_h
  
-#include "../../AnalyzerAllSteps/interface/AnalyzerAllSteps.h"
+#include "AnalyzerAllSteps.h"
 using namespace edm;
 using namespace std; 
 class FlatTreeProducerDATA : public edm::EDAnalyzer
@@ -45,7 +45,15 @@ class FlatTreeProducerDATA : public edm::EDAnalyzer
     TTree* _tree;   
 
     //definition of variablew which should go to tree
-    std::vector<double> _S_px,_S_py,_S_pz;
+    std::vector<double> _S_charge;
+    std::vector<double> _S_lxy_interaction_vertex, _S_error_lxy_interaction_vertex,_S_mass,_S_chi2_ndof;
+    std::vector<double> _S_daughters_deltaphi,_S_daughters_deltaeta,_S_daughters_openingsangle;
+    std::vector<double> _S_dxy,_Ks_dxy,_Lambda_dxy;
+    std::vector<double> _S_dz,_Ks_dz,_Lambda_dz;
+    std::vector<double> _S_pt,_Ks_pt,_Lambda_pt;
+    std::vector<double> _S_pz,_Ks_pz,_Lambda_pz;
+    std::vector<double> _S_vz_interaction_vertex;
+    std::vector<double> _S_vx,_S_vy,_S_vz;
 
 
      };
