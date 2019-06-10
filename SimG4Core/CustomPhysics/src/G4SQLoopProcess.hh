@@ -43,7 +43,9 @@ class G4SQLoopProcess : public G4VContinuousProcess {
  
     G4int nreset;
     G4ThreeVector posini;
-  
+    G4double globaltimeini;
+    G4double localtimeini;
+    G4double propertimeini;
 };
 
 

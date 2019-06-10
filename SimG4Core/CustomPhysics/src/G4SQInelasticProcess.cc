@@ -188,10 +188,12 @@ G4SQInelasticProcess::PostStepDoIt(const G4Track& aTrack, const G4Step& aStep)
   theTotalResult->Clear();
   theTotalResult->Initialize(aTrack);
   theTotalResult->ProposeWeight(aTrack.GetWeight());
-  if(aTrack.GetTrackStatus() != fAlive) { return theTotalResult; }
+  if(aTrack.GetTrackStatus() != fAlive) {std::cout << "no interaction because primary is not alive" << std::endl; return theTotalResult; }
 
 
 std::cout << "=== Interaction!?" << std::endl;
+
+  if(aTrack.GetPosition().rho()/centimeter < 1) std::cout << "the rho of the track is < 1cm and it's going to interact..." << std::endl;
 
   // Find cross section at end of step and check if <= 0
   //

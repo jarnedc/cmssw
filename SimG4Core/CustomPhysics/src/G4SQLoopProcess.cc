@@ -22,8 +22,7 @@ G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4
 {
   G4Track * mytr = const_cast<G4Track *>(&track);
   // check of reset needed
-  if (fabs(mytr->GetMomentum().eta())<4 &&  // require not too forward
-      (mytr->GetPosition().rho()>100*centimeter || // require to be "outside" the tracker
+  if ((mytr->GetPosition().rho()>100*centimeter || // require to be "outside" the tracker
        fabs(mytr->GetPosition().z())>300*centimeter) &&
       nreset < 100) { // don't reset too many times
     std::cout << "*** RESET " << nreset%100 + 1 << " ! from " << mytr->GetPosition()
@@ -31,8 +30,16 @@ G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4
     std::cout << "*** KINE " << mytr->GetKineticEnergy() << " " << mytr->GetVelocity() << std::endl;
     ++nreset;
     mytr->SetPosition(posini);
+    mytr->SetGlobalTime(globaltimeini); //resetting the GlobalTime, because there is a limit of 500 for particles which travel too long
+    mytr->SetLocalTime(localtimeini); //resetting the LocalTime, because there is a limit of 500 for particles which travel too long
+    mytr->SetProperTime(propertimeini);
   }
   // return current state of the track
+ 
+  if(mytr->GetPosition() == posini) std::cout << "the track is back at it's posini, does it interact here?" << std::endl;
+  
+  std::cout << "*** in between RESETs to initpos KIN, vel, position " << mytr->GetKineticEnergy() << " " << mytr->GetVelocity() << " " << mytr->GetPosition()/centimeter << std::endl;
+  std::cout << "*** in between RESETs to initpos GlobalTime, LocalTime, ProperTime, TrackStatus, TrackLength " << mytr->GetGlobalTime()/nanosecond << " " << mytr->GetLocalTime()/nanosecond << " " << mytr->GetProperTime()/nanosecond << " " << mytr->GetTrackStatus() << " " << mytr->GetTrackLength()/centimeter << std::endl;
   fParticleChange->Clear();
   fParticleChange->Initialize(track);
   fParticleChange->ProposeWeight(track.GetWeight());
@@ -60,6 +67,10 @@ void G4SQLoopProcess::StartTracking(G4Track * aTrack)
             << aTrack->GetPosition().rho()/centimeter << " " 
             << aTrack->GetPosition().z()/centimeter << std::endl;
   posini = aTrack->GetPosition();
+  globaltimeini = aTrack->GetGlobalTime();
+  localtimeini = aTrack->GetLocalTime();
+  propertimeini = aTrack->GetProperTime();
+  
   nreset = 0;
 }
 
