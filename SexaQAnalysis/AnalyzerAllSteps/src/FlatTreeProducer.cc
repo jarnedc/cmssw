@@ -166,7 +166,6 @@ void FlatTreeProducer::analyze(edm::Event const& iEvent, edm::EventSetup const& 
 	  }//if(h_genParticles.isValid())
   }
 
-  _tree->Fill();
 
  } //end of analyzer
 
@@ -284,6 +283,7 @@ void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_
 	_S_vy.push_back(RECO_S->vy());	
 	_S_vz.push_back(RECO_S->vz());	
 
+  	_tree->Fill();
 
 }
 
