@@ -25,6 +25,7 @@
 #include "SimG4Core/CustomPhysics/src/G4SIMPInelasticProcess.hh"
 #include "SimG4Core/CustomPhysics/src/G4SQInelasticProcess.hh"
 #include "SimG4Core/CustomPhysics/src/G4SQLoopProcess.hh"
+#include "SimG4Core/CustomPhysics/src/G4SQLoopProcessDiscr.hh"
 #include "SimG4Core/CustomPhysics/src/G4SQNeutronAnnih.hh"
 #include "SimG4Core/CustomPhysics/src/G4SQInelasticCrossSection.hh"
 
@@ -97,6 +98,8 @@ std::cout << "=-= SL sexaq FTW! =-= "
 
 	G4SQLoopProcess * sqLoopPr = new G4SQLoopProcess();
 	pmanager->AddContinuousProcess(sqLoopPr);
+	G4SQLoopProcessDiscr * sqLoopPrDiscr = new G4SQLoopProcessDiscr();
+	pmanager->AddDiscreteProcess(sqLoopPrDiscr);
       }
       else  edm::LogInfo("CustomPhysics") << "   No pmanager";
 
