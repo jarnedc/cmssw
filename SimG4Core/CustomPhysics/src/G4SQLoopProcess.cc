@@ -23,8 +23,8 @@ G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4
   G4Track * mytr = const_cast<G4Track *>(&track);
   
   std::cout << "*** in between RESETs to initpos KIN, vel, position " << mytr->GetKineticEnergy() << " " << mytr->GetVelocity() << " " << mytr->GetPosition()/centimeter << std::endl;
-  std::cout << "*** in between RESETs to initpos Material " << mytr->GetMaterial()  << std::endl;
   std::cout << "*** in between RESETs to initpos GlobalTime, LocalTime, ProperTime, TrackStatus, TrackLength " << mytr->GetGlobalTime()/nanosecond << " " << mytr->GetLocalTime()/nanosecond << " " << mytr->GetProperTime()/nanosecond << " " << mytr->GetTrackStatus() << " " << mytr->GetTrackLength()/centimeter << std::endl;
+  if(mytr->GetPosition()==posini)std::cout << "*** in between RESETs to initpos Material " << mytr->GetMaterial()  << std::endl;
   //fParticleChange->Clear();
   fParticleChange->Initialize(track);
   //fParticleChange->ProposeWeight(track.GetWeight());
@@ -46,15 +46,7 @@ G4double G4SQLoopProcess::GetContinuousStepLimit(const G4Track& track, G4double 
 
 void G4SQLoopProcess::StartTracking(G4Track * aTrack)
 {
-  std::cout << "*** STARTTRACK "
-            << aTrack->GetMomentum().rho()/GeV << " "
-            << aTrack->GetMomentum().eta() << " "
-            << aTrack->GetPosition().rho()/centimeter << " " 
-            << aTrack->GetPosition().z()/centimeter << std::endl;
   posini = aTrack->GetPosition();
-  globaltimeini = aTrack->GetGlobalTime();
-  localtimeini = aTrack->GetLocalTime();
-  propertimeini = aTrack->GetProperTime();
   
   nreset = 0;
 }

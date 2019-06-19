@@ -183,7 +183,7 @@ G4VParticleChange*
 G4SQInelasticProcess::PostStepDoIt(const G4Track& aTrack, const G4Step& aStep)
 {
 
-
+  std::cout << "Starting G4SQInelasticProcess::PostStepDoIt" << std::endl;
   // if primary is not Alive then do nothing
   theTotalResult->Clear();
   theTotalResult->Initialize(aTrack);

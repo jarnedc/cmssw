@@ -22,15 +22,19 @@ G4VParticleChange* G4SQLoopProcessDiscr::PostStepDoIt(const G4Track& track, cons
 {
   G4Track * mytr = const_cast<G4Track *>(&track);
   G4ThreeVector origin(0.,0.,0.);
-  mytr->SetPosition(origin);
+  mytr->SetPosition(posini);
 //    mytr->SetGlobalTime(globaltimeini); //resetting the GlobalTime, because there is a limit of 500 for particles which travel too long
 //    mytr->SetLocalTime(localtimeini); //resetting the LocalTime, because there is a limit of 500 for particles which travel too long
 //    mytr->SetProperTime(propertimeini);
   
-  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt  position " <<  mytr->GetPosition()/centimeter << std::endl;
+  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt, reset "<< nreset << " position " <<  mytr->GetPosition()/centimeter << std::endl;
   fParticleChange->Clear();
   fParticleChange->Initialize(track);
-  fParticleChange->ProposeWeight(track.GetWeight());
+  fParticleChange->SetNumberOfSecondaries(1);
+  G4DynamicParticle* replacementParticle= new G4DynamicParticle(G4SQ::SQ(), track.GetMomentumDirection(), track.GetKineticEnergy());
+  fParticleChange->AddSecondary(replacementParticle);
+  fParticleChange->ProposeTrackStatus(fStopAndKill);
+  //fParticleChange->ProposeWeight(track.GetWeight());
   return fParticleChange;
 }
 
@@ -44,7 +48,7 @@ G4double G4SQLoopProcessDiscr::PostStepGetPhysicalInteractionLength(const G4Trac
        fabs(mytr->GetPosition().z())>300*centimeter) ){
        //nreset < 100) {
        intLength = 0.0;
-       //++nreset;
+       ++nreset;
   } 
   std::cout << "G4SQLoopProcessDiscr::PostStepGetPhysicalInteractionLength return: " << intLength << std::endl;
   return intLength;
