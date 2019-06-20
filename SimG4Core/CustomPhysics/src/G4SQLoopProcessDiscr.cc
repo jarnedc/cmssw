@@ -23,11 +23,12 @@ G4VParticleChange* G4SQLoopProcessDiscr::PostStepDoIt(const G4Track& track, cons
   G4Track * mytr = const_cast<G4Track *>(&track);
   G4ThreeVector origin(0.,0.,0.);
   mytr->SetPosition(posini);
-//    mytr->SetGlobalTime(globaltimeini); //resetting the GlobalTime, because there is a limit of 500 for particles which travel too long
-//    mytr->SetLocalTime(localtimeini); //resetting the LocalTime, because there is a limit of 500 for particles which travel too long
-//    mytr->SetProperTime(propertimeini);
+//  mytr->SetGlobalTime(globaltimeini); //resetting the GlobalTime, because there is a limit of 500 for particles which travel too long
+//  mytr->SetLocalTime(localtimeini); //resetting the LocalTime, because there is a limit of 500 for particles which travel too long
+//  mytr->SetProperTime(propertimeini);
   
-  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt, reset "<< nreset << " position " <<  mytr->GetPosition()/centimeter << std::endl;
+  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt   momentumdirection: " << mytr->GetMomentumDirection() << " momentumdirection eta: " << mytr->GetMomentumDirection().eta() <<   " position new " <<  mytr->GetPosition()/centimeter << " globaltime: " << mytr->GetGlobalTime()/ns <<  std::endl;
+  if(mytr->GetGlobalTime()/ns>49990) std::cout << "going to loose the particle because the GlobalTime is getting close to 50000" << std::endl;
   fParticleChange->Clear();
   fParticleChange->Initialize(track);
   fParticleChange->SetNumberOfSecondaries(1);
@@ -47,10 +48,10 @@ G4double G4SQLoopProcessDiscr::PostStepGetPhysicalInteractionLength(const G4Trac
   if ((mytr->GetPosition().rho()>100*centimeter || // require to be "outside" the tracker
        fabs(mytr->GetPosition().z())>300*centimeter) ){
        //nreset < 100) {
-       intLength = 0.0;
+       intLength = 0.0;//0 interaction length means particle will directly interact.
        ++nreset;
   } 
-  std::cout << "G4SQLoopProcessDiscr::PostStepGetPhysicalInteractionLength return: " << intLength << std::endl;
+ // std::cout << "G4SQLoopProcessDiscr::PostStepGetPhysicalInteractionLength return: " << intLength << std::endl;
   return intLength;
 }
 
@@ -60,13 +61,14 @@ G4double G4SQLoopProcessDiscr::GetMeanFreePath(const G4Track&,G4double,
   return DBL_MAX;
 } 
 
+
 void G4SQLoopProcessDiscr::StartTracking(G4Track * aTrack)
 {
-  std::cout << "*** STARTTRACK "
-            << aTrack->GetMomentum().rho()/GeV << " "
-            << aTrack->GetMomentum().eta() << " "
-            << aTrack->GetPosition().rho()/centimeter << " "
-            << aTrack->GetPosition().z()/centimeter << std::endl;
+ // std::cout << "*** STARTTRACK: momentum rho, momentum eta, rho, z "
+ //           << aTrack->GetMomentum().rho()/GeV << " "
+ //           << aTrack->GetMomentum().eta() << " "
+ //           << aTrack->GetPosition().rho()/centimeter << " "
+ //           << aTrack->GetPosition().z()/centimeter << std::endl;
   posini = aTrack->GetPosition();
   globaltimeini = aTrack->GetGlobalTime();
   localtimeini = aTrack->GetLocalTime();

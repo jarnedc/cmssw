@@ -184,6 +184,7 @@ G4SQInelasticProcess::PostStepDoIt(const G4Track& aTrack, const G4Step& aStep)
 {
 
   std::cout << "Starting G4SQInelasticProcess::PostStepDoIt" << std::endl;
+  std::cout << "particle is going to interact at position" << aTrack.GetPosition()/cm << " with momentum direction " << aTrack.GetMomentumDirection() <<  " momentumdirection eta: " << aTrack.GetMomentumDirection().eta() << std::endl;
   // if primary is not Alive then do nothing
   theTotalResult->Clear();
   theTotalResult->Initialize(aTrack);

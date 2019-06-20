@@ -81,7 +81,7 @@ std::cout << "=== SL === "
       }
       else  edm::LogInfo("CustomPhysics") << "   No pmanager";
 
-    } else if (particle->GetParticleName() == "sexaq" || particle->GetParticleName() == "anti_sexaq") {
+    } else if (particle->GetParticleName() == "anti_sexaq") {
 
 std::cout << "=-= SL sexaq FTW! =-= " 
           << particle->GetParticleType() << " "
@@ -103,7 +103,11 @@ std::cout << "=-= SL sexaq FTW! =-= "
       }
       else  edm::LogInfo("CustomPhysics") << "   No pmanager";
 
-    } else {
+    }
+     else if (particle->GetParticleName() == "sexaq"){
+	edm::LogInfo("CustomPhysics") << "   No pmanager implemented for sexaq, only for anti_sexaq";
+     } 
+     else {
 
 std::cout << "=-= SL =-= " 
           << particle->GetParticleType() << " "

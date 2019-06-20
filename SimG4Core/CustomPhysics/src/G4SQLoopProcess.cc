@@ -20,14 +20,15 @@ G4SQLoopProcess::~G4SQLoopProcess()
 
 G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4Step& step)
 {
-  G4Track * mytr = const_cast<G4Track *>(&track);
+  //G4Track * mytr = const_cast<G4Track *>(&track);
   
-  std::cout << "*** in between RESETs to initpos KIN, vel, position " << mytr->GetKineticEnergy() << " " << mytr->GetVelocity() << " " << mytr->GetPosition()/centimeter << std::endl;
-  std::cout << "*** in between RESETs to initpos GlobalTime, LocalTime, ProperTime, TrackStatus, TrackLength " << mytr->GetGlobalTime()/nanosecond << " " << mytr->GetLocalTime()/nanosecond << " " << mytr->GetProperTime()/nanosecond << " " << mytr->GetTrackStatus() << " " << mytr->GetTrackLength()/centimeter << std::endl;
-  if(mytr->GetPosition()==posini)std::cout << "*** in between RESETs to initpos Material " << mytr->GetMaterial()  << std::endl;
-  //fParticleChange->Clear();
+  //std::cout << "*** in between RESETs to initpos GetPostion  " << track.GetPosition()/cm << " MomentumDirection " << track.GetMomentumDirection() << std::endl;
+  //std::cout << "*** in between RESETs to initpos GlobalTime, LocalTime, ProperTime, TrackStatus, TrackLength " << mytr->GetGlobalTime()/nanosecond << " " << mytr->GetLocalTime()/nanosecond << " " << mytr->GetProperTime()/nanosecond << " " << mytr->GetTrackStatus() << " " << mytr->GetTrackLength()/centimeter << std::endl;
+  //if(track.GetPosition()==posini)std::cout << "*** in between RESETs to initpos Material " << track.GetMaterial()  << std::endl;
+  fParticleChange->Clear();
   fParticleChange->Initialize(track);
-  //fParticleChange->ProposeWeight(track.GetWeight());
+  fParticleChange->ProposeWeight(track.GetWeight());
+  //if(fabs(track.GetMomentumDirection().eta()) > 3){fParticleChange->ProposeTrackStatus(fStopAndKill);std::cout << "killed the particle because eta is too large" << std::endl;}
   return fParticleChange;
 }
 

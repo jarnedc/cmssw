@@ -26,6 +26,7 @@ class G4SQLoopProcessDiscr : public G4VDiscreteProcess {
     virtual G4VParticleChange* PostStepDoIt(const G4Track&, const G4Step&);
     virtual G4double PostStepGetPhysicalInteractionLength(const G4Track& track, G4double previousStepSize, G4ForceCondition* condition);
     virtual G4double GetMeanFreePath(const G4Track&, G4double,G4ForceCondition*);
+    void  SetTimeLimit(G4double);
     virtual void StartTracking(G4Track * aTrack);					
   private:
 
@@ -44,6 +45,8 @@ class G4SQLoopProcessDiscr : public G4VDiscreteProcess {
     G4double globaltimeini;
     G4double localtimeini;
     G4double propertimeini;
+   
+
 };
 
 
