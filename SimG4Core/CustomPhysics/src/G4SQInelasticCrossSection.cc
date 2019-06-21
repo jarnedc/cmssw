@@ -84,7 +84,7 @@ G4double G4SQInelasticCrossSection::GetElementCrossSection(
   //G4double coeff = 1e20;
   //const_cast<G4DynamicParticle*>(aPart)->SetMagneticMoment(aPart->GetMagneticMoment()+coeff*(A-Z));
   // now calculate the cross section
-  G4double baseXS = 1.*millibarn; //40. * millibarn;
+  G4double baseXS = 10000.*millibarn; //40. * millibarn;
   // the following scaled xsection makes that we get instead of an exponential
   // rather a flat interaction probability over an ensemble of particles
   // for all material (neutrons) in the detector

@@ -22,7 +22,7 @@ G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4
 {
   //G4Track * mytr = const_cast<G4Track *>(&track);
   
-  //std::cout << "*** in between RESETs to initpos GetPostion  " << track.GetPosition()/cm << " MomentumDirection " << track.GetMomentumDirection() << std::endl;
+  std::cout << "G4SQLoopProcess::AlongStepDoIt GetPostion  " << track.GetPosition()/cm << " MomentumDirection " << track.GetMomentumDirection() << " trackId " << track.GetTrackID() << " parentId: " << track.GetParentID()  << std::endl;
   //std::cout << "*** in between RESETs to initpos GlobalTime, LocalTime, ProperTime, TrackStatus, TrackLength " << mytr->GetGlobalTime()/nanosecond << " " << mytr->GetLocalTime()/nanosecond << " " << mytr->GetProperTime()/nanosecond << " " << mytr->GetTrackStatus() << " " << mytr->GetTrackLength()/centimeter << std::endl;
   //if(track.GetPosition()==posini)std::cout << "*** in between RESETs to initpos Material " << track.GetMaterial()  << std::endl;
   fParticleChange->Clear();

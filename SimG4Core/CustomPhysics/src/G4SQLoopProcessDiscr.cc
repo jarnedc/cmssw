@@ -20,20 +20,15 @@ G4SQLoopProcessDiscr::~G4SQLoopProcessDiscr()
 
 G4VParticleChange* G4SQLoopProcessDiscr::PostStepDoIt(const G4Track& track, const G4Step& step)
 {
-  G4Track * mytr = const_cast<G4Track *>(&track);
-  G4ThreeVector origin(0.,0.,0.);
-  mytr->SetPosition(posini);
+    G4Track * mytr = const_cast<G4Track *>(&track);
 //  mytr->SetGlobalTime(globaltimeini); //resetting the GlobalTime, because there is a limit of 500 for particles which travel too long
 //  mytr->SetLocalTime(localtimeini); //resetting the LocalTime, because there is a limit of 500 for particles which travel too long
 //  mytr->SetProperTime(propertimeini);
   
-  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt   momentumdirection: " << mytr->GetMomentumDirection() << " momentumdirection eta: " << mytr->GetMomentumDirection().eta() <<   " position new " <<  mytr->GetPosition()/centimeter << " globaltime: " << mytr->GetGlobalTime()/ns <<  std::endl;
+  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt killing particle at   momentumdirection: " << mytr->GetMomentumDirection() << " momentumdirection eta: " << mytr->GetMomentumDirection().eta() <<   " position new " <<  mytr->GetPosition()/centimeter << " globaltime: " << mytr->GetGlobalTime()/ns <<  std::endl;
   if(mytr->GetGlobalTime()/ns>49990) std::cout << "going to loose the particle because the GlobalTime is getting close to 50000" << std::endl;
   fParticleChange->Clear();
   fParticleChange->Initialize(track);
-  fParticleChange->SetNumberOfSecondaries(1);
-  G4DynamicParticle* replacementParticle= new G4DynamicParticle(G4SQ::SQ(), track.GetMomentumDirection(), track.GetKineticEnergy());
-  fParticleChange->AddSecondary(replacementParticle);
   fParticleChange->ProposeTrackStatus(fStopAndKill);
   //fParticleChange->ProposeWeight(track.GetWeight());
   return fParticleChange;
