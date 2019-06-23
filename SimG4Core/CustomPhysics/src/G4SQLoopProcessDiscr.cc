@@ -27,7 +27,7 @@ G4VParticleChange* G4SQLoopProcessDiscr::PostStepDoIt(const G4Track& track, cons
 //    mytr->SetProperTime(propertimeini);
   
   std::cout << "G4SQLoopProcessDiscr::PostStepDoIt killing particle at   momentumdirection: " << mytr->GetMomentumDirection() << " momentumdirection eta: " << mytr->GetMomentumDirection().eta() <<   " position new " <<  mytr->GetPosition()/centimeter << " globaltime: " << mytr->GetGlobalTime()/ns <<  std::endl;
-  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt fParticleChange GetPostion  " << fParticleChange->GetPosition().x() << "," << fParticleChange->GetPosition().y() << "," << fParticleChange->GetPosition().z() << " MomentumDirection " << fParticleChange->GetMomentumDirection().x() << "," << fParticleChange->GetMomentumDirection().y() << "," << fParticleChange->GetMomentumDirection().z() << "," << " GlobalTime " << fParticleChange->GetGlobalTime() << std::endl;
+  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt fParticleChange GetPostion  " << fParticleChange->GetPosition()->x() << "," << fParticleChange->GetPosition()->y() << "," << fParticleChange->GetPosition()->z() << " MomentumDirection " << fParticleChange->GetMomentumDirection()->x() << "," << fParticleChange->GetMomentumDirection()->y() << "," << fParticleChange->GetMomentumDirection()->z() << "," << " GlobalTime " << fParticleChange->GetGlobalTime() << std::endl;
   if(mytr->GetGlobalTime()/ns>4990) std::cout << "going to loose the particle because the GlobalTime is getting close to 5000" << std::endl;
 
   fParticleChange->Clear();

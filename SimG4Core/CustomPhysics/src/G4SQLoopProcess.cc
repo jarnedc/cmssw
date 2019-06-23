@@ -20,7 +20,7 @@ G4SQLoopProcess::~G4SQLoopProcess()
 
 G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4Step& step)
 {
-  G4Track * mytr = const_cast<G4Track *>(&track);
+//  G4Track * mytr = const_cast<G4Track *>(&track);
 
 //  mytr->SetGlobalTime(globaltimeini); 
 //  mytr->SetLocalTime(localtimeini); 
