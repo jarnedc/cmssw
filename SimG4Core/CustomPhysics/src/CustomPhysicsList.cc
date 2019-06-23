@@ -101,8 +101,8 @@ std::cout << "=-= SL sexaq FTW! =-= "
 	pmanager->AddContinuousProcess(sqLoopPr);
 	G4SQLoopProcessDiscr * sqLoopPrDiscr = new G4SQLoopProcessDiscr();
 	pmanager->AddDiscreteProcess(sqLoopPrDiscr);
-	G4SQLoopProcessCreateDiscr * sqLoopPrCreateDiscr = new G4SQLoopProcessCreateDiscr();
-	pmanager->AddDiscreteProcess(sqLoopPrCreateDiscr);
+//	G4SQLoopProcessCreateDiscr * sqLoopPrCreateDiscr = new G4SQLoopProcessCreateDiscr();
+//	pmanager->AddDiscreteProcess(sqLoopPrCreateDiscr);
       }
       else  edm::LogInfo("CustomPhysics") << "   No pmanager";
 

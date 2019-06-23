@@ -21,14 +21,30 @@ G4SQLoopProcessDiscr::~G4SQLoopProcessDiscr()
 G4VParticleChange* G4SQLoopProcessDiscr::PostStepDoIt(const G4Track& track, const G4Step& step)
 {
     G4Track * mytr = const_cast<G4Track *>(&track);
-//  mytr->SetGlobalTime(globaltimeini); //resetting the GlobalTime, because there is a limit of 500 for particles which travel too long
-//  mytr->SetLocalTime(localtimeini); //resetting the LocalTime, because there is a limit of 500 for particles which travel too long
-//  mytr->SetProperTime(propertimeini);
+    mytr->SetPosition(posini);
+    mytr->SetGlobalTime(globaltimeini); //resetting the GlobalTime, because there is a limit of 500 for particles which travel too long
+    mytr->SetLocalTime(localtimeini); //resetting the LocalTime, because there is a limit of 500 for particles which travel too long
+    mytr->SetProperTime(propertimeini);
   
   std::cout << "G4SQLoopProcessDiscr::PostStepDoIt killing particle at   momentumdirection: " << mytr->GetMomentumDirection() << " momentumdirection eta: " << mytr->GetMomentumDirection().eta() <<   " position new " <<  mytr->GetPosition()/centimeter << " globaltime: " << mytr->GetGlobalTime()/ns <<  std::endl;
-  if(mytr->GetGlobalTime()/ns>49990) std::cout << "going to loose the particle because the GlobalTime is getting close to 50000" << std::endl;
+  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt fParticleChange GetPostion  " << fParticleChange->GetPosition().x() << "," << fParticleChange->GetPosition().y() << "," << fParticleChange->GetPosition().z() << " MomentumDirection " << fParticleChange->GetMomentumDirection().x() << "," << fParticleChange->GetMomentumDirection().y() << "," << fParticleChange->GetMomentumDirection().z() << "," << " GlobalTime " << fParticleChange->GetGlobalTime() << std::endl;
+  if(mytr->GetGlobalTime()/ns>4990) std::cout << "going to loose the particle because the GlobalTime is getting close to 5000" << std::endl;
+
   fParticleChange->Clear();
   fParticleChange->Initialize(track);
+
+  //adding secondary antiS
+  fParticleChange->SetNumberOfSecondaries(1); 
+  G4DynamicParticle* replacementParticle= new G4DynamicParticle(G4AntiSQ::AntiSQ(), track.GetMomentumDirection(), track.GetKineticEnergy());
+  std::cout << "G4SQLoopProcessDiscr::PostStepDoIt: 1 replacementParticle TotalEnergy: "<< replacementParticle->GetTotalEnergy()/GeV << std::endl;
+  fParticleChange->AddSecondary(replacementParticle);
+
+  //fParticleChange->AddSecondary(replacementParticle,globaltimeini);
+  //fParticleChange->ProposeGlobalTime(globaltimeini);
+  //fParticleChange->ProposeLocalTime(localtimeini);
+  //fParticleChange->ProposeProperTime(propertimeini);
+
+  //killing original AntiS
   fParticleChange->ProposeTrackStatus(fStopAndKill);
   //fParticleChange->ProposeWeight(track.GetWeight());
   return fParticleChange;

@@ -7,6 +7,7 @@
 #include "G4ParticleChange.hh"
 #include "G4ParticleChangeForTransport.hh"
 #include "G4SQ.hh"
+#include "G4AntiSQ.hh"
 
 class G4Step;
 class G4ParticleDefinition;
