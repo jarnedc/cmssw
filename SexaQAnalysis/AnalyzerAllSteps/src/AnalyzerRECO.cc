@@ -27,6 +27,9 @@ void AnalyzerRECO::beginJob() {
      TFileDirectory dir_RECO = m_fs->mkdir("RECO"); 
 
      TFileDirectory dir_PV = m_fs->mkdir("PV");
+     histos_th1f["h_PV_n"] = dir_PV.make<TH1F>(b+"h_PV_n", "; #Primary Vertices; #entries ",100,0,100);
+     histos_th1f["h_PV_vx"] = dir_PV.make<TH1F>(b+"h_PV_vx", "; vx (cm); #entries ",200,-10,10);
+     histos_th1f["h_PV_vy"] = dir_PV.make<TH1F>(b+"h_PV_vy", "; vy (cm); #entries ",200,-10,10);
      histos_th1f["h_PV_vz"] = dir_PV.make<TH1F>(b+"h_PV_vz", "; vz (cm); #entries ",600,-300,300);
 
      TFileDirectory dir_RECO_Ks = dir_RECO.mkdir("RECO_Ks");
@@ -239,6 +242,7 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   TVector3 FirstOfflinePV(0.,0.,0.);
   if(h_offlinePV.isValid()){ 
 	FirstOfflinePV.SetX(h_offlinePV->at(0).x()); FirstOfflinePV.SetY(h_offlinePV->at(0).y()); FirstOfflinePV.SetZ(h_offlinePV->at(0).z());
+	histos_th1f["h_PV_n"]->Fill(h_offlinePV->size());
 	for(size_t i=0; i<h_offlinePV->size(); ++i) {
 		reco::Vertex PrimVertex = h_offlinePV->at(i);		
 		FillHistosPV(PrimVertex, beamspot);
@@ -278,6 +282,8 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
  } //end of analyzer
 
 void AnalyzerRECO::FillHistosPV(reco::Vertex PrimVertex, TVector3 beamspot){
+	histos_th1f["h_PV_vx"]->Fill(PrimVertex.x());
+	histos_th1f["h_PV_vy"]->Fill(PrimVertex.y());
 	histos_th1f["h_PV_vz"]->Fill(PrimVertex.z());
 }
 

@@ -50,11 +50,19 @@ void FlatTreeProducer::beginJob() {
 	_tree->Branch("_S_daughters_deltaphi",&_S_daughters_deltaphi);
 	_tree->Branch("_S_daughters_deltaeta",&_S_daughters_deltaeta);
 	_tree->Branch("_S_daughters_openingsangle",&_S_daughters_openingsangle);
+	_tree->Branch("_S_Ks_openingsangle",&_S_Ks_openingsangle);
+	_tree->Branch("_S_Lambda_openingsangle",&_S_Lambda_openingsangle);
+	_tree->Branch("_S_daughters_DeltaR",&_S_daughters_DeltaR);
 	_tree->Branch("_S_eta",&_S_eta);
+	_tree->Branch("_Ks_eta",&_Ks_eta);
+	_tree->Branch("_Lambda_eta",&_Lambda_eta);
 
 	_tree->Branch("_S_dxy",&_S_dxy);
 	_tree->Branch("_Ks_dxy",&_Ks_dxy);
 	_tree->Branch("_Lambda_dxy",&_Lambda_dxy);
+	_tree->Branch("_S_dxy_dzPVmin",&_S_dxy_dzPVmin);
+	_tree->Branch("_Ks_dxy_dzPVmin",&_Ks_dxy_dzPVmin);
+	_tree->Branch("_Lambda_dxy_dzPVmin",&_Lambda_dxy_dzPVmin);
 
 	_tree->Branch("_S_dxy_over_lxy",&_S_dxy_over_lxy);
 	_tree->Branch("_Ks_dxy_over_lxy",&_Ks_dxy_over_lxy);
@@ -63,6 +71,9 @@ void FlatTreeProducer::beginJob() {
 	_tree->Branch("_S_dz",&_S_dz);
 	_tree->Branch("_Ks_dz",&_Ks_dz);
 	_tree->Branch("_Lambda_dz",&_Lambda_dz);
+	_tree->Branch("_S_dz_min",&_S_dz_min);
+	_tree->Branch("_Ks_dz_min",&_Ks_dz_min);
+	_tree->Branch("_Lambda_dz_min",&_Lambda_dz_min);
 
 	_tree->Branch("_S_pt",&_S_pt);
 	_tree->Branch("_Ks_pt",&_Ks_pt);
@@ -137,7 +148,9 @@ void FlatTreeProducer::analyze(edm::Event const& iEvent, edm::EventSetup const& 
 		//the if below is important, if it is -1 you are looking at signal (antiS). If it is +1 you are looking at background (S).
 		int chargeAntiProton = 1; //by default look at the background
 		if(m_lookAtAntiS) chargeAntiProton = -1;//only when the m_lookAtAntiS flag is enabled look at the antiS, which has a charge of -1 (representing the charge of the proton)
-		if(antiS->charge()==chargeAntiProton)FillBranches(antiS, beamspot, beamspotVariance, h_offlinePV);
+		if(antiS->charge()==chargeAntiProton){
+			FillBranches(antiS, beamspot, beamspotVariance, h_offlinePV);
+		}
 	      }
 	  }
   }
@@ -190,7 +203,7 @@ void FlatTreeProducer::FindRecoAntiS(const reco::Candidate  * genParticle, edm::
 }
 
 void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_S, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV){
-
+	nTotalRECOS++;
 
 	//calculate some kinematic variables for the RECO AntiS
 	TVector3 RECOAntiSInteractionVertex(RECO_S->vx(),RECO_S->vy(),RECO_S->vz());//this is the interaction vertex of the antiS and the neutron. Check in the skimming code if you want to check.
@@ -199,7 +212,7 @@ void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_
 	double RECOErrorLxy_interactionVertex = AnalyzerAllSteps::std_dev_lxy(RECO_S->vx(), RECO_S->vy(), RECO_S->vertexCovariance(0,0), RECO_S->vertexCovariance(1,1), beamspot.X(), beamspot.Y(), beamspotVariance.X(), beamspotVariance.Y());
 	double RECODeltaPhiDaughters = reco::deltaPhi(RECO_S->daughter(0)->phi(),RECO_S->daughter(1)->phi());
 	double RECODeltaEtaDaughters = RECO_S->daughter(0)->eta()-RECO_S->daughter(1)->eta();
-//	double RECODeltaRDaughters = pow(RECODeltaPhiDaughters*RECODeltaPhiDaughters+RECODeltaEtaDaughters*RECODeltaEtaDaughters,0.5);
+	double RECODeltaRDaughters = pow(RECODeltaPhiDaughters*RECODeltaPhiDaughters+RECODeltaEtaDaughters*RECODeltaEtaDaughters,0.5);
 
 	reco::LeafCandidate::LorentzVector n_(0,0,0,0.939565);
 	double RECO_Smass = (RECO_S->p4()-n_).mass();
@@ -207,8 +220,11 @@ void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_
 	//the dxy of the Ks and Lambda
 	TVector3 RECOAntiSDaug0Momentum(RECO_S->daughter(0)->px(),RECO_S->daughter(0)->py(),RECO_S->daughter(0)->pz());
         TVector3 RECOAntiSDaug1Momentum(RECO_S->daughter(1)->px(),RECO_S->daughter(1)->py(),RECO_S->daughter(1)->pz());
+	reco::Candidate::Vector vRECOAntiSMomentum(RECO_S->px(),RECO_S->py(),RECO_S->pz());
 	reco::Candidate::Vector vRECOAntiSDaug0Momentum(RECO_S->daughter(0)->px(),RECO_S->daughter(0)->py(),RECO_S->daughter(0)->pz());
         reco::Candidate::Vector vRECOAntiSDaug1Momentum(RECO_S->daughter(1)->px(),RECO_S->daughter(1)->py(),RECO_S->daughter(1)->pz());
+	double RECOOpeningsAngleAntiSKs = AnalyzerAllSteps::openings_angle(vRECOAntiSDaug0Momentum,vRECOAntiSMomentum);
+	double RECOOpeningsAngleAntiSLambda = AnalyzerAllSteps::openings_angle(vRECOAntiSDaug1Momentum,vRECOAntiSMomentum);
 	double RECOOpeningsAngleDaughters = AnalyzerAllSteps::openings_angle(vRECOAntiSDaug0Momentum,vRECOAntiSDaug1Momentum);
         double RECO_dxy_daughter0 = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex, RECOAntiSDaug0Momentum,beamspot);
         double RECO_dxy_daughter1 = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex, RECOAntiSDaug1Momentum,beamspot);
@@ -234,17 +250,37 @@ void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_
 //	double signPtDotdxy_daughter0 = AnalyzerAllSteps::sgn(AnalyzerAllSteps::vec_dxy_line_point(RECOAntiSInteractionVertex, RECOAntiSDaug0Momentum,beamspot)*RECOAntiSDaug0Momentum);
 //	double signPtDotdxy_daughter1 = AnalyzerAllSteps::sgn(AnalyzerAllSteps::vec_dxy_line_point(RECOAntiSInteractionVertex, RECOAntiSDaug1Momentum,beamspot)*RECOAntiSDaug1Momentum);
 
-	//loop over all PVs and find the one which minimises the dxy of the antiS
-/*	double RECOdzAntiSPVmin = 999.;
+	//loop over all PVs and find the one which minimises the dz of the antiS
+	double RECOdzAntiSPVmin = 999.;
 	TVector3  bestPVdzAntiS;
 	for(unsigned int i = 0; i < h_offlinePV->size(); ++i){
 		TVector3 PV(h_offlinePV->at(i).x(),h_offlinePV->at(i).y(),h_offlinePV->at(i).z());
 		double dzAntiSPV = AnalyzerAllSteps::dz_line_point(RECOAntiSInteractionVertex,RECOAntiSMomentumVertex,PV);
 		if(abs(dzAntiSPV) < abs(RECOdzAntiSPVmin)) {RECOdzAntiSPVmin = dzAntiSPV; bestPVdzAntiS = PV;}
 	}
-	
 	double dxyAntiSPVmin = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex,RECOAntiSMomentumVertex,bestPVdzAntiS);
-*/	
+
+	double RECOdzKsPVmin = 999.;
+	TVector3  bestPVdzKs;
+	for(unsigned int i = 0; i < h_offlinePV->size(); ++i){
+		TVector3 PV(h_offlinePV->at(i).x(),h_offlinePV->at(i).y(),h_offlinePV->at(i).z());
+		double dzKsPV = AnalyzerAllSteps::dz_line_point(RECOAntiSInteractionVertex,RECOAntiSDaug0Momentum,PV);
+		if(abs(dzKsPV) < abs(RECOdzKsPVmin)) {RECOdzKsPVmin = dzKsPV; bestPVdzKs = PV;}
+	}
+	double dxyKsPVmin = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex,RECOAntiSDaug0Momentum,bestPVdzKs);
+
+	double RECOdzLambdaPVmin = 999.;
+	TVector3  bestPVdzLambda;
+	for(unsigned int i = 0; i < h_offlinePV->size(); ++i){
+		TVector3 PV(h_offlinePV->at(i).x(),h_offlinePV->at(i).y(),h_offlinePV->at(i).z());
+		double dzLambdaPV = AnalyzerAllSteps::dz_line_point(RECOAntiSInteractionVertex,RECOAntiSDaug1Momentum,PV);
+		if(abs(dzLambdaPV) < abs(RECOdzLambdaPVmin)) {RECOdzLambdaPVmin = dzLambdaPV; bestPVdzLambda = PV;}
+	}
+	double dxyLambdaPVmin = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex,RECOAntiSDaug1Momentum,bestPVdzLambda);
+
+	//if the RECO S particle fails one of the below cuts than don't fill the tree. These already cut the majority of the background, so the background trees will be much smaller, which is nice. 
+	if(RECOLxy_interactionVertex < 1.9 || RECOErrorLxy_interactionVertex > 0.1 || RECO_Smass < 0.)return;
+	nSavedRECOS++;
 	_S_charge.push_back(RECO_S->charge());
 
 	_S_lxy_interaction_vertex.push_back(RECOLxy_interactionVertex);
@@ -255,11 +291,19 @@ void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_
 	_S_daughters_deltaphi.push_back(RECODeltaPhiDaughters);
 	_S_daughters_deltaeta.push_back(RECODeltaEtaDaughters);
 	_S_daughters_openingsangle.push_back(RECOOpeningsAngleDaughters);
+	_S_Ks_openingsangle.push_back(RECOOpeningsAngleAntiSKs);
+	_S_Lambda_openingsangle.push_back(RECOOpeningsAngleAntiSLambda);
+	_S_daughters_DeltaR.push_back(RECODeltaRDaughters);
 	_S_eta.push_back(RECO_S->eta());
+	_Ks_eta.push_back(RECO_S->daughter(0)->eta());
+	_Lambda_eta.push_back(RECO_S->daughter(1)->eta());
 
 	_S_dxy.push_back(RECO_dxy_antiS);
 	_Ks_dxy.push_back(RECO_dxy_daughter0);
 	_Lambda_dxy.push_back(RECO_dxy_daughter1);
+	_S_dxy_dzPVmin.push_back(dxyAntiSPVmin);
+	_Ks_dxy_dzPVmin.push_back(dxyKsPVmin);
+	_Lambda_dxy_dzPVmin.push_back(dxyLambdaPVmin);
 
 	_S_dxy_over_lxy.push_back(RECO_dxy_antiS/RECOLxy_interactionVertex);
 	_Ks_dxy_over_lxy.push_back(RECO_dxy_daughter0/RECOLxy_interactionVertex);
@@ -268,6 +312,9 @@ void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_
 	_S_dz.push_back(RECO_dz_antiS);
 	_Ks_dz.push_back(RECO_dz_daughter0);
 	_Lambda_dz.push_back(RECO_dz_daughter1);
+	_S_dz_min.push_back(RECOdzAntiSPVmin);
+	_Ks_dz_min.push_back(RECOdzKsPVmin);
+	_Lambda_dz_min.push_back(RECOdzLambdaPVmin);
 
 	_S_pt.push_back(RECO_S->pt());
 	_Ks_pt.push_back(RECO_S->daughter(0)->pt());
@@ -327,6 +374,15 @@ FlatTreeProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions)
 
 FlatTreeProducer::~FlatTreeProducer()
 {
+	if(m_lookAtAntiS){
+			std::cout << "The total number RECO anti-S that were found is: " << nTotalRECOS << std::endl; 
+			std::cout << "The total number RECO anti-S that were saved is: " << nSavedRECOS << std::endl; 
+	}
+	if(!m_lookAtAntiS){
+			std::cout << "The total number RECO S that were found is: " << nTotalRECOS << std::endl; 
+			std::cout << "The total number RECO S that were saved is: " << nSavedRECOS << std::endl; 
+	}
+	std::cout << "saved/found = " << (double)nSavedRECOS/(double)nTotalRECOS << std::endl;
 }
 
 
@@ -345,11 +401,19 @@ FlatTreeProducer::Init()
 	_S_daughters_deltaphi.clear();
 	_S_daughters_deltaeta.clear();
 	_S_daughters_openingsangle.clear();
+	_S_Ks_openingsangle.clear();
+	_S_Lambda_openingsangle.clear();
+	_S_daughters_DeltaR.clear();
 	_S_eta.clear();
+	_Ks_eta.clear();
+	_Lambda_eta.clear();
 
 	_S_dxy.clear();
 	_Ks_dxy.clear();
 	_Lambda_dxy.clear();
+	_S_dxy_dzPVmin.clear();
+	_Ks_dxy_dzPVmin.clear();
+	_Lambda_dxy_dzPVmin.clear();
 
 	_S_dxy_over_lxy.clear();
 	_Ks_dxy_over_lxy.clear();
@@ -358,6 +422,9 @@ FlatTreeProducer::Init()
 	_S_dz.clear();
 	_Ks_dz.clear();
 	_Lambda_dz.clear();
+	_S_dz_min.clear();
+	_Ks_dz_min.clear();
+	_Lambda_dz_min.clear();
 
 	_S_pt.clear();
 	_Ks_pt.clear();

@@ -338,13 +338,13 @@ void AnalyzerGEN::beginJob() {
      histos_th1f["h_GENRECO_AntiS_deltaRmin"] = dir_GENRECO_AntiS.make<TH1F>(b+"h_GENRECO_AntiS_deltaRmin", "; min #DeltaR(gen AntiS, reco AntiS); #entries ",1000,0,10);
 
      TFileDirectory dir_GENRECO_RECO_AntiS = dir_GENRECO_AntiS.mkdir("GENRECO_RECO_AntiS");
+     histos_th1f["h_GENRECO_RECO_AntiS_m"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_m", "; #bar{S} m (GeV); #entries ",200,0,20);
      histos_th1f["h_GENRECO_RECO_AntiS_pt"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_pt", "; #bar{S} pT (GeV); #entries ",200,0,20);
      histos_th1f["h_GENRECO_RECO_AntiS_pz"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_pz", "; #bar{S} pz (GeV); #entries ",200,-50,50);
      histos_th1f["h_GENRECO_RECO_AntiS_eta"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_eta", "; #bar{S} #eta; #entries ",200,-10,10);
      histos_th1f["h_GENRECO_RECO_AntiS_phi"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_phi", "; #bar{S} #phi (rad); #entries ",200,-4,4);
      histos_th2f["h2_GENRECO_RECO_AntiS_vx_vy"] = dir_GENRECO_RECO_AntiS.make<TH2F>(b+"h2_GENRECO_RECO_AntiS_vx_vy", "; #bar{S} vx (cm); #bar{S} vy (cm)",400,-200,200,400,-200,200);
      histos_th2f["h2_GENRECO_RECO_AntiS_vx_vz"] = dir_GENRECO_RECO_AntiS.make<TH2F>(b+"h2_GENRECO_RECO_AntiS_vx_vz", "; #bar{S} vx (cm); #bar{S} vz (cm)",400,-200,200,800,-400,400);
-     histos_th1f["h_GENRECO_RECO_AntiS_lxy"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_lxy", "; #bar{S} lxy(beamspot, #bar{S} vertex) (cm); #entries ",200,0,200);
      histos_th1f["h_GENRECO_RECO_AntiS_lxy_interactionVertex"] = dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_lxy_interactionVertex", "; #bar{S} lxy(beamspot, #bar{S} interaction vertex) (cm); #entries ",200,0,200);
      histos_th1f["h_GENRECO_RECO_AntiS_vz"] =  dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_vz", "; #bar{S} vz(#bar{S} vertex) (cm); #entries ",600,-300,300);
      histos_th1f["h_GENRECO_RECO_AntiS_vz_interactionVertex"] =  dir_GENRECO_RECO_AntiS.make<TH1F>(b+"h_GENRECO_RECO_AntiS_vz_interactionVertex", "; #bar{S} vz(#bar{S} decay vertex) (cm); #entries ",600,-300,300);
@@ -1319,22 +1319,22 @@ void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm:
 	
 	if(deltaRmin<AnalyzerAllSteps::deltaRCutRECOAntiS){//matched
 		//kinematics of the matched GEN particles	
-		histos_th1f["h_GENRECO_RECO_AntiS_pt"]->Fill(GENAntiS->pt());	
-		histos_th1f["h_GENRECO_RECO_AntiS_pz"]->Fill(GENAntiS->pz());	
-		histos_th1f["h_GENRECO_RECO_AntiS_eta"]->Fill(GENAntiS->eta());	
-		histos_th1f["h_GENRECO_RECO_AntiS_phi"]->Fill(GENAntiS->phi());	
-		histos_th2f["h2_GENRECO_RECO_AntiS_vx_vy"]->Fill(GENAntiS->vx(),GENAntiS->vy());
-		histos_th2f["h2_GENRECO_RECO_AntiS_vx_vz"]->Fill(GENAntiS->vx(),GENAntiS->vz());
-		histos_th1f["h_GENRECO_RECO_AntiS_lxy"]->Fill(GENLxy);	
-		histos_th1f["h_GENRECO_RECO_AntiS_lxy_interactionVertex"]->Fill(GENLxy_interactionVertex);	
-		histos_th1f["h_GENRECO_RECO_AntiS_vz"]->Fill(GENAntiS->vz());	
-		histos_th1f["h_GENRECO_RECO_AntiS_vz_interactionVertex"]->Fill(GENAntiSInteractionVertex.Z());	
-		histos_th1f["h_GENRECO_RECO_AntiS_dxy"]->Fill(GENdxy);	
-		histos_th1f["h_GENRECO_RECO_AntiS_dz"]->Fill(GENdz);
+		histos_th1f["h_GENRECO_RECO_AntiS_m"]->Fill(bestRECOAntiSmass);	
+		histos_th1f["h_GENRECO_RECO_AntiS_pt"]->Fill(bestRECOAntiS->pt());	
+		histos_th1f["h_GENRECO_RECO_AntiS_pz"]->Fill(bestRECOAntiS->pz());	
+		histos_th1f["h_GENRECO_RECO_AntiS_eta"]->Fill(bestRECOAntiS->eta());	
+		histos_th1f["h_GENRECO_RECO_AntiS_phi"]->Fill(bestRECOAntiS->phi());	
+		histos_th2f["h2_GENRECO_RECO_AntiS_vx_vy"]->Fill(bestRECOAntiS->vx(),bestRECOAntiS->vy());
+		histos_th2f["h2_GENRECO_RECO_AntiS_vx_vz"]->Fill(bestRECOAntiS->vx(),bestRECOAntiS->vz());
+		histos_th1f["h_GENRECO_RECO_AntiS_lxy_interactionVertex"]->Fill(RECOLxy_interactionVertex);	
+		histos_th1f["h_GENRECO_RECO_AntiS_vz"]->Fill(bestRECOAntiS->vz());	
+		histos_th1f["h_GENRECO_RECO_AntiS_vz_interactionVertex"]->Fill(RECOAntiSInteractionVertex.Z());	
+		histos_th1f["h_GENRECO_RECO_AntiS_dxy"]->Fill(RECO_dxy_antiS);	
+		histos_th1f["h_GENRECO_RECO_AntiS_dz"]->Fill(RECO_dz_antiS);
 		histos_th1f["h_GENRECO_RECO_AntiS_deltaRDaughters"]->Fill(RECODeltaRDaughters);	
 		histos_th1f["h_GENRECO_RECO_AntiS_openingsAngleDaughters"]->Fill(RECOOpeningsAngleDaughters);	
-		histos_th1f["h_GENRECO_RECO_AntiS_pt_Ks"]->Fill(GENAntiS->daughter(0)->pt());	
-		histos_th1f["h_GENRECO_RECO_AntiS_pt_AntiL"]->Fill(GENAntiS->daughter(1)->pt());	
+		histos_th1f["h_GENRECO_RECO_AntiS_pt_Ks"]->Fill(bestRECOAntiS->daughter(0)->pt());	
+		histos_th1f["h_GENRECO_RECO_AntiS_pt_AntiL"]->Fill(bestRECOAntiS->daughter(1)->pt());	
 		
 		
 		//so now if you found a RECO antiS compare it to the GEN antiS. Compare parameters such as GEN vs RECO pt, GEN vs RECO interaction vertex, ...
