@@ -5,6 +5,5 @@ FlatTreeProducerGEN = cms.EDAnalyzer('FlatTreeProducerGEN',
     lookAtAntiS = cms.untracked.bool(False),
     runningOnData = cms.untracked.bool(False),
     beamspot = cms.InputTag("offlineBeamSpot"),
-    genCollection_GEN =  cms.InputTag("genParticles","","GEN"),
-    genCollection_SIM_GEANT =  cms.InputTag("genParticlesPlusGEANT","","SIM")
+    genCollection_GEN =  cms.InputTag("genParticles","","GEN")
 )

@@ -12,11 +12,9 @@ config.General.transferLogs = True
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '../treeproducer_data_cfg.py'
 
-#config.Data.inputDataset = '/SingleMuon/Run2016G-23Sep2016-v1/AOD'
-#config.Data.inputDBS = 'global'
-config.Data.splitting = 'EventAwareLumiBased'
-config.Data.unitsPerJob = 200000
-#config.Data.splitting = 'Automatic'
+#config.Data.splitting = 'EventAwareLumiBased'
+#config.Data.unitsPerJob = 200000
+config.Data.splitting = 'Automatic'
 config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt'
 config.Data.runRange = ''
 config.Data.outLFNDirBase = '/store/user/jdeclerc/data_Sexaq/trial'+trial
@@ -28,7 +26,7 @@ config.Site.storageSite = 'T2_BE_IIHE'
 #very thight blacklist:
 #config.Site.blacklist = ['T1_DE_KIT','T2_GR_Ioannina','T2_IT_Legnaro','T1_UK_RAL','T1_RU_JINR','T1_FR_CCIN2P3','T2_IT_Bari','T2_IN_TIFR','T2_US_UCSD','T2_IT_Rome','T2_BR_UERJ','T2_FR_GRIF_LLR','T1_FR_CCIN2P3']
 #loosened blacklist
-config.Site.blacklist = ['T2_GR_Ioannina','T2_IT_Legnaro','T2_IT_Bari','T2_IN_TIFR','T2_IT_Rome','T2_BR_UERJ','T2_FR_GRIF_LLR']
+#config.Site.blacklist = ['T2_GR_Ioannina','T2_IT_Legnaro','T2_IT_Bari','T2_IN_TIFR','T2_IT_Rome','T2_BR_UERJ','T2_FR_GRIF_LLR']
 
 def submit_single_run(arg1, arg2):
 
@@ -67,30 +65,30 @@ if __name__ == '__main__':
     #############################################################################################
 
 ###submit_single_run("BTagCSV","Run2016B-07Aug17_ver2-v1") #--> only availalbe on TAPE
-submit_single_run("BTagCSV","Run2016C-07Aug17-v1")
-###submit_single_run("BTagCSV","Run2016D-07Aug17-v1") #--> only availalbe on TAPE
-submit_single_run("BTagCSV","Run2016E-07Aug17-v1")
-submit_single_run("BTagCSV","Run2016F-07Aug17-v1")
-###submit_single_run("BTagCSV","Run2016G-07Aug17-v1") #--> only availalbe on TAPE
-submit_single_run("BTagCSV","Run2016H-07Aug17-v1")
-###submit_single_run("BTagMu","Run2016B-07Aug17_ver2-v1") #--> only availalbe on TAPE
-submit_single_run("BTagMu","Run2016C-07Aug17-v1")
-submit_single_run("BTagMu","Run2016D-07Aug17-v1")
-submit_single_run("BTagMu","Run2016E-07Aug17-v1")
-submit_single_run("BTagMu","Run2016F-07Aug17-v1")
-submit_single_run("BTagMu","Run2016G-07Aug17-v1")
-submit_single_run("BTagMu","Run2016H-07Aug17-v1")
-submit_single_run("Charmonium","Run2016B-07Aug17_ver2-v1")
-submit_single_run("Charmonium","Run2016C-07Aug17-v1")
-submit_single_run("Charmonium","Run2016D-07Aug17-v1")
-submit_single_run("Charmonium","Run2016E-07Aug17-v1")
-submit_single_run("Charmonium","Run2016F-07Aug17-v1")
-submit_single_run("Charmonium","Run2016G-07Aug17-v1")
-submit_single_run("Charmonium","Run2016H-07Aug17-v1")
+#submit_single_run("BTagCSV","Run2016C-07Aug17-v1")
+####submit_single_run("BTagCSV","Run2016D-07Aug17-v1") #--> only availalbe on TAPE
+#submit_single_run("BTagCSV","Run2016E-07Aug17-v1")
+#submit_single_run("BTagCSV","Run2016F-07Aug17-v1")
+####submit_single_run("BTagCSV","Run2016G-07Aug17-v1") #--> only availalbe on TAPE
+#submit_single_run("BTagCSV","Run2016H-07Aug17-v1")
+####submit_single_run("BTagMu","Run2016B-07Aug17_ver2-v1") #--> only availalbe on TAPE
+#submit_single_run("BTagMu","Run2016C-07Aug17-v1")
+#submit_single_run("BTagMu","Run2016D-07Aug17-v1")
+#submit_single_run("BTagMu","Run2016E-07Aug17-v1")
+#submit_single_run("BTagMu","Run2016F-07Aug17-v1")
+#submit_single_run("BTagMu","Run2016G-07Aug17-v1")
+#submit_single_run("BTagMu","Run2016H-07Aug17-v1")
+#submit_single_run("Charmonium","Run2016B-07Aug17_ver2-v1")
+#submit_single_run("Charmonium","Run2016C-07Aug17-v1")
+#submit_single_run("Charmonium","Run2016D-07Aug17-v1")
+#submit_single_run("Charmonium","Run2016E-07Aug17-v1")
+#submit_single_run("Charmonium","Run2016F-07Aug17-v1")
+#submit_single_run("Charmonium","Run2016G-07Aug17-v1")
+#submit_single_run("Charmonium","Run2016H-07Aug17-v1")
 #submit_single_run("DisplacedJet","Run2016B-07Aug17_ver2-v1")
 ####submit_single_run("DisplacedJet","Run2016C-07Aug17-v1") #--> only availalbe on TAPE
 #submit_single_run("DisplacedJet","Run2016D-07Aug17-v1")
-#submit_single_run("DisplacedJet","Run2016E-07Aug17-v1")
+submit_single_run("DisplacedJet","Run2016E-07Aug17-v1")
 #submit_single_run("DisplacedJet","Run2016F-07Aug17-v1")
 ####submit_single_run("DisplacedJet","Run2016G-07Aug17-v1") #--> only availalbe on TAPE
 #submit_single_run("DisplacedJet","Run2016H-07Aug17-v1")
@@ -117,7 +115,7 @@ submit_single_run("Charmonium","Run2016H-07Aug17-v1")
 #submit_single_run("DoubleMuonLowMass","Run2016H-07Aug17-v1")
 #submit_single_run("HTMHT","Run2016B-07Aug17_ver2-v1")
 #submit_single_run("HTMHT","Run2016C-07Aug17-v1")
-#submit_single_run("HTMHT","Run2016D-07Aug17-v1")
+submit_single_run("HTMHT","Run2016D-07Aug17-v1")
 #submit_single_run("HTMHT","Run2016E-07Aug17-v1")
 #submit_single_run("HTMHT","Run2016F-07Aug17-v1")
 #submit_single_run("HTMHT","Run2016G-23Sep2016-v2")
@@ -125,15 +123,15 @@ submit_single_run("Charmonium","Run2016H-07Aug17-v1")
 #submit_single_run("JetHT","Run2016B-07Aug17_ver2-v1")
 #submit_single_run("JetHT","Run2016C-07Aug17-v1")
 ####submit_single_run("JetHT","Run2016D-07Aug17-v1") #--> only availalbe on TAPE
-#submit_single_run("JetHT","Run2016E-07Aug17-v1")
+submit_single_run("JetHT","Run2016E-07Aug17-v1")
 #submit_single_run("JetHT","Run2016F-07Aug17-v1")
 #submit_single_run("JetHT","Run2016G-07Aug17-v1")
 #submit_single_run("JetHT","Run2016H-07Aug17-v1")
 #submit_single_run("MET","Run2016B-07Aug17_ver2-v1")
 #submit_single_run("MET","Run2016C-07Aug17-v1")
-#submit_single_run("MET","Run2016D-07Aug17-v1")
+submit_single_run("MET","Run2016D-07Aug17-v1")
 #submit_single_run("MET","Run2016E-07Aug17-v1")
-#submit_single_run("MET","Run2016F-07Aug17-v1")
+submit_single_run("MET","Run2016F-07Aug17-v1")
 #submit_single_run("MET","Run2016G-07Aug17-v1")
 #submit_single_run("MET","Run2016H-07Aug17-v1")
 #submit_single_run("MuOnia","Run2016B-07Aug17_ver2-v1")

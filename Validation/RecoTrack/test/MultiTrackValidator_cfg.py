@@ -20,10 +20,42 @@ process.Timing = cms.Service("Timing"
 
 # source
 readFiles = cms.untracked.vstring()
-secFiles = cms.untracked.vstring() 
-source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
+secFiles = cms.untracked.vstring()
+#source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles) 
+source = cms.Source ("PoolSource",fileNames = readFiles,duplicateCheckMode = cms.untracked.string ("noDuplicateCheck"))
 readFiles.extend( [
-       '/store/relval/CMSSW_7_4_0_pre6/RelValTTbar_13/GEN-SIM-RECO/PU25ns_MCRUN2_74_V1-v3/00000/067739D0-AFAB-E411-AC03-0025905A48D0.root'
+       #'/store/relval/CMSSW_7_4_0_pre6/RelValTTbar_13/GEN-SIM-RECO/PU25ns_MCRUN2_74_V1-v3/00000/067739D0-AFAB-E411-AC03-0025905A48D0.root'
+       #'file:/user/jdeclerc/CMSSW_8_0_30/src/STEP2_Sexaq/crabSlimmedFEVT/test_Step2_WithPU_1200mb.root'
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_180.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_181.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_182.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_183.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_184.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_185.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_186.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_187.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_188.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_189.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_280.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_281.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_282.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_283.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_284.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_285.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_286.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_287.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_288.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_289.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_380.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_381.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_382.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_383.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_384.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_385.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_386.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_387.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_388.root',
+'file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8/crab_WithPU2016NeutrinoGun_tryToFix_808072019_v1/190708_113423/0000/output_389.root'
                   ] )
 
 
@@ -76,7 +108,7 @@ secFiles.extend( [
         '/store/relval/CMSSW_7_4_0_pre6/RelValTTbar_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PU25ns_MCRUN2_74_V1-v3/00000/FE40619E-61AB-E411-B453-0025905B858C.root',
         ] )
 process.source = source
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(400) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 ### conditions
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')

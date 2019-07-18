@@ -107,6 +107,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     double static dz_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in);
     double static sgn(double input);
     int static getDaughterParticlesTypes(const reco::Candidate * genParticle);
+    int static trackQualityAsInt(const reco::Track *track);
      };
 
 #endif

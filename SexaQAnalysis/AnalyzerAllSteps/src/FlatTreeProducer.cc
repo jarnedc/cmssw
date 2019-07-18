@@ -42,6 +42,7 @@ void FlatTreeProducer::beginJob() {
         // Event
         //just for checking you are looking at the correct one: S or antiS
 	_tree->Branch("_S_charge",&_S_charge);
+	_tree->Branch("_S_deltaRmin_GEN_RECO",&_S_deltaRmin_GEN_RECO);
 	_tree->Branch("_S_lxy_interaction_vertex",&_S_lxy_interaction_vertex);
 	_tree->Branch("_S_error_lxy_interaction_vertex",&_S_error_lxy_interaction_vertex);
 	_tree->Branch("_S_mass",&_S_mass);
@@ -95,7 +96,6 @@ void FlatTreeProducer::beginJob() {
 
 void FlatTreeProducer::analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup) {
 
-  Init();
  
 
   //beamspot
@@ -149,7 +149,7 @@ void FlatTreeProducer::analyze(edm::Event const& iEvent, edm::EventSetup const& 
 		int chargeAntiProton = 1; //by default look at the background
 		if(m_lookAtAntiS) chargeAntiProton = -1;//only when the m_lookAtAntiS flag is enabled look at the antiS, which has a charge of -1 (representing the charge of the proton)
 		if(antiS->charge()==chargeAntiProton){
-			FillBranches(antiS, beamspot, beamspotVariance, h_offlinePV);
+			FillBranches(antiS, beamspot, beamspotVariance, h_offlinePV,-999);
 		}
 	      }
 	  }
@@ -198,11 +198,11 @@ void FlatTreeProducer::FindRecoAntiS(const reco::Candidate  * genParticle, edm::
 			if(deltaR < deltaRmin){ deltaRmin = deltaR; bestRECOAntiS = AntiS;}
 		}
 
-		if(deltaRmin<AnalyzerAllSteps::deltaRCutRECOAntiS)FillBranches(bestRECOAntiS, beamspot, beamspotVariance, h_offlinePV);
+		if(deltaRmin<AnalyzerAllSteps::deltaRCutRECOAntiS)FillBranches(bestRECOAntiS, beamspot, beamspotVariance, h_offlinePV, deltaRmin);
        }
 }
 
-void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_S, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV){
+void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_S, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV, double deltaRmin){
 	nTotalRECOS++;
 
 	//calculate some kinematic variables for the RECO AntiS
@@ -279,9 +279,13 @@ void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_
 	double dxyLambdaPVmin = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex,RECOAntiSDaug1Momentum,bestPVdzLambda);
 
 	//if the RECO S particle fails one of the below cuts than don't fill the tree. These already cut the majority of the background, so the background trees will be much smaller, which is nice. 
-	if(RECOLxy_interactionVertex < 1.9 || RECOErrorLxy_interactionVertex > 0.1 || RECO_Smass < 0.)return;
+	if(RECOLxy_interactionVertex < MinLxyCut || RECOErrorLxy_interactionVertex > MaxErrorLxyCut || RECO_Smass < 0.)return;
 	nSavedRECOS++;
+
+	Init();	
+
 	_S_charge.push_back(RECO_S->charge());
+	_S_deltaRmin_GEN_RECO.push_back(deltaRmin);
 
 	_S_lxy_interaction_vertex.push_back(RECOLxy_interactionVertex);
 	_S_error_lxy_interaction_vertex.push_back(RECOErrorLxy_interactionVertex);
@@ -392,6 +396,7 @@ FlatTreeProducer::Init()
 
 
     	_S_charge.clear();
+    	_S_deltaRmin_GEN_RECO.clear();
 
     	_S_lxy_interaction_vertex.clear();
         _S_error_lxy_interaction_vertex.clear();

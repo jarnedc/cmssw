@@ -99,7 +99,8 @@ process.AODSIMoutput.outputCommands += (
 "keep *_siPixelClusters_*_*",
 "keep *_siStripClusters_*_*",
 "keep *_generalTracks_*_*",
-
+"keep *_mixData_MergedTrackTruth_HLT",
+"keep *_mix_MergedTrackTruth_*"
 )
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag

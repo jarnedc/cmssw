@@ -157,4 +157,19 @@ int AnalyzerAllSteps::getDaughterParticlesTypes(const reco::Candidate * genParti
 
         return returnCode;
 
+}
+
+int AnalyzerAllSteps::trackQualityAsInt(const reco::Track *track){
+    int myquality = -99;
+    if(track->quality(reco::TrackBase::undefQuality))myquality = -1;
+    if(track->quality(reco::TrackBase::loose))myquality = 0;
+    if(track->quality(reco::TrackBase::tight))myquality = 1;
+    if(track->quality(reco::TrackBase::highPurity))myquality = 2;
+    if(track->quality(reco::TrackBase::confirmed))myquality=3;
+    if(track->quality(reco::TrackBase::goodIterative))myquality=4;
+    if(track->quality(reco::TrackBase::looseSetWithPV))myquality=5;
+    if(track->quality(reco::TrackBase::highPuritySetWithPV))myquality=6;
+    if(track->quality(reco::TrackBase::discarded))myquality=7;
+    if(track->quality(reco::TrackBase::qualitySize))myquality=8;
+    return myquality;
 }   

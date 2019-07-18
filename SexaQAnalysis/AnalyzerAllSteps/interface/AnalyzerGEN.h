@@ -1,6 +1,7 @@
 #ifndef AnalyzerAllSteps_h
 #define AnalyzerAllSteps_h
- 
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+
 #include "AnalyzerAllSteps.h"
 using namespace edm;
 using namespace std; 
@@ -15,8 +16,8 @@ class AnalyzerGEN : public edm::EDAnalyzer
 
     bool isTpGrandDaughterAntiS(TrackingParticleCollection const & TPColl, const TrackingParticle& tp);
 
-    void FillHistosNonAntiSTracksRECO(const TrackingParticle& tp, TVector3 beamspot);
-    void FillHistosNonAntiSTracksAll(const TrackingParticle& tp, TVector3 beamspot);
+    void FillHistosNonAntiSTracksRECO(const TrackingParticle& tp, TVector3 beamspot, int nPVs, int matchedTrackQuality);
+    void FillHistosNonAntiSTracksAll(const TrackingParticle& tp, TVector3 beamspot, int nPVs, int matchedTrackQuality);
     void FillHistosAntiSTracks(const TrackingParticle& tp, TVector3 beamspot, TrackingParticleCollection const & TPColl, edm::Handle<TrackingParticleCollection> h_TP, edm::Handle< reco::TrackToTrackingParticleAssociator> h_trackAssociator, edm::Handle<View<reco::Track>> h_generalTracks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0Ks, edm::Handle<vector<reco::VertexCompositeCandidate> > h_V0L);
     void FillHistosAntiSKsDaughterTracksRECO(const TrackingParticle& tp, TVector3 beamspot);
     void FillHistosAntiSKsDaughterTracksAll(const TrackingParticle& tp, TVector3 beamspot);
@@ -56,6 +57,7 @@ class AnalyzerGEN : public edm::EDAnalyzer
     edm::InputTag m_V0LTag;
     edm::InputTag m_trackAssociatorTag;
     edm::InputTag m_TPTag;
+//    edm::InputTag m_PileupInfoTag;
 
 
     edm::EDGetTokenT<reco::BeamSpot> m_bsToken;
@@ -69,6 +71,7 @@ class AnalyzerGEN : public edm::EDAnalyzer
     edm::EDGetTokenT<vector<reco::VertexCompositeCandidate> > m_V0LToken;
     edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator>  m_trackAssociatorToken;
     edm::EDGetTokenT<vector<TrackingParticle> > m_TPToken;
+//    edm::EDGetTokenT<vector<PileupSummaryInfo> > m_PileupInfoToken;
    
  
     int verbose=1;

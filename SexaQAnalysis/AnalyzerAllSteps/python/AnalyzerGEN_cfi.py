@@ -12,4 +12,5 @@ AnalyzerGEN = cms.EDAnalyzer('AnalyzerGEN',
     V0LCollection = cms.InputTag("generalV0Candidates","Lambda","RECO"),
     trackAssociators = cms.InputTag("quickTrackAssociatorByHits"),
     TrackingParticles = cms.InputTag("mix","MergedTrackTruth")
+#    PileupInfo = cms.InputTag("addPileupInfo","","HLT")
 )

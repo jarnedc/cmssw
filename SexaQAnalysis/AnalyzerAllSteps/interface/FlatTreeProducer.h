@@ -12,7 +12,7 @@ class FlatTreeProducer : public edm::EDAnalyzer
     static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
     void FindRecoAntiS(const reco::Candidate  * genParticle, edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV);
-    void FillBranches(const reco::VertexCompositeCandidate * antiS, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV);    
+    void FillBranches(const reco::VertexCompositeCandidate * antiS, TVector3 beamspot, TVector3 beamspotVariance, edm::Handle<vector<reco::Vertex>> h_offlinePV, double deltaRmin);    
 
   private:
     int nTotalRECOS=0;
@@ -56,6 +56,7 @@ class FlatTreeProducer : public edm::EDAnalyzer
 
     //definition of variables which should go to tree
     std::vector<float> _S_charge;
+    std::vector<float> _S_deltaRmin_GEN_RECO;
     std::vector<float> _S_lxy_interaction_vertex, _S_error_lxy_interaction_vertex,_S_mass,_S_chi2_ndof;
     std::vector<float> _S_daughters_deltaphi,_S_daughters_deltaeta,_S_daughters_openingsangle,_S_Ks_openingsangle,_S_Lambda_openingsangle,_S_daughters_DeltaR,_S_eta,_Ks_eta,_Lambda_eta;
     std::vector<float> _S_dxy,_Ks_dxy,_Lambda_dxy,_S_dxy_dzPVmin,_Ks_dxy_dzPVmin,_Lambda_dxy_dzPVmin;
