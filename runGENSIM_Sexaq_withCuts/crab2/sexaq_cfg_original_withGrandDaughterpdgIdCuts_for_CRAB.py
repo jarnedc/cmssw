@@ -31,13 +31,13 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(20)
+    input = cms.untracked.int32(-1)
 )
 
 process.source = cms.Source("PoolSource",
     #fileNames = cms.untracked.vstring('file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/crmc/Sexaquark_13TeV_trial10_scalingNumAntiS/crmc_Sexaq_1.root'),
     fileNames = cms.untracked.vstring(options.inputFiles),
-    #skipEvents = cms.untracked.uint32(SKIP),
+    skipEvents = cms.untracked.uint32(0),
     duplicateCheckMode = cms.untracked.string ("noDuplicateCheck")
 )
 
@@ -250,6 +250,7 @@ process.printTree*
 #process.genAntiSGranddaughterFilterAntiLambda*process.NumgenAntiSGranddaughterFilterAntiLambda*
 #process.genAntiSGranddaughterFilterKsAntiLambdaPresent*process.NumgenAntiSGranddaughterFilterKsAntiLambdaPresent*
 #process.genAntiSGranddaughterFilterDeltaRKsAntiLambda*process.NumgenAntiSGranddaughterFilterDeltaRKsAntiLambda*
+
 process.genAntiSGranddaughterFilterKsPiMin*process.NumgenAntiSGranddaughterFilterKsPiMin*
 process.genAntiSGranddaughterFilterKsPiPlus*process.NumgenAntiSGranddaughterFilterKsPiPlus*
 process.genAntiSGranddaughterFilterAntiLambdaPiPlus*process.NumgenAntiSGranddaughterFilterAntiLambdaPiPlus*

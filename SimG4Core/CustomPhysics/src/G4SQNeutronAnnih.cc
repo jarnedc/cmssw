@@ -75,7 +75,7 @@ G4HadFinalState* G4SQNeutronAnnih::ApplyYourself(
 
   G4int A = targetNucleus.GetA_asInt();
   G4int Z = targetNucleus.GetZ_asInt();
-  G4int N = A - Z;
+//  G4int N = A - Z;
 
 
   //G4double m_n = G4Neutron::Neutron()->GetPDGMass();
@@ -84,29 +84,25 @@ G4HadFinalState* G4SQNeutronAnnih::ApplyYourself(
   G4double m_K0S = G4KaonZeroShort::KaonZeroShort()->GetPDGMass();
   G4double m_L  = G4AntiLambda::AntiLambda()->GetPDGMass();
 
+  G4cout << "---->   G4SQNeutronAnnih    <-----" <<  G4endl;
 
-  G4double plab = aParticle->GetTotalMomentum();
+  //G4double plab = aParticle->GetTotalMomentum();
 
-//  const G4Nucleus* aNucleus = &targetNucleus;
-//  if (verboseLevel > 1)
-    G4cout << "Incident particle p (GeV), total Energy (GeV), particle name ="
-           << plab/GeV << "  "
-           << aParticle->GetTotalEnergy()/GeV << "  "
-           << aParticle->GetDefinition()->GetParticleName() << G4endl;
-   //  G4cout << "targetNucleus p(GeV), total Energy (GeV), particle name = "
-   //	   << aNucleus->GetTotalMomentum()/GeV << "  "
-   //        << aNucleus->GetTotalEnergy()/GeV << "  "
-   //        << aNucleus->GetDefinition()->GetParticleName() << G4endl;
+//    G4cout << "G4SQNeutronAnnih: Incident particle p (GeV), total Energy (GeV), particle name, eta ="
+//           << plab/GeV << "  "
+//           << aParticle->GetTotalEnergy()/GeV << "  "
+//           << aParticle->GetDefinition()->GetParticleName() << " "
+//	   << aParticle->Get4Momentum() << G4endl;
 
   // Scattered particle referred to axis of incident particle
-  const G4ParticleDefinition* theParticle = aParticle->GetDefinition();
+  //const G4ParticleDefinition* theParticle = aParticle->GetDefinition();
 
-  G4int projPDG = theParticle->GetPDGEncoding();
-  if (verboseLevel > 1)
-    G4cout << "G4SQNeutronAnnih for " << theParticle->GetParticleName()
-           << " PDGcode= " << projPDG << " on nucleus Z= " << Z
-           << " A= " << A << " N= " << N
-           << G4endl;
+  //G4int projPDG = theParticle->GetPDGEncoding();
+//  if (verboseLevel > 1)
+//    G4cout << "G4SQNeutronAnnih: for " << theParticle->GetParticleName()
+//           << " PDGcode= " << projPDG << " on nucleus Z= " << Z
+//           << " A= " << A << " N= " << N
+//           << G4endl;
 
   G4LorentzVector lv1 = aParticle->Get4Momentum();
   G4LorentzVector lv0(0.,0.,0.,G4Neutron::Neutron()->GetPDGMass());
@@ -114,7 +110,7 @@ G4HadFinalState* G4SQNeutronAnnih::ApplyYourself(
   //const G4Nucleus* aNucleus = &targetNucleus;
   G4double BENeutronInNucleus = 0;
   if(A != 0)BENeutronInNucleus =  G4NucleiProperties::GetBindingEnergy( A, Z)/(A);
-  G4cout << "BE of nucleon in the nucleus (GeV): " << BENeutronInNucleus/GeV << G4endl;
+//  G4cout << "BE of nucleon in the nucleus (GeV): " << BENeutronInNucleus/GeV << G4endl;
   G4LorentzVector lvBE(0,0,0,BENeutronInNucleus/GeV);
   G4LorentzVector lv  = lv0 + lv1 - lvBE;
 //  G4ThreeVector bst = lv.boostVector();

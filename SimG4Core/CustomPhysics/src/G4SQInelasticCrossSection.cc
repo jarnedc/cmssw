@@ -73,9 +73,11 @@ G4double G4SQInelasticCrossSection::GetElementCrossSection(
 
   // zero crosssection for particle at rest
   if(aPart->GetKineticEnergy() <= 0.0) { return 0.0; }
+  //I don't want to interact on hydrogen
+  if(Z <= 1){return 0.0;}
 
   // get the atomic weight (to estimate nr neutrons)
-  //G4double A = nist->GetAtomicMassAmu(Z);
+  G4double A = nist->GetAtomicMassAmu(Z);
   // increase the passed number of neutrons, so that we can mimic
   // a flat interaction probability as a function of neutron density
   // in the detector
@@ -84,7 +86,9 @@ G4double G4SQInelasticCrossSection::GetElementCrossSection(
   //G4double coeff = 1e20;
   //const_cast<G4DynamicParticle*>(aPart)->SetMagneticMoment(aPart->GetMagneticMoment()+coeff*(A-Z));
   // now calculate the cross section
-  G4double baseXS = 1.*millibarn; //40. * millibarn;
+
+  //put the X section very low for the antiS to get a flat interaction rate, but also make it scale with the number of neutrons in the material, because we are going to interact on neutrons, not on protons
+  G4double baseXS = (.1*(A-(G4double)Z)/(G4double)Z)*millibarn; //40. * millibarn;
   // the following scaled xsection makes that we get instead of an exponential
   // rather a flat interaction probability over an ensemble of particles
   // for all material (neutrons) in the detector

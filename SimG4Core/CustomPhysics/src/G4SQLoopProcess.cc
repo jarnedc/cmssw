@@ -20,24 +20,14 @@ G4SQLoopProcess::~G4SQLoopProcess()
 
 G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4Step& step)
 {
-//  G4Track * mytr = const_cast<G4Track *>(&track);
 
-//  mytr->SetGlobalTime(globaltimeini); 
-//  mytr->SetLocalTime(localtimeini); 
-//  mytr->SetProperTime(propertimeini); 
-
-  std::cout << "G4SQLoopProcess::AlongStepDoIt track GetPostion  " << track.GetPosition()/cm << " MomentumDirection " << track.GetMomentumDirection() << " trackId " << track.GetTrackID() << " parentId: " << track.GetParentID() << " GlobalTime " << track.GetGlobalTime()/ns << " TotalEnergy: " << track.GetTotalEnergy()/GeV << " Velocity " << track.GetVelocity()/m/ns << std::endl;
-//  std::cout << "G4SQLoopProcess::AlongStepDoIt fParticleChange GetPostion  " << fParticleChange->GetPosition()->x()/cm << " " << fParticleChange->GetPosition()->y()/cm << " " << fParticleChange->GetPosition()->z()/cm << " " << " MomentumDirection " << fParticleChange->GetMomentumDirection() << " GlobalTime " << fParticleChange->GetGlobalTime() << std::endl;
-
-  if(track.GetPosition()==posini) std::cout << "G4SQLoopProcess::AlongStepDoIt particle is back at posini, where Material is " << track.GetMaterial()  << std::endl;
+  if(track.GetPosition()==posini)std::cout  << "G4SQLoopProcess::AlongStepDoIt  MomentumDirection " << track.GetMomentumDirection().eta()  << " track GetPostion  " << track.GetPosition()/cm  << " trackId " << track.GetTrackID() << " parentId: " << track.GetParentID() << " GlobalTime " << track.GetGlobalTime()/ns << " TotalEnergy: " << track.GetTotalEnergy()/GeV << " Velocity " << track.GetVelocity()/m/ns << std::endl;
+  //if(track.GetPosition()==posini) std::cout << "G4SQLoopProcess::AlongStepDoIt particle is back at posini, where Material is " << track.GetMaterial()  << std::endl;
 
   fParticleChange->Clear();
   fParticleChange->Initialize(track);
   fParticleChange->ProposeWeight(track.GetWeight());
-
-  //fParticleChange->ProposeGlobalTime(globaltimeini);
-  //fParticleChange->ProposeLocalTime(localtimeini);
-  //fParticleChange->ProposeProperTime(propertimeini); 
+  if(fabs(track.GetMomentumDirection().eta())>4.){std::cout << "G4SQLoopProcess::AlongStepDoIt particle getting killed because too large eta"<< std::endl; fParticleChange->ProposeTrackStatus(fStopAndKill);}
 
   return fParticleChange;
 }
@@ -58,10 +48,6 @@ G4double G4SQLoopProcess::GetContinuousStepLimit(const G4Track& track, G4double 
 void G4SQLoopProcess::StartTracking(G4Track * aTrack)
 {
   posini = aTrack->GetPosition();
-  globaltimeini = aTrack->GetGlobalTime();  
-  localtimeini = aTrack->GetLocalTime();
-  propertimeini = aTrack->GetProperTime();
-  nreset = 0;
 }
 
 

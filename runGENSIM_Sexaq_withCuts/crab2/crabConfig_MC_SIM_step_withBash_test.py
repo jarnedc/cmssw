@@ -1,6 +1,6 @@
 from WMCore.Configuration import Configuration
 
-day = "16042019"
+day = "17072019"
 version = "v1"
 
 config = Configuration()
@@ -15,12 +15,12 @@ config.JobType.psetName = 'sexaq_cfg_original_withGrandDaughterpdgIdCuts_for_CRA
 
 config.section_('Data') 
 config.Data.unitsPerJob = 1 
-config.Data.totalUnits = 7000 
+config.Data.totalUnits = 10000 
 config.Data.publication = False 
 config.Data.splitting = 'FileBased' 
 config.Data.outLFNDirBase = '/store/user/jdeclerc/crmc_Sexaq/GENSIM' 
-config.Data.userInputFiles = open('/user/jdeclerc/CMSSW_7_1_20_patch2/src/runGENSIM_Sexaq_withCuts/crab2/inputFiles.txt').readlines() 
-config.Data.outputPrimaryDataset = "CRAB_SimSexaq_7000GENInputFiles"
+config.Data.userInputFiles = open('/user/jdeclerc/CMSSW_7_1_20_patch2/src/runGENSIM_Sexaq_withCuts/crab2/inputFilesTrial13.txt').readlines() 
+config.Data.outputPrimaryDataset = "CRAB_SimSexaq_withSLoopingSpherical_120cmborder_neutronXS_0p1_inputFilesTrial13"
 
 config.section_('User') 
 config.User.voGroup = 'becms'
