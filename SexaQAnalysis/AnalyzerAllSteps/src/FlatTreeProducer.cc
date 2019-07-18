@@ -279,7 +279,7 @@ void FlatTreeProducer::FillBranches(const reco::VertexCompositeCandidate * RECO_
 	double dxyLambdaPVmin = AnalyzerAllSteps::dxy_signed_line_point(RECOAntiSInteractionVertex,RECOAntiSDaug1Momentum,bestPVdzLambda);
 
 	//if the RECO S particle fails one of the below cuts than don't fill the tree. These already cut the majority of the background, so the background trees will be much smaller, which is nice. 
-	if(RECOLxy_interactionVertex < MinLxyCut || RECOErrorLxy_interactionVertex > MaxErrorLxyCut || RECO_Smass < 0.)return;
+	if(RECOLxy_interactionVertex < AnalyzerAllSteps::MinLxyCut || RECOErrorLxy_interactionVertex > AnalyzerAllSteps::MaxErrorLxyCut || RECO_Smass < 0.)return;
 	nSavedRECOS++;
 
 	Init();	
