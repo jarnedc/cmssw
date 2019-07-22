@@ -1,13 +1,13 @@
 from WMCore.Configuration import Configuration
 
-day = "16072019"
-version = "v1"
+day = "21072019"
+version = "v2"
 
 config = Configuration()
 config.section_('General')
 config.General.transferOutputs = True
 config.General.transferLogs = True
-config.General.requestName = 'AnalyzerAllStepsStep2SexaqWithPU2016NeutrinoGun_tryToFix_8_'+day+'_'+version 
+config.General.requestName = 'AnalyzerAllStepsSkimmedSexaqWithPU2016NeutrinoGun_tryToFix_8_'+day+'_'+version 
 
 config.section_('JobType') 
 config.JobType.pluginName = 'Analysis' 
@@ -18,7 +18,7 @@ config.Data.unitsPerJob = 1
 config.Data.totalUnits = 7000
 config.Data.publication = False 
 config.Data.splitting = 'FileBased' 
-config.Data.outLFNDirBase = '/store/user/jdeclerc/crmc_Sexaq/Analyzed_Step2' 
+config.Data.outLFNDirBase = '/store/user/jdeclerc/crmc_Sexaq/Analyzed_Skimmed' 
 #config.Data.outLFNDirBase = '/store/user/jdeclerc/data_Sexaq/Analyzed/trialK' 
 config.Data.userInputFiles = open('/user/jdeclerc/CMSSW_8_0_30/src/SexaQAnalysis/AnalyzerAllSteps/test/wihtMatchingOnHits/inputFiles.txt').readlines() 
 config.Data.outputPrimaryDataset = "CRAB_AnalyzerAllStep2_WithPU2016NeutrinoGun_tryToFix_8_"+day+'_'+version
