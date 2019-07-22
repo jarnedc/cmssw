@@ -1721,7 +1721,7 @@ void AnalyzerGEN::RecoEvaluationAntiS(const reco::Candidate  * genParticle, edm:
 	histos_th1f["h_GENRECO_All_AntiS_eta"]->Fill(GENAntiS->eta());	
 	histos_th1f["h_GENRECO_All_AntiS_phi"]->Fill(GENAntiS->phi());	
 	histos_th2f["h2_GENRECO_All_AntiS_vx_vy"]->Fill(GENAntiS->vx(),GENAntiS->vy());
-	histos_th2f["h2_GENRECO_All_AntiS_vx_vz"]->Fill(GENAntiS->vx(),GENAntiS->vz());
+	histos_th2f["h2_GENRECO_All_AntiS_lxy_vz"]->Fill(GENLxy,GENAntiS->vz());
 	histos_th1f["h_GENRECO_All_AntiS_lxy"]->Fill(GENLxy);	
 	histos_th1f["h_GENRECO_All_AntiS_lxy_interactionVertex"]->Fill(GENLxy_interactionVertex);	
 	histos_th1f["h_GENRECO_All_AntiS_vz"]->Fill(GENAntiS->vz());	

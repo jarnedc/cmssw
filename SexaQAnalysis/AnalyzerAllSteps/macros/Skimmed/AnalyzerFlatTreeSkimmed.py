@@ -18,6 +18,7 @@ h_antiS_eta_pz = TH2F('h_antiS_eta_pz',';#bar{S} #eta; #bar{S} |p_{z}| (GeV); #E
 
 h_antiS_vx_vy = TH2F('h_antiS_vx_vy',';#bar{S} interaction vertex v_{x} (cm); #bar{S} interaction vertex v_{y} (cm); #Entries',240,-120,120,240,-120,120)
 h_antiS_vz_vx = TH2F('h_antiS_vz_vx',';#bar{S} interaction vertex v_{z} (cm); #bar{S} interaction vertex v_{x} (cm); #Entries',240,-120,120,240,-120,120)
+h_antiS_vz_lxy = TH2F('h_antiS_vz_lxy',';#bar{S} interaction vertex v_{z} (cm); #bar{S} interaction vertex l_{0} (cm); #Entries',240,-120,120,120,0,120)
 
 nEntries = tree.GetEntries()
 print 'Number of entries in the tree: ', nEntries
@@ -34,6 +35,7 @@ for i in range(0,nEntries):
 	h_antiS_eta_pz.Fill(tree._S_eta[0],abs(tree._S_pz[0]))
 	h_antiS_vx_vy.Fill(tree._S_vx[0],tree._S_vy[0])
 	h_antiS_vz_vx.Fill(tree._S_vz[0],tree._S_vx[0])
+	h_antiS_vz_lxy.Fill(tree._S_vz[0],tree._S_lxy_interaction_vertex[0])
 
 c_antiS_mass = TCanvas("c_antiS_mass","");
 h_antiS_mass.DrawNormalized()
