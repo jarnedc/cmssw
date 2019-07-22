@@ -294,13 +294,13 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
 
       if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda) outfile << "------- \n";
       // measure distance between tracks at their closest approach
-      if (!posTransTkPtr->impactPointTSCP().isValid() || !negTransTkPtr->impactPointTSCP().isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "0 \n";};continue;}
+      if (!posTransTkPtr->impactPointTSCP().isValid() || !negTransTkPtr->impactPointTSCP().isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "AAA \n";};continue;}
       FreeTrajectoryState const & posState = posTransTkPtr->impactPointTSCP().theState();
       FreeTrajectoryState const & negState = negTransTkPtr->impactPointTSCP().theState();
       ClosestApproachInRPhi cApp;
       cApp.calculate(posState, negState);
       
-      if (!cApp.status()){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "1";};continue;}
+      if (!cApp.status()){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "BBB";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "1 passed ClosestApproachInRPhi valid" << std::endl;}
       float dca = std::abs(cApp.distance());
 
@@ -322,20 +322,20 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda)   std::cout << "posTrack: innermomentum xyz: " << positiveTrackRef->innerMomentum().X() << "," << positiveTrackRef->innerMomentum().Y() << "," << positiveTrackRef->innerMomentum().Z()  << std::endl;
 
 
-      if (dca > tkDCACut_){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "2 \n";};continue;}
+      if (dca > tkDCACut_){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "CCC, DCA = " << dca << "\n";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "2 passed closest approach cut" << std::endl;}
 
       // the POCA should at least be in the sensitive volume
       GlobalPoint cxPt = cApp.crossingPoint();
-      if (sqrt(cxPt.x()*cxPt.x() + cxPt.y()*cxPt.y()) > 120. || std::abs(cxPt.z()) > 300.) {if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "3 \n";};continue;}
+      if (sqrt(cxPt.x()*cxPt.x() + cxPt.y()*cxPt.y()) > 120. || std::abs(cxPt.z()) > 300.) {if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "DDD \n";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "3 passed POCA cut" << std::endl;}
 
       // the tracks should at least point in the same quadrant
       TrajectoryStateClosestToPoint const & posTSCP = posTransTkPtr->trajectoryStateClosestToPoint(cxPt);
       TrajectoryStateClosestToPoint const & negTSCP = negTransTkPtr->trajectoryStateClosestToPoint(cxPt);
-      if (!posTSCP.isValid() || !negTSCP.isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "4 \n";};continue;}
+      if (!posTSCP.isValid() || !negTSCP.isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "EEE \n";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "4 passed quadrant cut" << std::endl;}
-      if (posTSCP.momentum().dot(negTSCP.momentum())  < 0) {if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "5 \n";};continue;}
+      if (posTSCP.momentum().dot(negTSCP.momentum())  < 0) {if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "FFF \n";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "5 passed cut on dot product" << std::endl;}
      
       // calculate mPiPi
@@ -343,7 +343,21 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
       double totalESq = totalE*totalE;
       double totalPSq = (posTSCP.momentum() + negTSCP.momentum()).mag2();
       double mass = sqrt(totalESq - totalPSq);
-      if (mass > mPiPiCut_){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "6 \n";};continue;}
+      //when one of the tracks is moving back in the direction of the beamspot this is not know by the track reconstruction because there is no timing for the hits. Therefore the momentum vector of this track will be taken to point outwards. Therefore you could try to take teh track with the lowest momentum (this is likely the one which is going back to the beamspot), revert it's momentum and calculate the mass of the pair again
+//      double totalPSq_trial2 = (-posTSCP.momentum() + negTSCP.momentum()).mag2();
+//      double mass_trial2 = sqrt(totalESq - totalPSq_trial2);
+//
+//      double totalPSq_trial3 = (posTSCP.momentum() - negTSCP.momentum()).mag2();
+//      double mass_trial3 = sqrt(totalESq - totalPSq_trial3);      
+//
+//      double totalPSq_trial4 = (-posTSCP.momentum() - negTSCP.momentum()).mag2();
+//      double mass_trial4 = sqrt(totalESq - totalPSq_trial4);      
+//
+//      if (mass > mPiPiCut_ and mass_trial2 > mPiPiCut_ and mass_trial3 > mPiPiCut_ and mass_trial4 > mPiPiCut_){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "GGG, inv mass of track pair: " << mass << " alternative masses: " << mass_trial2 << " " << mass_trial3 << " " << mass_trial4 <<  " with momenta " << posTSCP.momentum().mag() << " and " << negTSCP.momentum().mag() << " and dot product between momenta: " << posTSCP.momentum().dot(negTSCP.momentum()) << "\n";};continue;}
+//      else if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "Good invariant mass of the tracks: " <<  mass << " alternative mass: " << mass_trial2 << " " << mass_trial3 << " " << mass_trial4 << " with momenta " << posTSCP.momentum().mag() << " and " << negTSCP.momentum().mag() << " and dot product between momenta: " << posTSCP.momentum().dot(negTSCP.momentum()) << "\n";}
+//
+      if (mass > mPiPiCut_){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "GGG, inv mass of track pair: " << mass << " with momenta " << posTSCP.momentum().mag() << " and " << negTSCP.momentum().mag() << " and dot product between momenta: " << posTSCP.momentum().dot(negTSCP.momentum()) << "\n";};continue;}
+
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "6 passed inv mass PiPi cut" << std::endl;}
 
       // Fill the vector of TransientTracks to send to KVF
@@ -362,11 +376,11 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
          AdaptiveVertexFitter theAdaptiveFitter;
          theRecoVertex = theAdaptiveFitter.vertex(transTracks);
       }
-      if (!theRecoVertex.isValid()){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "7 \n";};continue;}
+      if (!theRecoVertex.isValid()){ if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "HHH \n";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "7 passed vertexing" << std::endl;}
      
       reco::Vertex theVtx = theRecoVertex;
-      if (theVtx.normalizedChi2() > vtxChi2Cut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "8 \n";};continue;}
+      if (theVtx.normalizedChi2() > vtxChi2Cut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){ outfile << "III \n";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "8 passed vertex Chi2 cut" << std::endl;}
       GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z());
 
@@ -376,14 +390,14 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
       SVector3 distVecXY(vtxPos.x()-referencePos.x(), vtxPos.y()-referencePos.y(), 0.);
       double distMagXY = ROOT::Math::Mag(distVecXY);
       double sigmaDistMagXY = sqrt(ROOT::Math::Similarity(totalCov, distVecXY)) / distMagXY;
-      if (distMagXY/sigmaDistMagXY < vtxDecaySigXYCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "9 \n";}; continue;}
+      if (distMagXY/sigmaDistMagXY < vtxDecaySigXYCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "JJJ \n";}; continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "9 passed 2D sign cut" << std::endl;}
 
       // 3D decay significance
       SVector3 distVecXYZ(vtxPos.x()-referencePos.x(), vtxPos.y()-referencePos.y(), vtxPos.z()-referencePos.z());
       double distMagXYZ = ROOT::Math::Mag(distVecXYZ);
       double sigmaDistMagXYZ = sqrt(ROOT::Math::Similarity(totalCov, distVecXYZ)) / distMagXYZ;
-      if (distMagXYZ/sigmaDistMagXYZ < vtxDecaySigXYZCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "10 \n";}; continue;}
+      if (distMagXYZ/sigmaDistMagXYZ < vtxDecaySigXYZCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "KKK \n";}; continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "10 passed 3D sign cut" << std::endl;}
 
       // make sure the vertex radius is within the inner track hit radius
@@ -391,13 +405,13 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
          reco::Vertex::Point posTkHitPos = positiveTrackRef->innerPosition();
          double posTkHitPosD2 =  (posTkHitPos.x()-referencePos.x())*(posTkHitPos.x()-referencePos.x()) +
             (posTkHitPos.y()-referencePos.y())*(posTkHitPos.y()-referencePos.y());
-         if (sqrt(posTkHitPosD2) < (distMagXY - sigmaDistMagXY*innerHitPosCut_)){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "11 \n";}; continue;}
+         if (sqrt(posTkHitPosD2) < (distMagXY - sigmaDistMagXY*innerHitPosCut_)){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "LLL \n";}; continue;}
       }
       if (innerHitPosCut_ > 0. && negativeTrackRef->innerOk()) {
          reco::Vertex::Point negTkHitPos = negativeTrackRef->innerPosition();
          double negTkHitPosD2 = (negTkHitPos.x()-referencePos.x())*(negTkHitPos.x()-referencePos.x()) +
             (negTkHitPos.y()-referencePos.y())*(negTkHitPos.y()-referencePos.y());
-         if (sqrt(negTkHitPosD2) < (distMagXY - sigmaDistMagXY*innerHitPosCut_)){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "11 \n";}; continue;}
+         if (sqrt(negTkHitPosD2) < (distMagXY - sigmaDistMagXY*innerHitPosCut_)){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "MMM \n";}; continue;}
       }
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "11 passed inner track hit radius cut" << std::endl;}
       
@@ -426,7 +440,7 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
          trajMins.reset(new TrajectoryStateClosestToPoint(negTransTkPtr->trajectoryStateClosestToPoint(vtxPos)));
       }
 
-      if (trajPlus.get() == 0 || trajMins.get() == 0 || !trajPlus->isValid() || !trajMins->isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "12 \n";}; continue;}
+      if (trajPlus.get() == 0 || trajMins.get() == 0 || !trajPlus->isValid() || !trajMins->isValid()){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "NNN \n";}; continue;}
 
       GlobalVector positiveP(trajPlus->momentum());
       GlobalVector negativeP(trajMins->momentum());
@@ -438,14 +452,14 @@ void V0Fitter::fitAll(const edm::Event& iEvent, const edm::EventSetup& iSetup,
       double px = totalP.x();
       double py = totalP.y();
       double angleXY = (dx*px+dy*py)/(sqrt(dx*dx+dy*dy)*sqrt(px*px+py*py));
-      if (angleXY < cosThetaXYCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "13 \n";};continue;}
+      if (angleXY < cosThetaXYCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "OOO \n";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "13 passed 2D pointing angle cut" << std::endl;}
 
       // 3D pointing angle
       double dz = theVtx.z()-referencePos.z();
       double pz = totalP.z();
       double angleXYZ = (dx*px+dy*py+dz*pz)/(sqrt(dx*dx+dy*dy+dz*dz)*sqrt(px*px+py*py+pz*pz));
-      if (angleXYZ < cosThetaXYZCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "14 \n";};continue;}
+      if (angleXYZ < cosThetaXYZCut_){if(tracksAreFromAntiSKs || tracksAreFromAntiSAntiLambda){outfile << "PPP \n";};continue;}
       if(tracksAreFromAntiSKs||tracksAreFromAntiSAntiLambda){std::cout << "14 passed 3D pointing angle cut" << std::endl;}
 
       // calculate total energy of V0 3 ways: assume it's a kShort, a Lambda, or a LambdaBar.
