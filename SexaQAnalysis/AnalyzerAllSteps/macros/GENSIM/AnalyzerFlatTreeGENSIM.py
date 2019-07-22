@@ -108,6 +108,7 @@ h_n_interactions_vs_n_loops_endcap_more_forward_than_endcap = TH1F("h_n_interact
 h2_interaction_vertex_vx_vy = TH2F("h2_interaction_vertex_vx_vy","; v_{x} #bar{S} interaction vertex (cm); v_{y} #bar{S} interaction vertex (cm);#Entries",2500,-125,125,2500,-125,125)
 h2_interaction_vertex_vz_vx = TH2F("h2_interaction_vertex_vz_vx","; v_{z} #bar{S} interaction vertex (cm); v_{x} #bar{S} interaction vertex (cm);#Entries",2500,-125,125,2500,-125,125)
 h2_interaction_vertex_vz_vy = TH2F("h2_interaction_vertex_vz_vy","; v_{z} #bar{S} interaction vertex (cm); v_{y} #bar{S} interaction vertex (cm);#Entries",2500,-125,125,2500,-125,125)
+h2_interaction_vertex_vz_lxy = TH2F("h2_interaction_vertex_vz_lxy","; v_{z} #bar{S} interaction vertex (cm); l_{0} #bar{S} interaction vertex (cm);#Entries",2500,-125,125,1250,0,125)
 
 for i in range(0,nEntries):
 	tree.GetEntry(i)
@@ -116,6 +117,7 @@ for i in range(0,nEntries):
 		h2_interaction_vertex_vx_vy.Fill(tree._S_vx_interaction_vertex[j],tree._S_vy_interaction_vertex[j])
 		h2_interaction_vertex_vz_vx.Fill(tree._S_vz_interaction_vertex[j],tree._S_vx_interaction_vertex[j])
 		h2_interaction_vertex_vz_vy.Fill(tree._S_vz_interaction_vertex[j],tree._S_vy_interaction_vertex[j])
+		h2_interaction_vertex_vz_lxy.Fill(tree._S_vz_interaction_vertex[j],tree._S_lxy_interaction_vertex[j])
 		h_n_interactions_vs_n_loops.Fill(tree._S_n_loops[j])
 		if(abs(tree._S_eta[j])<1.1):
 			h_n_interactions_vs_n_loops_barrel.Fill(tree._S_n_loops[j])
@@ -163,22 +165,30 @@ h_vz_creation_vertex_AntiLambda_daughters = TH1F("h_vz_creation_vertex_AntiLambd
 
 h2_vx_vy_creation_vertex_Ks_daughters = TH2F("h2_vx_vy_creation_vertex_Ks_daughters",";v_{x} decay vertex K_{S}^{0} (cm); v_{y} decay vertex K_{S}^{0} (cm);#Entries",240,-120,120,240,-120,120)
 h2_vz_vx_creation_vertex_Ks_daughters = TH2F("h2_vz_vx_creation_vertex_Ks_daughters",";v_{z} decay vertex K_{S}^{0} (cm);v_{x} decay vertex K_{S}^{0} (cm);#Entries",600,-300,300,240,-120,120)
+h2_vz_lxy_creation_vertex_Ks_daughters = TH2F("h2_vz_lxy_creation_vertex_Ks_daughters",";v_{z} decay vertex K_{S}^{0} (cm);l_{0} decay vertex K_{S}^{0} (cm);#Entries",600,-300,300,120,0,120)
 h2_vx_vy_creation_vertex_AntiLambda_daughters = TH2F("h2_vx_vy_creation_vertex_AntiLambda_daughters",";v_{x} decay vertex #bar{#Lambda}^{0} (cm);v_{y} decayvertex #bar{#Lambda}^{0} (cm);#Entries",240,-120,120,240,-120,120)
 h2_vz_vx_creation_vertex_AntiLambda_daughters = TH2F("h2_vz_vx_creation_vertex_AntiLambda_daughters",";v_{z} decay vertex #bar{#Lambda}^{0} (cm);v_{x} decay vertex #bar{#Lambda}^{0} (cm);#Entries",600,-300,300,240,-120,120)
+h2_vz_lxy_creation_vertex_AntiLambda_daughters = TH2F("h2_vz_lxy_creation_vertex_AntiLambda_daughters",";v_{z} decay vertex #bar{#Lambda}^{0} (cm);l_{0} decay vertex #bar{#Lambda}^{0} (cm);#Entries",600,-300,300,120,0,120)
 
-prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt",";v_{x} decay vertex K_{S}^{0} (cm); v_{y} decay vertex K_{S}^{0} (cm);mean number of tracker layers hit by the track from the K_{S}^{0} daughter",240,-120,120,240,-120,120)
-prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt",";v_{z} decay vertex K_{S}^{0} (cm); v_{x} decay vertex K_{S}^{0} (cm);mean number of tracker layers hit by the track from the K_{S}^{0} daughter",600,-300,300,240,-120,120)
-prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt",";v_{x} decay vertex #bar{#Lambda}^{0} (cm); v_{y} decay vertex #bar{#Lambda}^{0} (cm);mean number of tracker layers hit by the track from the #bar{p} daughter",240,-120,120,240,-120,120)
-prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); v_{x} decay vertex #bar{#Lambda}^{0} (cm);mean number of tracker layers hit by the track from the #bar{p} daughter",600,-300,300,240,-120,120)
-prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt",";v_{x} decay vertex #bar{#Lambda}^{0} (cm); v_{y} decay vertex #bar{#Lambda}^{0} (cm);mean number of tracker layers hit by the track from the #pi^{+} daughter",240,-120,120,240,-120,120)
-prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); v_{x} decay vertex #bar{#Lambda}^{0} (cm);mean number of tracker layers hit by the track from the #pi^{+} daughter",600,-300,300,240,-120,120)
+prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt",";v_{x} decay vertex K_{S}^{0} (cm); v_{y} decay vertex K_{S}^{0} (cm);mean #tracker layers hit by the track from K_{S}^{0} daughter",240,-120,120,240,-120,120)
+prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt",";v_{z} decay vertex K_{S}^{0} (cm); v_{x} decay vertex K_{S}^{0} (cm);mean #tracker layers hit by the track from K_{S}^{0} daughter",600,-300,300,240,-120,120)
+prof2_vz_lxy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt = TProfile2D("prof2_lxy_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt",";v_{z} decay vertex K_{S}^{0} (cm); l_{0} decay vertex K_{S}^{0} (cm);mean #tracker layers hit by the track from K_{S}^{0} daughter",600,-300,300,120,0,120)
+prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt",";v_{x} decay vertex #bar{#Lambda}^{0} (cm); v_{y} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #bar{p} daughter",240,-120,120,240,-120,120)
+prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); v_{x} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #bar{p} daughter",600,-300,300,240,-120,120)
+prof2_vz_lxy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vz_lxy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); l_{0} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #bar{p} daughter",600,-300,300,120,0,120)
+prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt",";v_{x} decay vertex #bar{#Lambda}^{0} (cm); v_{y} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #pi^{+} daughter",240,-120,120,240,-120,120)
+prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); v_{x} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #pi^{+} daughter",600,-300,300,240,-120,120)
+prof2_vz_lxy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt = TProfile2D("prof2_vz_lxy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); l_{0} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #pi^{+} daughter",600,-300,300,120,0,120)
 
-prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt = TProfile2D("prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt",";v_{x} decay vertex K_{S}^{0} (cm); v_{y} decay vertex K_{S}^{0} (cm);mean number of tracker layers hit by the track from the K_{S}^{0} daughter",240,-120,120,240,-120,120)
-prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt",";v_{z} decay vertex K_{S}^{0} (cm); v_{x} decay vertex K_{S}^{0} (cm);mean number of tracker layers hit by the track from the K_{S}^{0} daughter",600,-300,300,240,-120,120)
-prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt = TProfile2D("prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt",";v_{x} decay vertex #bar{#Lambda}^{0} (cm); v_{y} decay vertex #bar{#Lambda}^{0} (cm);mean number of tracker layers hit by the track from the #bar{p} daughter",240,-120,120,240,-120,120)
-prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); v_{x} decay vertex #bar{#Lambda}^{0} (cm);mean number of tracker layers hit by the track from the #bar{p} daughter",600,-300,300,240,-120,120)
-prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt = TProfile2D("prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt",";v_{x} decay vertex #bar{#Lambda}^{0} (cm); v_{y} decay vertex #bar{#Lambda}^{0} (cm);mean number of tracker layers hit by the track from the #pi^{+} daughter",240,-120,120,240,-120,120)
-prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); v_{x} decay vertex #bar{#Lambda}^{0} (cm);mean number of tracker layers hit by the track from the #pi^{+} daughter",600,-300,300,240,-120,120)
+prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt = TProfile2D("prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt",";v_{x} decay vertex K_{S}^{0} (cm); v_{y} decay vertex K_{S}^{0} (cm);mean #tracker layers hit by the track from K_{S}^{0} daughter",240,-120,120,240,-120,120)
+prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt",";v_{z} decay vertex K_{S}^{0} (cm); v_{x} decay vertex K_{S}^{0} (cm);mean #tracker layers hit by the track from K_{S}^{0} daughter",600,-300,300,240,-120,120)
+prof2_vz_lxy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_lxy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt",";v_{z} decay vertex K_{S}^{0} (cm); l_{0} decay vertex K_{S}^{0} (cm);mean #tracker layers hit by the track from K_{S}^{0} daughter",600,-300,300,120,0,120)
+prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt = TProfile2D("prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt",";v_{x} decay vertex #bar{#Lambda}^{0} (cm); v_{y} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #bar{p} daughter",240,-120,120,240,-120,120)
+prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); v_{x} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #bar{p} daughter",600,-300,300,240,-120,120)
+prof2_vz_lxy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_lxy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); l_{0} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #bar{p} daughter",600,-300,300,120,0,120)
+prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt = TProfile2D("prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt",";v_{x} decay vertex #bar{#Lambda}^{0} (cm); v_{y} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #pi^{+} daughter",240,-120,120,240,-120,120)
+prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); v_{x} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #pi^{+} daughter",600,-300,300,240,-120,120)
+prof2_vz_lxy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt = TProfile2D("prof2_vz_lxy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt",";v_{z} decay vertex #bar{#Lambda}^{0} (cm); l_{0} decay vertex #bar{#Lambda}^{0} (cm);mean #tracker layers hit by the track from #pi^{+} daughter",600,-300,300,120,0,120)
 
 h_antiS_lxy = TH1F('h_antiS_lxy','; #bar{S} interaction vertex l_{0} (cm) ; #Entries',120,0,120)
 h_antiS_vz = TH1F('h_antiS_vz','; #bar{S} interaction vertex |v_{z}| (cm); #Entries',50,0,200)
@@ -218,38 +228,48 @@ for i in range(0,nEntries):
 
 	h2_vx_vy_creation_vertex_Ks_daughters.Fill(tree._GEN_Ks_daughter0_vx[0],tree._GEN_Ks_daughter0_vy[0])
 	h2_vz_vx_creation_vertex_Ks_daughters.Fill(tree._GEN_Ks_daughter0_vz[0],tree._GEN_Ks_daughter0_vx[0])
+	h2_vz_lxy_creation_vertex_Ks_daughters.Fill(tree._GEN_Ks_daughter0_vz[0],tree._GEN_Ks_daughter0_lxy[0])
 	h2_vx_vy_creation_vertex_AntiLambda_daughters.Fill(tree._GEN_AntiLambda_AntiProton_vx[0],tree._GEN_AntiLambda_AntiProton_vy[0])
 	h2_vz_vx_creation_vertex_AntiLambda_daughters.Fill(tree._GEN_AntiLambda_AntiProton_vz[0],tree._GEN_AntiLambda_AntiProton_vx[0])
+	h2_vz_lxy_creation_vertex_AntiLambda_daughters.Fill(tree._GEN_AntiLambda_AntiProton_vz[0],tree._GEN_AntiLambda_AntiProton_lxy[0])
 
 	#fill the tprofiles
 	#the Ks daughters are both pions, so can put them in same tprofiles
 	if(tree._GEN_Ks_daughter0_pt[0]>0.1 and tree._GEN_Ks_daughter0_pt[0]<0.9):
 		prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt.Fill(tree._GEN_Ks_daughter0_vx[0],tree._GEN_Ks_daughter0_vy[0],tree._GEN_Ks_daughter0_numberOfTrackerLayers[0])
 		prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt.Fill(tree._GEN_Ks_daughter0_vz[0],tree._GEN_Ks_daughter0_vx[0],tree._GEN_Ks_daughter0_numberOfTrackerLayers[0])
+		prof2_vz_lxy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt.Fill(tree._GEN_Ks_daughter0_vz[0],tree._GEN_Ks_daughter0_lxy[0],tree._GEN_Ks_daughter0_numberOfTrackerLayers[0])
 	if(tree._GEN_Ks_daughter1_pt[0]>0.1 and tree._GEN_Ks_daughter1_pt[0]<0.9):
 		prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt.Fill(tree._GEN_Ks_daughter1_vx[0],tree._GEN_Ks_daughter1_vy[0],tree._GEN_Ks_daughter1_numberOfTrackerLayers[0])
 		prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt.Fill(tree._GEN_Ks_daughter1_vz[0],tree._GEN_Ks_daughter1_vx[0],tree._GEN_Ks_daughter1_numberOfTrackerLayers[0])
+		prof2_vz_lxy_creation_vertex_Ks_daughters_numberOfTrackerLayers_lowPt.Fill(tree._GEN_Ks_daughter1_vz[0],tree._GEN_Ks_daughter1_lxy[0],tree._GEN_Ks_daughter1_numberOfTrackerLayers[0])
 
 	if(tree._GEN_AntiLambda_AntiProton_pt[0]>0.1 and tree._GEN_AntiLambda_AntiProton_pt[0]<0.9):
 		prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt.Fill(tree._GEN_AntiLambda_AntiProton_vx[0],tree._GEN_AntiLambda_AntiProton_vy[0],tree._GEN_AntiLambda_AntiProton_numberOfTrackerLayers[0])
 		prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt.Fill(tree._GEN_AntiLambda_AntiProton_vz[0],tree._GEN_AntiLambda_AntiProton_vx[0],tree._GEN_AntiLambda_AntiProton_numberOfTrackerLayers[0])
+		prof2_vz_lxy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_lowPt.Fill(tree._GEN_AntiLambda_AntiProton_vz[0],tree._GEN_AntiLambda_AntiProton_lxy[0],tree._GEN_AntiLambda_AntiProton_numberOfTrackerLayers[0])
 	if(tree._GEN_AntiLambda_Pion_pt[0]>0.1 and tree._GEN_AntiLambda_Pion_pt[0]<0.9):
 		prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt.Fill(tree._GEN_AntiLambda_Pion_vx[0],tree._GEN_AntiLambda_Pion_vy[0],tree._GEN_AntiLambda_Pion_numberOfTrackerLayers[0])
 		prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt.Fill(tree._GEN_AntiLambda_Pion_vz[0],tree._GEN_AntiLambda_Pion_vx[0],tree._GEN_AntiLambda_Pion_numberOfTrackerLayers[0])
+		prof2_vz_lxy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_lowPt.Fill(tree._GEN_AntiLambda_Pion_vz[0],tree._GEN_AntiLambda_Pion_lxy[0],tree._GEN_AntiLambda_Pion_numberOfTrackerLayers[0])
 
 	if(tree._GEN_Ks_daughter0_pt[0]>0.9):
 		prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt.Fill(tree._GEN_Ks_daughter0_vx[0],tree._GEN_Ks_daughter0_vy[0],tree._GEN_Ks_daughter0_numberOfTrackerLayers[0])
 		prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt.Fill(tree._GEN_Ks_daughter0_vz[0],tree._GEN_Ks_daughter0_vx[0],tree._GEN_Ks_daughter0_numberOfTrackerLayers[0])
+		prof2_vz_lxy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt.Fill(tree._GEN_Ks_daughter0_vz[0],tree._GEN_Ks_daughter0_lxy[0],tree._GEN_Ks_daughter0_numberOfTrackerLayers[0])
 	if(tree._GEN_Ks_daughter1_pt[0]>0.9):
 		prof2_vx_vy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt.Fill(tree._GEN_Ks_daughter1_vx[0],tree._GEN_Ks_daughter1_vy[0],tree._GEN_Ks_daughter1_numberOfTrackerLayers[0])
 		prof2_vz_vx_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt.Fill(tree._GEN_Ks_daughter1_vz[0],tree._GEN_Ks_daughter1_vx[0],tree._GEN_Ks_daughter1_numberOfTrackerLayers[0])
+		prof2_vz_lxy_creation_vertex_Ks_daughters_numberOfTrackerLayers_highPt.Fill(tree._GEN_Ks_daughter1_vz[0],tree._GEN_Ks_daughter1_lxy[0],tree._GEN_Ks_daughter1_numberOfTrackerLayers[0])
 	
 	if(tree._GEN_AntiLambda_AntiProton_pt[0]>0.9):
 		prof2_vx_vy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt.Fill(tree._GEN_AntiLambda_AntiProton_vx[0],tree._GEN_AntiLambda_AntiProton_vy[0],tree._GEN_AntiLambda_AntiProton_numberOfTrackerLayers[0])
 		prof2_vz_vx_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt.Fill(tree._GEN_AntiLambda_AntiProton_vz[0],tree._GEN_AntiLambda_AntiProton_vx[0],tree._GEN_AntiLambda_AntiProton_numberOfTrackerLayers[0])
+		prof2_vz_lxy_creation_vertex_AntiLambda_AntiProton_numberOfTrackerLayers_highPt.Fill(tree._GEN_AntiLambda_AntiProton_vz[0],tree._GEN_AntiLambda_AntiProton_lxy[0],tree._GEN_AntiLambda_AntiProton_numberOfTrackerLayers[0])
 	if(tree._GEN_AntiLambda_Pion_pt[0]>0.9):
 		prof2_vx_vy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt.Fill(tree._GEN_AntiLambda_Pion_vx[0],tree._GEN_AntiLambda_Pion_vy[0],tree._GEN_AntiLambda_Pion_numberOfTrackerLayers[0])
 		prof2_vz_vx_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt.Fill(tree._GEN_AntiLambda_Pion_vz[0],tree._GEN_AntiLambda_Pion_vx[0],tree._GEN_AntiLambda_Pion_numberOfTrackerLayers[0])
+		prof2_vz_lxy_creation_vertex_AntiLambda_Pion_numberOfTrackerLayers_highPt.Fill(tree._GEN_AntiLambda_Pion_vz[0],tree._GEN_AntiLambda_Pion_lxy[0],tree._GEN_AntiLambda_Pion_numberOfTrackerLayers[0])
 
 momenta_daughters_and_grandaughters_dir.cd()
 
