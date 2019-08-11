@@ -6,43 +6,50 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('python')
 
 #for MC: you want to add the extra collections so that you will be able to do the trackmatching on hits.
-collections_to_keep = cms.untracked.vstring(
-    'drop *',
-    'keep *_InitialProducer_*_*',
-    'keep recoVertexs_offlinePrimaryVertices_*_*',
-    'keep recoBeamSpot_offlineBeamSpot_*_*',
-    'keep *_genParticles_*_HLT',
-    'keep recoVertexCompositeCandidates_generalV0Candidates_*_*',
-    'keep recoTracks_lambdaKshortVertexFilter_sParticlesTracks_*',
-    'keep recoVertexCompositePtrCandidates_rMassFilter_sVertexCompositePtrCandidate_*',
-    'keep recoVertexCompositePtrCandidates_sMassFilter_sVertexCompositePtrCandidate_*',
-    'keep *_*_*_SEXAQ',
-    "keep *_genParticlesPlusGEANT_*_*",#this is for MC
-    "keep *_g4SimHits_*_*",#this is for MC
-    "keep *_simSiPixelDigis_*_*",#this is for MC
-    "keep *_simMuonRPCDigis_*_*",#this is for MC
-    "keep *_simSiStripDigis_*_*",#this is for MC
-    "keep *_mix_MergedTrackTruth_*",#this is for MC
-    "keep *_siPixelDigis_*_*",#this is for MC
-    "keep *_siStripDigis_*_*",#this is for MC
-    "keep *_siStripDigis_*_*",#this is for MC
-    "keep *_siPixelClusters_*_*",#this is for MC
-    "keep *_siStripClusters_*_*",#this is for MC
-    "keep *_generalTracks_*_*"#this is for MC
-  )
+#collections_to_keep = cms.untracked.vstring(
+#    'drop *',
+#    'keep *_InitialProducer_*_*',
+#    'keep recoVertexs_offlinePrimaryVertices_*_*',
+#    'keep recoBeamSpot_offlineBeamSpot_*_*',
+#    'keep *_genParticles_*_HLT',
+#    'keep recoVertexCompositeCandidates_generalV0Candidates_*_*',
+#    'keep recoTracks_lambdaKshortVertexFilter_sParticlesTracks_*',
+#    'keep recoVertexCompositePtrCandidates_rMassFilter_sVertexCompositePtrCandidate_*',
+#    'keep recoVertexCompositePtrCandidates_sMassFilter_sVertexCompositePtrCandidate_*',
+#    'keep *_*_*_SEXAQ',
+#    "keep *_genParticlesPlusGEANT_*_*",#this is for MC
+#    "keep *_g4SimHits_*_*",#this is for MC
+#    "keep *_simSiPixelDigis_*_*",#this is for MC
+#    "keep *_simMuonRPCDigis_*_*",#this is for MC
+#    "keep *_simSiStripDigis_*_*",#this is for MC
+#    "keep *_mix_MergedTrackTruth_*",#this is for MC
+#    "keep *_siPixelDigis_*_*",#this is for MC
+#    "keep *_siStripDigis_*_*",#this is for MC
+#    "keep *_siStripDigis_*_*",#this is for MC
+#    "keep *_siPixelClusters_*_*",#this is for MC
+#    "keep *_siStripClusters_*_*",#this is for MC
+#    "keep *_generalTracks_*_*"#this is for MC
+#  )
 
 #for data: do not save the extra collections as things will get heavy
+collections_to_keep = cms.untracked.vstring(
+   'drop *',
+   'keep *_generalTracks_*_*',
+   'keep *_InitialProducer_*_*',
+   'keep recoVertexs_offlinePrimaryVertices_*_*',
+   'keep recoBeamSpot_offlineBeamSpot_*_*',
+   'keep *_genParticles_*_HLT',
+   'keep recoVertexCompositeCandidates_generalV0Candidates_*_*',
+   'keep recoTracks_lambdaKshortVertexFilter_sParticlesTracks_*',
+   'keep recoVertexCompositePtrCandidates_rMassFilter_sVertexCompositePtrCandidate_*',
+   'keep recoVertexCompositePtrCandidates_sMassFilter_sVertexCompositePtrCandidate_*',
+   'keep *_*_*_SEXAQ',
+   'keep *_muons_*_RECO',
+   'keep *_ak4PFJets_*_RECO'
+ )
+
 #collections_to_keep = cms.untracked.vstring(
-#   'drop *',
-#   'keep *_InitialProducer_*_*',
-#   'keep recoVertexs_offlinePrimaryVertices_*_*',
-#   'keep recoBeamSpot_offlineBeamSpot_*_*',
-#   'keep *_genParticles_*_HLT',
-#   'keep recoVertexCompositeCandidates_generalV0Candidates_*_*',
-#   'keep recoTracks_lambdaKshortVertexFilter_sParticlesTracks_*',
-#   'keep recoVertexCompositePtrCandidates_rMassFilter_sVertexCompositePtrCandidate_*',
-#   'keep recoVertexCompositePtrCandidates_sMassFilter_sVertexCompositePtrCandidate_*',
-#   'keep *_*_*_SEXAQ'
+#   'keep *'
 # )
 
 
@@ -80,19 +87,10 @@ else:
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvts))
 
+
 process.source = cms.Source("PoolSource",
-   duplicateCheckMode = cms.untracked.string('checkAllFilesOpened'),
-   fileNames = cms.untracked.vstring(
-   #'file:///user/lowette/SexaQ/RunIISummer16DR80_MinBias_TuneCUETP8M1_13TeV-pythia8_GEN-SIM-RECO_NoPU_RECO_80X_mcRun2_asymptotic_v14-v1_100000_00150044-D075-E611-AAE8-001E67505A2D.root',
-   #single muon data example 
-   #'file:///user/lowette/SexaQ/Run2016H_SingleMuon_AOD_07Aug17-v1_10000_F068EC7F-FB96-E711-96FF-7845C4FC3BFF.root',
-   #Simulated Xi events:
-   #file:/user/jdeclerc/CMSSW_8_0_30/src/runSTEP2_Sexaq/SUS-RunIISummer16DR80Premix-00068_IIDD_step2_trial2_noDataMixing.root',
-   #'file:///user/jdeclerc/Analysis/ParticleGun/CMSSW_8_0_21/src/XiGun_GENSIM_IIDD_10k_events_decay_length_5cm_no_EvtGen_step2.root',
-   #'file:///user/jdeclerc/Analysis/dataSamples/ZeroBiasData/D07C27A2-5690-E711-844F-B083FED429D5.root'
-   #'file:///user/jdeclerc/Analysis/ParticleGun/CMSSW_8_0_21/src/f2prime1525_GENSIM_IIDD_0point5to10GeV1k_MODIFIEDBRANCHINGRATIOS_MODPHI_MODBEAMSPOT_0cm_step2.root'
-   'file:///pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/Step2/CRAB_SimSexaq_cosThetaXYCut_innerHitPosCut/crab_Step2Sexaq_15052019_v1/190515_071013/0000/output_1.root'
-   )
+        fileNames = cms.untracked.vstring(options.inputFiles),
+  duplicateCheckMode = cms.untracked.string ("noDuplicateCheck")
 )
 
 
@@ -150,7 +148,6 @@ process.load("SexaQAnalysis.TreeProducer.Treeproducer_AOD_cfi")
 #process.tree.isData = cms.untracked.bool(options.isData)
 
 process.p = cms.Path(
-#  process.genParticlePlusGEANT *
   process.generalV0Candidates* 
   process.tree*
   process.nEvTotal *
@@ -162,7 +159,6 @@ process.p = cms.Path(
   process.rMassFilter *
   process.sMassFilter *
   process.nEvSMass 
-#  process.tree 
 )
 
 # Output --> not used in the analyzer

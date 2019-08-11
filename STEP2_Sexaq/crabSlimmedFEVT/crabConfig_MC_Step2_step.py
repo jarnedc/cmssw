@@ -1,13 +1,13 @@
 from WMCore.Configuration import Configuration
 
-day = "15072019"
+day = "24072019"
 version = "v1"
 
 config = Configuration()
 config.section_('General')
 config.General.transferOutputs = True
 config.General.transferLogs = True
-config.General.requestName = 'WithPU2016NeutrinoGun_tryToFix_8_trial11'+day+'_'+version 
+config.General.requestName = 'Sexaq_Step2_trial13_'+day+'_'+version 
 
 config.section_('JobType') 
 config.JobType.pluginName = 'Analysis' 
@@ -20,7 +20,7 @@ config.Data.publication = False
 config.Data.splitting = 'FileBased' 
 config.Data.outLFNDirBase = '/store/user/jdeclerc/crmc_Sexaq/Step2' 
 config.Data.userInputFiles = open('/storage_mnt/storage/user/jdeclerc/CMSSW_8_0_30/src/STEP2_Sexaq/crabSlimmedFEVT/inputFiles.txt').readlines()
-config.Data.outputPrimaryDataset = "crab_Step2SexaqWithPU2016NeutrinoGun_tryToFix_8_trial11"
+config.Data.outputPrimaryDataset = "crab_Sexaq_Step2_trial13"
 
 config.section_('User') 
 config.User.voGroup = 'becms'

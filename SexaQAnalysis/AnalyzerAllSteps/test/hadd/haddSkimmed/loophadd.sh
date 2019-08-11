@@ -6,3 +6,7 @@ hadd -f combinedSkimmed_4.root @x04
 hadd -f combinedSkimmed_5.root @x05
 hadd -f combinedSkimmed_6.root @x06
 hadd -f combinedSkimmed_7.root @x07
+hadd -f combinedSkimmed_8.root @x08
+hadd -f combinedSkimmed_9.root @x09
+hadd -f combinedSkimmed_10.root @x10
+hadd -f combinedSkimmed_11.root @x11

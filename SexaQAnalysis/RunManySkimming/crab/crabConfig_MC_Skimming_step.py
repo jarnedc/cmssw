@@ -1,13 +1,13 @@
 from WMCore.Configuration import Configuration
 
-day = "17072019"
+day = "25072019"
 version = "v1"
 
 config = Configuration()
 config.section_('General')
 config.General.transferOutputs = True
 config.General.transferLogs = True
-config.General.requestName = 'SkimmingSexaqWithPU2016NeutrinoGun_tryToFix_8_trial11_'+day+'_'+version 
+config.General.requestName = 'SkimmingSexaq_trial13_'+day+'_'+version 
 
 config.section_('JobType') 
 config.JobType.pluginName = 'Analysis' 
@@ -20,7 +20,7 @@ config.Data.publication = False
 config.Data.splitting = 'FileBased' 
 config.Data.outLFNDirBase = '/store/user/jdeclerc/crmc_Sexaq/Skimmed' 
 config.Data.userInputFiles = open('/user/jdeclerc/CMSSW_8_0_30/src/SexaQAnalysis/RunManySkimming/crab/inputFiles.txt').readlines() 
-config.Data.outputPrimaryDataset = "CRAB_SimSexaqWithPU2016NeutrinoGun_tryToFix_8_trial11_"+day+"_"+version
+config.Data.outputPrimaryDataset = "CRAB_SimSexaq_Skimming_trial13_"+day+"_"+version
 
 config.section_('User') 
 config.User.voGroup = 'becms'

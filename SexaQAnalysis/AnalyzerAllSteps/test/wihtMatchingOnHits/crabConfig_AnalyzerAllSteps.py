@@ -1,7 +1,7 @@
 from WMCore.Configuration import Configuration
 
-day = "21072019"
-version = "v2"
+day = "23072019"
+version = "v1"
 
 config = Configuration()
 config.section_('General')
