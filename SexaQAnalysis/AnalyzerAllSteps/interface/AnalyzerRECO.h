@@ -15,8 +15,9 @@ class AnalyzerRECO : public edm::EDAnalyzer
 
 
     void FillHistosPV(reco::Vertex PrimVertex, TVector3 beamspot);
-    void FillHistosRECOKs(const reco::VertexCompositeCandidate * RECOKs, TVector3 beamspot);
-    void FillHistosRECOLambda(const reco::VertexCompositeCandidate * RECOAntiLambda, TVector3 beamspot);
+    void FillHistosRECOKs(const reco::VertexCompositeCandidate * RECOKs, TVector3 beamspot, edm::Handle<vector<reco::Vertex>> h_offlinePV);
+    void FillHistosRECOLambda(const reco::VertexCompositeCandidate * RECOAntiLambda, TVector3 beamspot,edm::Handle<vector<reco::Vertex>> h_offlinePV);
+    void FillHistosRECOTracks(const reco::Track *track, TVector3 beamspot);
     void FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RECOAntiS, TVector3 beamspot,TVector3 beamspotVariance, int eventId, edm::Handle<vector<reco::Vertex>> h_offlinePV);
 
 
@@ -29,6 +30,7 @@ class AnalyzerRECO : public edm::EDAnalyzer
  
     edm::InputTag m_bsTag;
     edm::InputTag m_offlinePVTag;
+    edm::InputTag m_generalTracksTag;
     edm::InputTag m_sCandsTag;
     edm::InputTag m_V0KsTag;
     edm::InputTag m_V0LTag;
@@ -36,6 +38,7 @@ class AnalyzerRECO : public edm::EDAnalyzer
 
     edm::EDGetTokenT<reco::BeamSpot> m_bsToken;
     edm::EDGetTokenT<vector<reco::Vertex>> m_offlinePVToken;
+    edm::EDGetTokenT<View<reco::Track>> m_generalTracksToken;
     edm::EDGetTokenT<vector<reco::VertexCompositeCandidate> > m_sCandsToken;
     edm::EDGetTokenT<vector<reco::VertexCompositeCandidate> > m_V0KsToken;
     edm::EDGetTokenT<vector<reco::VertexCompositeCandidate> > m_V0LToken;

@@ -57,14 +57,14 @@ class FlatTreeProducer : public edm::EDAnalyzer
     //definition of variables which should go to tree
     std::vector<float> _S_charge;
     std::vector<float> _S_deltaRmin_GEN_RECO;
-    std::vector<float> _S_lxy_interaction_vertex, _S_error_lxy_interaction_vertex,_S_mass,_S_chi2_ndof;
+    std::vector<float> _S_lxy_interaction_vertex, _S_error_lxy_interaction_vertex,_Ks_lxy_decay_vertex,_Lambda_lxy_decay_vertex,_S_mass,_S_chi2_ndof;
     std::vector<float> _S_daughters_deltaphi,_S_daughters_deltaeta,_S_daughters_openingsangle,_S_Ks_openingsangle,_S_Lambda_openingsangle,_S_daughters_DeltaR,_S_eta,_Ks_eta,_Lambda_eta;
     std::vector<float> _S_dxy,_Ks_dxy,_Lambda_dxy,_S_dxy_dzPVmin,_Ks_dxy_dzPVmin,_Lambda_dxy_dzPVmin;
     std::vector<float> _S_dxy_over_lxy,_Ks_dxy_over_lxy,_Lambda_dxy_over_lxy;
     std::vector<float> _S_dz,_Ks_dz,_Lambda_dz,_S_dz_min,_Ks_dz_min,_Lambda_dz_min;
     std::vector<float> _S_pt,_Ks_pt,_Lambda_pt;
     std::vector<float> _S_pz,_Ks_pz,_Lambda_pz;
-    std::vector<float> _S_vz_interaction_vertex;
+    std::vector<float> _S_vz_interaction_vertex,_Ks_vz_decay_vertex,_Lambda_vz_decay_vertex;
     std::vector<float> _S_vx,_S_vy,_S_vz;
 
 

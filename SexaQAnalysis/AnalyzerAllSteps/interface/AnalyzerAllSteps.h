@@ -105,6 +105,7 @@ class AnalyzerAllSteps : public edm::EDAnalyzer
     double static XYpointingAngle(const reco::Candidate  * particle,TVector3 beamspot);
     double static CosOpeningsAngle(TVector3 vec1, TVector3 vec2);
     double static dz_line_point(TVector3 Point_line_in, TVector3 Vector_along_line_in, TVector3 Point_in);
+    TVector3 static dz_line_point_min(TVector3 Point_line_in, TVector3 Vector_along_line_in, edm::Handle<vector<reco::Vertex>> h_offlinePV);
     double static sgn(double input);
     int static getDaughterParticlesTypes(const reco::Candidate * genParticle);
     int static trackQualityAsInt(const reco::Track *track);

@@ -5,12 +5,14 @@ AnalyzerRECO::AnalyzerRECO(edm::ParameterSet const& pset):
   m_lookAtAntiS(pset.getUntrackedParameter<bool>("lookAtAntiS")),
   m_bsTag(pset.getParameter<edm::InputTag>("beamspot")),
   m_offlinePVTag(pset.getParameter<edm::InputTag>("offlinePV")),
+  m_generalTracksTag(pset.getParameter<edm::InputTag>("generalTracksCollection")),
   m_sCandsTag(pset.getParameter<edm::InputTag>("sexaqCandidates")),
   m_V0KsTag(pset.getParameter<edm::InputTag>("V0KsCollection")),
   m_V0LTag(pset.getParameter<edm::InputTag>("V0LCollection")),
 
   m_bsToken    (consumes<reco::BeamSpot>(m_bsTag)),
   m_offlinePVToken    (consumes<vector<reco::Vertex>>(m_offlinePVTag)),
+  m_generalTracksToken(consumes<View<reco::Track> >(m_generalTracksTag)),
   m_sCandsToken(consumes<vector<reco::VertexCompositeCandidate> >(m_sCandsTag)),
   m_V0KsToken(consumes<vector<reco::VertexCompositeCandidate> >(m_V0KsTag)),
   m_V0LToken(consumes<vector<reco::VertexCompositeCandidate> >(m_V0LTag))
@@ -40,8 +42,24 @@ void AnalyzerRECO::beginJob() {
      histos_th2f["h2_RECO_Ks_vx_vz"] = dir_RECO_Ks.make<TH2F>(b+"h2_RECO_Ks_vx_vz", "; Ks vx (cm); Ks vz (cm)",400,-200,200,800,-400,400);
      histos_th1f["h_RECO_Ks_lxy"] = dir_RECO_Ks.make<TH1F>(b+"h_RECO_Ks_lxy", "; Ks lxy(beamspot, Ks vertex) (cm); #entries ",200,0,200);
      histos_th1f["h_RECO_Ks_vz"] = dir_RECO_Ks.make<TH1F>(b+"h_RECO_Ks_vz", "; Ks vz(Ks vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_RECO_Ks_dxy"] = dir_RECO_Ks.make<TH1F>(b+"h_RECO_Ks_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
      histos_th1f["h_RECO_Ks_m"] = dir_RECO_Ks.make<TH1F>(b+"h_RECO_Ks_m", "; Ks m (GeV); #entries ",4000,0,4);
+
+     TFileDirectory dir_RECO_Ks_extra_mass_cut = dir_RECO_Ks.mkdir("RECO_Ks_extra_mass_cut");
+     histos_th2f["h2_RECO_Ks_lxy_vz"] = dir_RECO_Ks_extra_mass_cut.make<TH2F>(b+"h2_RECO_Ks_lxy_vz", "; Ks |vz| (cm); Ks l_{0} (cm)",300,0,300,120,0,120);
+     histos_th2f["h2_RECO_Ks_pt_pz"] = dir_RECO_Ks_extra_mass_cut.make<TH2F>(b+"h2_RECO_Ks_pt_pz", "; Ks pt (GeV); Ks |pz| (GeV)",100,0,10,100,0,40);
+     histos_th2f["h2_RECO_Ks_dxy_dz"] = dir_RECO_Ks_extra_mass_cut.make<TH2F>(b+"h2_RECO_Ks_dxy_dz", "; Ks dxy (cm); Ks dz (cm)",100,-20,20,100,-40,40);
+
+     histos_th2f["h2_RECO_Ks_lxy_dz"] = dir_RECO_Ks_extra_mass_cut.make<TH2F>(b+"h2_RECO_Ks_lxy_dz", "; Ks |dz| (cm); Ks l_{0} (cm)",300,0,300,120,0,120);
+     histos_th1f["h_RECO_Ks_dxy"] = dir_RECO_Ks_extra_mass_cut.make<TH1F>(b+"h_RECO_Ks_dxy", "; Ks dxy(beamspot) (cm); #entries ",400,-20,20);
+     histos_th1f["h_RECO_Ks_dz"] = dir_RECO_Ks_extra_mass_cut.make<TH1F>(b+"h_RECO_Ks_dz", "; Ks dz(beamspot) (cm); #entries ",400,-200,200);
+     histos_th1f["h_RECO_Ks_dz_min"] = dir_RECO_Ks_extra_mass_cut.make<TH1F>(b+"h_RECO_Ks_dz_min", "; Ks dz(beamspot) (cm); #entries ",400,-200,200);
+     histos_th2f["h2_RECO_Ks_mass_dz"] = dir_RECO_Ks_extra_mass_cut.make<TH2F>(b+"h2_RECO_Ks_mass_dz", "; Ks |d_{z}| (cm); Ks mass (GeV)",300,0,300,100,0,1);
+
+     TFileDirectory dir_RECO_Ks_extra_mass_cut_kinregA = dir_RECO_Ks_extra_mass_cut.mkdir("RECO_Ks_extra_mass_cut_kinregA");
+     histos_th2f["h2_RECO_Ks_lxy_vz_kinregA"] = dir_RECO_Ks_extra_mass_cut_kinregA.make<TH2F>(b+"h2_RECO_Ks_lxy_vz_kinregA", "; Ks |vz| (cm); Ks l_{0} (cm)",300,0,300,120,0,120);
+     histos_th2f["h2_RECO_Ks_pt_pz_kinregA"] = dir_RECO_Ks_extra_mass_cut_kinregA.make<TH2F>(b+"h2_RECO_Ks_pt_pz_kinregA", "; Ks pt (GeV); Ks |pz| (GeV)",100,0,10,100,0,40);
+     histos_th2f["h2_RECO_Ks_dxy_dz_kinregA"] = dir_RECO_Ks_extra_mass_cut_kinregA.make<TH2F>(b+"h2_RECO_Ks_dxy_dz_kinregA", "; Ks dxy (cm); Ks dz (cm)",100,-2,2,100,-40,40);
+     histos_th2f["h2_RECO_Ks_eta_phi_kinregA"] = dir_RECO_Ks_extra_mass_cut_kinregA.make<TH2F>(b+"h2_RECO_Ks_eta_phi_kinregA", "; Ks #eta (cm); Ks #phi (cm)",100,-4,4,100,-4,4);
 
      TFileDirectory dir_RECO_Lambda = dir_RECO.mkdir("RECO_Lambda");
      histos_th1f["h_RECO_Lambda_pt"] = dir_RECO_Lambda.make<TH1F>(b+"h_RECO_Lambda_pt", "; #bar{#Lambda} or #Lambda pT (GeV); #entries ",200,0,20);
@@ -51,9 +69,28 @@ void AnalyzerRECO::beginJob() {
      histos_th2f["h2_RECO_Lambda_vx_vz"] = dir_RECO_Lambda.make<TH2F>(b+"h2_RECO_Lambda_vx_vz", "; #bar{#Lambda} or #Lambda vx (cm); #bar{#Lambda} vz (cm)",400,-200,200,800,-400,400);
      histos_th1f["h_RECO_Lambda_lxy"] = dir_RECO_Lambda.make<TH1F>(b+"h_RECO_Lambda_lxy", "; #bar{#Lambda} or #Lambda lxy(beamspot, #bar{#Lambda} vertex) (cm); #entries ",200,0,200);
      histos_th1f["h_RECO_Lambda_vz"] = dir_RECO_Lambda.make<TH1F>(b+"h_RECO_Lambda_vz", "; #bar{#Lambda} or #Lambda vz(Ks vertex) (cm); #entries ",600,-300,300);
-     histos_th1f["h_RECO_Lambda_dxy"] = dir_RECO_Lambda.make<TH1F>(b+"h_RECO_Lambda_dxy", "; #bar{#Lambda} or #Lambda dxy(beamspot) (cm); #entries ",400,-20,20);
      histos_th1f["h_RECO_Lambda_m"] = dir_RECO_Lambda.make<TH1F>(b+"h_RECO_Lambda_m", "; #bar{#Lambda} or #Lambda m (GeV); #entries ",4000,0,4);
      histos_th1f["h_RECO_Lambda_deltaRMin_GEN_Lambda"] = dir_RECO_Lambda.make<TH1F>(b+"h_RECO_Lambda_deltaRMin_GEN_Lambda", "; #DeltaR_{min} (#bar{#Lambda} or or #Lambda GEN, #bar{#Lambda} or #Lambda RECO); #entries ",1000,0,10);
+
+     TFileDirectory dir_RECO_Lambda_extra_mass_cut = dir_RECO_Lambda.mkdir("RECO_Lambda_extra_mass_cut");
+     histos_th2f["h2_RECO_Lambda_lxy_vz"] = dir_RECO_Lambda_extra_mass_cut.make<TH2F>(b+"h2_RECO_Lambda_lxy_vz", "; #bar{#Lambda} or #Lambda |v_{z}| (cm); #bar{#Lambda} l_{0} (cm)",300,0,300,120,0,120);
+     histos_th2f["h2_RECO_Lambda_lxy_dz"] = dir_RECO_Lambda_extra_mass_cut.make<TH2F>(b+"h2_RECO_Lambda_lxy_dz", "; #bar{#Lambda} or #Lambda |d_{z}| (cm); #bar{#Lambda} l_{0} (cm)",300,0,300,120,0,120);
+     histos_th1f["h_RECO_Lambda_dxy"] = dir_RECO_Lambda_extra_mass_cut.make<TH1F>(b+"h_RECO_Lambda_dxy", "; #bar{#Lambda} or #Lambda dxy(beamspot) (cm); #entries ",400,-20,20);
+     histos_th1f["h_RECO_Lambda_dz"] = dir_RECO_Lambda_extra_mass_cut.make<TH1F>(b+"h_RECO_Lambda_dz", "; #bar{#Lambda} or #Lambda dz(beamspot) (cm); #entries ",400,-200,200);
+     histos_th2f["h2_RECO_Lambda_mass_dz"] = dir_RECO_Lambda_extra_mass_cut.make<TH2F>(b+"h2_RECO_Lambda_mass_dz", "; #bar{#Lambda} or #Lambda |d_{z}| (cm); #bar{#Lambda} mass (GeV)",300,0,300,100,1,2);
+
+     TFileDirectory dir_RECO_Lambda_extra_mass_cut_kinregA = dir_RECO_Lambda_extra_mass_cut.mkdir("RECO_Lambda_extra_mass_cut_kinregA");
+     histos_th2f["h2_RECO_Lambda_lxy_vz_kinregA"] = dir_RECO_Lambda_extra_mass_cut_kinregA.make<TH2F>(b+"h2_RECO_Lambda_lxy_vz_kinregA", "; #bar{#Lambda} or #Lambda |vz| (cm); #bar{#Lambda} or #Lambda l_{0} (cm)",300,0,300,120,0,120);
+     histos_th2f["h2_RECO_Lambda_pt_pz_kinregA"] = dir_RECO_Lambda_extra_mass_cut_kinregA.make<TH2F>(b+"h2_RECO_Lambda_pt_pz_kinregA", "; #bar{#Lambda} or #Lambda pt (GeV); #bar{#Lambda} or #Lambda |pz| (GeV)",100,0,10,100,0,40);
+     histos_th2f["h2_RECO_Lambda_dxy_dz_kinregA"] = dir_RECO_Lambda_extra_mass_cut_kinregA.make<TH2F>(b+"h2_RECO_Lambda_dxy_dz_kinregA", "; #bar{#Lambda} or #Lambda dxy (cm); #bar{#Lambda} or #Lambda dz (cm)",100,-2,2,100,-40,40);
+     histos_th2f["h2_RECO_Lambda_eta_phi_kinregA"] = dir_RECO_Lambda_extra_mass_cut_kinregA.make<TH2F>(b+"h2_RECO_Lambda_eta_phi_kinregA", "; #bar{#Lambda} or #Lambda #eta; #bar{#Lambda} or #Lambda #phi)",100,-4,4,100,-4,4);
+
+
+     //Just in general for tracks:
+     TFileDirectory dir_RECO_Tracks = dir_RECO.mkdir("RECO_Tracks");
+     histos_th1f["h_RECO_Track_vz"] = dir_RECO_Tracks.make<TH1F>(b+"h_RECO_Track_vz", "; Track |v_{z}| (cm); #entries ",300,0,300);
+     histos_th1f["h_RECO_Track_dz"] = dir_RECO_Tracks.make<TH1F>(b+"h_RECO_Track_dz", "; Track |d_{z}| (cm); #entries ",300,0,300);
+     histos_th1f["h_RECO_Track_dsz"] = dir_RECO_Tracks.make<TH1F>(b+"h_RECO_Track_dsz", "; Track |ds_{z}| (cm); #entries ",300,0,300);
 
      TFileDirectory dir_RECO_AntiS = dir_RECO.mkdir("RECO_AntiS");
      TFileDirectory dir_RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics = dir_RECO_AntiS.mkdir("RECO_AntiS_PRE_BACKGROUND_CUTS_Kinematics");
@@ -217,6 +254,10 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   edm::Handle<vector<reco::Vertex>> h_offlinePV;
   iEvent.getByToken(m_offlinePVToken, h_offlinePV);
 
+  //general tracks
+  edm::Handle<View<reco::Track>> h_generalTracks;
+  iEvent.getByToken(m_generalTracksToken, h_generalTracks);
+
   //lambdaKshortVertexFilter sexaquark candidates
   edm::Handle<vector<reco::VertexCompositeCandidate> > h_sCands;
   iEvent.getByToken(m_sCandsToken, h_sCands);
@@ -253,7 +294,7 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   if(h_V0Ks.isValid()){
       for(unsigned int i = 0; i < h_V0Ks->size(); ++i){//loop all Ks candidates
 	const reco::VertexCompositeCandidate * Ks = &h_V0Ks->at(i);	
-	FillHistosRECOKs(Ks,beamspot);
+	FillHistosRECOKs(Ks,beamspot,h_offlinePV);
       }
   }
 
@@ -261,7 +302,7 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   if(h_V0L.isValid()){
       for(unsigned int i = 0; i < h_V0L->size(); ++i){//loop all Ks candidates
 	const reco::VertexCompositeCandidate * L = &h_V0L->at(i);	
-	FillHistosRECOLambda(L,beamspot);
+	FillHistosRECOLambda(L,beamspot,h_offlinePV);
       }
   }
 
@@ -277,6 +318,12 @@ void AnalyzerRECO::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       }
   }
 
+  if(h_generalTracks.isValid()){
+	for(unsigned int i = 0; i < h_generalTracks->size(); ++i){
+		const reco::Track *track =  &h_generalTracks->at(i);
+		FillHistosRECOTracks(track,beamspot);
+	}
+  }
 
 
  } //end of analyzer
@@ -288,11 +335,15 @@ void AnalyzerRECO::FillHistosPV(reco::Vertex PrimVertex, TVector3 beamspot){
 }
 
 
-void AnalyzerRECO::FillHistosRECOKs(const reco::VertexCompositeCandidate * RECOKs, TVector3 beamspot){
+void AnalyzerRECO::FillHistosRECOKs(const reco::VertexCompositeCandidate * RECOKs, TVector3 beamspot, edm::Handle<vector<reco::Vertex>> h_offlinePV){
 	TVector3 KsCreationVertex(RECOKs->vx(),RECOKs->vy(),RECOKs->vz());
 	double Lxy = AnalyzerAllSteps::lxy(beamspot,KsCreationVertex);
 	TVector3 KsMomentum(RECOKs->px(),RECOKs->py(),RECOKs->pz());
 	double dxy = AnalyzerAllSteps::dxy_signed_line_point(KsCreationVertex,KsMomentum,beamspot);
+	double dz = AnalyzerAllSteps::dz_line_point(KsCreationVertex,KsMomentum,beamspot);
+	TVector3 PVmin = AnalyzerAllSteps::dz_line_point_min(KsCreationVertex,KsMomentum,h_offlinePV);
+	double dz_min = AnalyzerAllSteps::dz_line_point(KsCreationVertex,KsMomentum,PVmin);
+
 	histos_th1f["h_RECO_Ks_pt"]->Fill(RECOKs->pt());	
 	histos_th1f["h_RECO_Ks_eta"]->Fill(RECOKs->eta());	
 	histos_th1f["h_RECO_Ks_phi"]->Fill(RECOKs->phi());	
@@ -300,16 +351,41 @@ void AnalyzerRECO::FillHistosRECOKs(const reco::VertexCompositeCandidate * RECOK
 	histos_th2f["h2_RECO_Ks_vx_vz"]->Fill(RECOKs->vx(),RECOKs->vz());
 	histos_th1f["h_RECO_Ks_lxy"]->Fill(Lxy);	
 	histos_th1f["h_RECO_Ks_vz"]->Fill(RECOKs->vz());	
-	histos_th1f["h_RECO_Ks_dxy"]->Fill(dxy);
 	histos_th1f["h_RECO_Ks_m"]->Fill(RECOKs->mass());
+	
+	if(RECOKs->mass() > 0.48 && RECOKs->mass() < 0.52){
+		histos_th2f["h2_RECO_Ks_lxy_vz"]->Fill(abs(RECOKs->vz()),Lxy);
+		histos_th2f["h2_RECO_Ks_pt_pz"]->Fill(RECOKs->pt(),abs(RECOKs->pz()));
+		histos_th2f["h2_RECO_Ks_dxy_dz"]->Fill(dxy,dz);
+
+		histos_th2f["h2_RECO_Ks_lxy_dz"]->Fill(abs(dz),Lxy);
+		histos_th1f["h_RECO_Ks_dxy"]->Fill(dxy);
+		histos_th1f["h_RECO_Ks_dz"]->Fill(dz);
+		histos_th1f["h_RECO_Ks_dz_min"]->Fill(dz_min);
+		histos_th2f["h2_RECO_Ks_mass_dz"]->Fill(abs(dz),RECOKs->mass());
+		//define kinematic region 'A'
+		//if(RECOKs->pt() < RECOKs->pz()/5 && RECOKs->pt() > 1.8 && abs(dz_min) < 1 && abs(dxy) > 0.5 && abs(dxy) < 2.4){
+		//if(2 < RECOKs->pt() && RECOKs->pt() < 2.5 &&   5 < abs(RECOKs->pz()) && abs(RECOKs->pz()) < 7.5  && abs(dxy)  < 0.1  && abs(dz_min) < 1 ){
+		if(abs(dz_min) < 1 && abs(dxy) < 0.06 && abs(RECOKs->eta()) < 0.5 ){
+			histos_th2f["h2_RECO_Ks_lxy_vz_kinregA"]->Fill(abs(RECOKs->vz()),Lxy);
+			histos_th2f["h2_RECO_Ks_pt_pz_kinregA"]->Fill(RECOKs->pt(),abs(RECOKs->pz()));
+			histos_th2f["h2_RECO_Ks_dxy_dz_kinregA"]->Fill(dxy,dz_min);
+			histos_th2f["h2_RECO_Ks_eta_phi_kinregA"]->Fill(RECOKs->eta(),RECOKs->phi());
+		}
+
+	}
 
 }
 
-void AnalyzerRECO::FillHistosRECOLambda(const reco::VertexCompositeCandidate * RECOLambda, TVector3 beamspot){
+void AnalyzerRECO::FillHistosRECOLambda(const reco::VertexCompositeCandidate * RECOLambda, TVector3 beamspot, edm::Handle<vector<reco::Vertex>> h_offlinePV){
 	TVector3 LambdaCreationVertex(RECOLambda->vx(),RECOLambda->vy(),RECOLambda->vz());
 	double Lxy = AnalyzerAllSteps::lxy(beamspot,LambdaCreationVertex);
 	TVector3 LambdaMomentum(RECOLambda->px(),RECOLambda->py(),RECOLambda->pz());
 	double dxy = AnalyzerAllSteps::dxy_signed_line_point(LambdaCreationVertex,LambdaMomentum,beamspot);
+	double dz = AnalyzerAllSteps::dz_line_point(LambdaCreationVertex,LambdaMomentum,beamspot);
+	TVector3 PVmin = AnalyzerAllSteps::dz_line_point_min(LambdaCreationVertex,LambdaMomentum,h_offlinePV);
+	double dz_min = AnalyzerAllSteps::dz_line_point(LambdaCreationVertex,LambdaMomentum,PVmin);
+
 	histos_th1f["h_RECO_Lambda_pt"]->Fill(RECOLambda->pt());	
 	histos_th1f["h_RECO_Lambda_eta"]->Fill(RECOLambda->eta());	
 	histos_th1f["h_RECO_Lambda_phi"]->Fill(RECOLambda->phi());	
@@ -317,10 +393,28 @@ void AnalyzerRECO::FillHistosRECOLambda(const reco::VertexCompositeCandidate * R
 	histos_th2f["h2_RECO_Lambda_vx_vz"]->Fill(RECOLambda->vx(),RECOLambda->vz());
 	histos_th1f["h_RECO_Lambda_lxy"]->Fill(Lxy);	
 	histos_th1f["h_RECO_Lambda_vz"]->Fill(RECOLambda->vz());	
-	histos_th1f["h_RECO_Lambda_dxy"]->Fill(dxy);	
 	histos_th1f["h_RECO_Lambda_m"]->Fill(RECOLambda->mass());	
+	
+	if(RECOLambda->mass() > 1.105 && RECOLambda->mass() < 1.125){
+		histos_th2f["h2_RECO_Lambda_lxy_vz"]->Fill(abs(RECOLambda->vz()),Lxy);
+		histos_th2f["h2_RECO_Lambda_lxy_dz"]->Fill(abs(dz),Lxy);
+		histos_th1f["h_RECO_Lambda_dxy"]->Fill(dxy);
+		histos_th1f["h_RECO_Lambda_dz"]->Fill(dz);
+		histos_th2f["h2_RECO_Lambda_mass_dz"]->Fill(abs(dz),RECOLambda->mass());
+		//if(2 < RECOLambda->pt() && RECOLambda->pt() < 2.5 &&   5 < abs(RECOLambda->pz()) && abs(RECOLambda->pz()) < 7.5  && abs(dxy)  < 0.1  && abs(dz_min) < 1 ){
+		if(abs(dz_min) < 1 && abs(dxy) < 0.06 && abs(RECOLambda->eta()) < 0.5){
+			histos_th2f["h2_RECO_Lambda_lxy_vz_kinregA"]->Fill(abs(RECOLambda->vz()),Lxy);
+			histos_th2f["h2_RECO_Lambda_pt_pz_kinregA"]->Fill(RECOLambda->pt(),abs(RECOLambda->pz()));
+			histos_th2f["h2_RECO_Lambda_dxy_dz_kinregA"]->Fill(dxy,dz_min);
+			histos_th2f["h2_RECO_Lambda_eta_phi_kinregA"]->Fill(RECOLambda->eta(),RECOLambda->phi());
+		}
+	}
+}
 
-
+void AnalyzerRECO::FillHistosRECOTracks(const reco::Track *track, TVector3 beamspot){
+	histos_th1f["h_RECO_Track_vz"]->Fill(abs(track->vz()));
+	histos_th1f["h_RECO_Track_dz"]->Fill(abs(track->dz()));
+	histos_th1f["h_RECO_Track_dsz"]->Fill(abs(track->dsz()));
 }
 
 void AnalyzerRECO::FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RECOAntiS, TVector3 beamspot, TVector3 beamspotVariance, int eventId, edm::Handle<vector<reco::Vertex>> h_offlinePV){
@@ -410,10 +504,10 @@ void AnalyzerRECO::FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RE
 	if(dxy_AntiS/Lxy > AnalyzerAllSteps::MinDxyOverLxyCut)       histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(9);
 	if(dxy_AntiS/Lxy < AnalyzerAllSteps::MaxDxyOverLxyCut)       histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(10);
 
-	if(dxy_daughter0/Lxy>AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter0/Lxy<AnalyzerAllSteps::DxyKsExclusionRangeMinCut)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(11);
-	if(dxy_daughter1/Lxy>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter1/Lxy<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut) histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(12);
+	if(dxy_daughter1/Lxy>AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter1/Lxy<AnalyzerAllSteps::DxyKsExclusionRangeMinCut)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(11);
+	if(dxy_daughter0/Lxy>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter0/Lxy<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut) histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(12);
 
-	if(RECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut)                 histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(13);
+	if(RECOAntiS->daughter(0)->pt() > AnalyzerAllSteps::MinLambdaPtCut)                 histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(13);
 	if(abs(dzAntiSPVmin)<AnalyzerAllSteps::dzAntiSPVminCut)                         histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(14);
 	if(abs(RECOAntiS->vz())>AnalyzerAllSteps::vzAntiSInteractionVertexCut)              histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(15);
 	if(abs(RECOAntiS->eta())>AnalyzerAllSteps::antiSEtaCut)                             histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(16);
@@ -430,10 +524,10 @@ void AnalyzerRECO::FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RE
 		dxy_AntiS/Lxy > AnalyzerAllSteps::MinDxyOverLxyCut &&
 		dxy_AntiS/Lxy < AnalyzerAllSteps::MaxDxyOverLxyCut &&
 
-		(dxy_daughter0/Lxy > AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter0/Lxy < AnalyzerAllSteps::DxyKsExclusionRangeMinCut) &&
-		(dxy_daughter1/Lxy>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter1/Lxy<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut) &&
+		(dxy_daughter1/Lxy > AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter1/Lxy < AnalyzerAllSteps::DxyKsExclusionRangeMinCut) &&
+		(dxy_daughter0/Lxy>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter0/Lxy<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut) &&
 
-		RECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut &&
+		RECOAntiS->daughter(0)->pt() > AnalyzerAllSteps::MinLambdaPtCut &&
 		abs(dzAntiSPVmin) < AnalyzerAllSteps::dzAntiSPVminCut &&
 		abs(RECOAntiS->vz())>AnalyzerAllSteps::vzAntiSInteractionVertexCut &&
 		abs(RECOAntiS->eta())>AnalyzerAllSteps::antiSEtaCut)histos_th1f["h_RECO_AntiS_BackgroundCuts_cutFlow"]->Fill(17);	
@@ -449,147 +543,15 @@ void AnalyzerRECO::FillHistosRECOAntiS(const reco::VertexCompositeCandidate * RE
 	histos_th1f["h_RECO_AntiS_openingsAngleDaughters"]->Fill(openingsAngleDaughters);
 	histos_th1f["h_RECO_AntiS_deltaEtaDaughters"]->Fill(deltaEtaDaughters);
 	histos_th1f["h_RECO_AntiS_dxy_over_lxy"]->Fill(dxy_AntiS/Lxy);
-	histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks"]->Fill(dxy_daughter0/Lxy);
-        histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL"]->Fill(dxy_daughter1/Lxy);
-	histos_th1f["h_RECO_AntiS_pt_AntiL"]->Fill(RECOAntiS->daughter(1)->pt());
+	histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks"]->Fill(dxy_daughter1/Lxy);
+        histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL"]->Fill(dxy_daughter0/Lxy);
+	histos_th1f["h_RECO_AntiS_pt_AntiL"]->Fill(RECOAntiS->daughter(0)->pt());
 	histos_th1f["h_RECO_AntiS_dzPVmin"]->Fill(dzAntiSPVmin);
 	histos_th1f["h_RECO_AntiS_vz"]->Fill(RECOAntiS->vz());
 	histos_th1f["h_RECO_AntiS_eta"]->Fill(RECOAntiS->eta());
 		
 
-	//now start applying the background cuts and see what is important, start with the "fundamental" background cuts
-	if(	
-	Lxy > AnalyzerAllSteps::MinLxyCut && 
-	error_Lxy < AnalyzerAllSteps::MaxErrorLxyCut && 
-	massAntiS > AnalyzerAllSteps::MinErrorMassCut &&
-	RECOAntiS->vertexNormalizedChi2() < AnalyzerAllSteps::MaxNormChi2Cut
-	){
-		histos_th1f["h_RECO_AntiS_lxy_L1"]->Fill(Lxy);     
-		histos_th1f["h_RECO_AntiS_error_lxy_L1"]->Fill(error_Lxy);
-		histos_th1f["h_RECO_AntiS_mass_L1"]->Fill(massAntiS);
-		histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L1"]->Fill(RECOAntiS->vertexNormalizedChi2());
-		histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L1"]->Fill(deltaPhiDaughters);
-		histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L1"]->Fill(openingsAngleDaughters);
-		histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L1"]->Fill(deltaEtaDaughters);
-		histos_th1f["h_RECO_AntiS_dxy_over_lxy_L1"]->Fill(dxy_AntiS/Lxy);
-		histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L1"]->Fill(dxy_daughter0/Lxy);
-		histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L1"]->Fill(dxy_daughter1/Lxy);
-		histos_th1f["h_RECO_AntiS_pt_AntiL_L1"]->Fill(RECOAntiS->daughter(1)->pt());
-		histos_th1f["h_RECO_AntiS_dzPVmin_L1"]->Fill(dzAntiSPVmin);
-		histos_th1f["h_RECO_AntiS_vz_L1"]->Fill(RECOAntiS->vz());
-		histos_th1f["h_RECO_AntiS_eta_L1"]->Fill(RECOAntiS->eta());
-
-		if(	
-		abs(deltaPhiDaughters) > AnalyzerAllSteps::MinAbsDeltaPhiDaughtersCut && 
-		abs(deltaPhiDaughters) < AnalyzerAllSteps::MaxAbsDeltaPhiDaughtersCut && 
-		openingsAngleDaughters < AnalyzerAllSteps::MaxOpeningsAngleCut &&
-		abs(deltaEtaDaughters) < AnalyzerAllSteps::MaxAbsDeltaEtaDaughCut &&
-		dxy_AntiS/Lxy > AnalyzerAllSteps::MinDxyOverLxyCut && 
-		dxy_AntiS/Lxy < AnalyzerAllSteps::MaxDxyOverLxyCut 
-		){			
-			histos_th1f["h_RECO_AntiS_lxy_L2"]->Fill(Lxy);     
-			histos_th1f["h_RECO_AntiS_error_lxy_L2"]->Fill(error_Lxy);
-			histos_th1f["h_RECO_AntiS_mass_L2"]->Fill(massAntiS);
-			histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L2"]->Fill(RECOAntiS->vertexNormalizedChi2());
-			histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L2"]->Fill(deltaPhiDaughters);
-			histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L2"]->Fill(openingsAngleDaughters);
-			histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L2"]->Fill(deltaEtaDaughters);
-			histos_th1f["h_RECO_AntiS_dxy_over_lxy_L2"]->Fill(dxy_AntiS/Lxy);
-			histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L2"]->Fill(dxy_daughter0/Lxy);
-			histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L2"]->Fill(dxy_daughter1/Lxy);
-			histos_th1f["h_RECO_AntiS_pt_AntiL_L2"]->Fill(RECOAntiS->daughter(1)->pt());
-			histos_th1f["h_RECO_AntiS_dzPVmin_L2"]->Fill(dzAntiSPVmin);
-			histos_th1f["h_RECO_AntiS_vz_L2"]->Fill(RECOAntiS->vz());
-			histos_th1f["h_RECO_AntiS_eta_L2"]->Fill(RECOAntiS->eta());
-
-			if(
-			(dxy_daughter0 > AnalyzerAllSteps::DxyKsExclusionRangeMaxCut || dxy_daughter0 < AnalyzerAllSteps::DxyKsExclusionRangeMinCut) &&
-			(dxy_daughter1>AnalyzerAllSteps::DxyAntiLExclusionRangeMaxCut || dxy_daughter1<AnalyzerAllSteps::DxyAntiLExclusionRangeMinCut)
-			){
-				histos_th1f["h_RECO_AntiS_lxy_L3"]->Fill(Lxy);     
-				histos_th1f["h_RECO_AntiS_error_lxy_L3"]->Fill(error_Lxy);
-				histos_th1f["h_RECO_AntiS_mass_L3"]->Fill(massAntiS);
-				histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L3"]->Fill(RECOAntiS->vertexNormalizedChi2());
-				histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L3"]->Fill(deltaPhiDaughters);
-				histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L3"]->Fill(openingsAngleDaughters);
-				histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L3"]->Fill(deltaEtaDaughters);
-				histos_th1f["h_RECO_AntiS_dxy_over_lxy_L3"]->Fill(dxy_AntiS/Lxy);
-				histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L3"]->Fill(dxy_daughter0/Lxy);
-				histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L3"]->Fill(dxy_daughter1/Lxy);
-				histos_th1f["h_RECO_AntiS_pt_AntiL_L3"]->Fill(RECOAntiS->daughter(1)->pt());
-				histos_th1f["h_RECO_AntiS_dzPVmin_L3"]->Fill(dzAntiSPVmin);
-				histos_th1f["h_RECO_AntiS_vz_L3"]->Fill(RECOAntiS->vz());
-				histos_th1f["h_RECO_AntiS_eta_L3"]->Fill(RECOAntiS->eta());
-
-				if(
-				RECOAntiS->daughter(1)->pt() > AnalyzerAllSteps::MinLambdaPtCut &&
-				abs(dzAntiSPVmin)<AnalyzerAllSteps::dzAntiSPVminCut &&
-				abs(RECOAntiS->vz()) > AnalyzerAllSteps::vzAntiSInteractionVertexCut &&
-				abs(RECOAntiS->eta())> AnalyzerAllSteps::antiSEtaCut
-				){
-
-
-					histos_th1f["h_RECO_AntiS_lxy_L4"]->Fill(Lxy);     
-					histos_th1f["h_RECO_AntiS_error_lxy_L4"]->Fill(error_Lxy);
-					histos_th1f["h_RECO_AntiS_mass_L4"]->Fill(massAntiS);
-					histos_th1f["h_RECO_AntiS_vertex_chi2_ndof_L4"]->Fill(RECOAntiS->vertexNormalizedChi2());
-					histos_th1f["h_RECO_AntiS_deltaPhiDaughters_L4"]->Fill(deltaPhiDaughters);
-					histos_th1f["h_RECO_AntiS_openingsAngleDaughters_L4"]->Fill(openingsAngleDaughters);
-					histos_th1f["h_RECO_AntiS_deltaEtaDaughters_L4"]->Fill(deltaEtaDaughters);
-					histos_th1f["h_RECO_AntiS_dxy_over_lxy_L4"]->Fill(dxy_AntiS/Lxy);
-					histos_th1f["h_RECO_AntiS_dxy_over_lxy_Ks_L4"]->Fill(dxy_daughter0/Lxy);
-					histos_th1f["h_RECO_AntiS_dxy_over_lxy_AntiL_L4"]->Fill(dxy_daughter1/Lxy);
-					histos_th1f["h_RECO_AntiS_pt_AntiL_L4"]->Fill(RECOAntiS->daughter(1)->pt());
-					histos_th1f["h_RECO_AntiS_dzPVmin_L4"]->Fill(dzAntiSPVmin);
-					histos_th1f["h_RECO_AntiS_vz_L4"]->Fill(RECOAntiS->vz());
-					histos_th1f["h_RECO_AntiS_eta_L4"]->Fill(RECOAntiS->eta());
-
-					//if not all background is gone yet, you can try to find something in the variables below to cut on
-					histos_th1f["h_RECO_AntiS_corr_dxy_Ks_extraplots_L4"]->Fill(dxy_daughter0);
-					histos_th1f["h_RECO_AntiS_corr_dz_Ks_extraplots_L4"]->Fill(dz_daughter0);
-					histos_th1f["h_RECO_AntiS_corr_dxy_AntiL_extraplots_L4"]->Fill(dxy_daughter1);
-					histos_th1f["h_RECO_AntiS_corr_dz_AntiL_extraplots_L4"]->Fill(dz_daughter1);
-					histos_th2f["h2_RECO_AntiS_corr_dxy_daughters_extraplots_L4"]->Fill(dxy_daughter0,dxy_daughter1);
-					histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdLxydxy_daughters_extraplots_L4"]->Fill(abs(dxy_daughter0)*signLxyDotdxy_daughter0,abs(dxy_daughter1)*signLxyDotdxy_daughter1);
-					histos_th2f["h2_RECO_AntiS_corr_dxy_sign_dotProdptdxy_daughters_extraplots_L4"]->Fill(abs(dxy_daughter0)*signPtDotdxy_daughter0,abs(dxy_daughter1)*signPtDotdxy_daughter1);
-					histos_th2f["h2_RECO_AntiS_corr_dxy_over_lxy_daughters_extraplots_L4"]->Fill(dxy_daughter0/Lxy,dxy_daughter1/Lxy);
-					histos_th2f["h2_RECO_AntiS_corr_dz_daughters_extraplots_L4"]->Fill(dz_daughter0,dz_daughter1);
-					histos_th2f["h2_RECO_AntiS_corr_dxyz_daughters_extraplots_L4"]->Fill(dxyz_daughter0,dxyz_daughter1);
-					histos_th2f["h2_RECO_AntiS_dxy_Ks_vs_lxy_Ks_extraplots_L4"]->Fill(Lxy,dxy_daughter0);
-					histos_th2f["h2_RECO_AntiS_dxy_AntiL_vs_lxy_AntiL_extraplots_L4"]->Fill(Lxy,dxy_daughter1);
-					histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_Ks_daughters_extraplots_L4"]->Fill(dxy_daughter0,dz_daughter0);
-					histos_th2f["h2_RECO_AntiS_dxy_L_dz_L_daughters_extraplots_L4"]->Fill(dxy_daughter1,dz_daughter1);
-					histos_th2f["h2_RECO_AntiS_dxy_Ks_dz_L_daughters_extraplots_L4"]->Fill(dxy_daughter0,dz_daughter1);
-					histos_th2f["h2_RECO_AntiS_dxy_L_dz_Ks_daughters_extraplots_L4"]->Fill(dxy_daughter1,dz_daughter0);
-					histos_th1f["h_RECO_AntiS_relDiff_RECO_dxy_daughters_extraplots_L4"]->Fill(relDiff_dxy_daughters);
-					histos_th1f["h_RECO_AntiS_relDiff_RECO_dz_daughters_extraplots_L4"]->Fill(relDiff_dz_daughters);
-					histos_th1f["h_RECO_AntiS_relDiff_RECO_dxyz_daughters_extraplots_L4"]->Fill(relDiff_dxyz_daughters);
-					histos_th1f["h_RECO_AntiS_RECO_vertexNormalizedChi2_extraplots_L4"]->Fill(RECOAntiS->vertexNormalizedChi2());
-					histos_th2f["h2_RECO_AntiS_deltaPhiDeltaEta_extraplots_L4"]->Fill(deltaPhiDaughters,deltaEtaDaughters);
-					histos_th1f["h_RECO_AntiS_openingsAngleDaughters_extraplots_L4"]->Fill(openingsAngleDaughters);
-					histos_th2f["h2_RECO_AntiS_deltaEta_openingsAngleDaughters_extraplots_L4"]->Fill(abs(deltaEtaDaughters),openingsAngleDaughters);
-					histos_th1f["h_RECO_AntiS_deltaRDaughters_extraplots_L4"]->Fill(deltaRDaughters);
-					histos_th1f["h_RECO_AntiS_pt_extraplots_L4"]->Fill(RECOAntiS->pt());
-					histos_th1f["h_RECO_AntiS_Ks_pt_extraplots_L4"]->Fill(RECOAntiS->daughter(0)->pt());
-					histos_th1f["h_RECO_AntiS_AntiL_pt_extraplots_L4"]->Fill(RECOAntiS->daughter(1)->pt());
-					histos_th1f["h_RECO_AntiS_mass_extraplots_L4"]->Fill(massAntiS);
-					histos_th1f["h_RECO_AntiS_eta_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->eta());	
-					histos_th1f["h_RECO_AntiS_phi_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->phi());	
-					histos_th2f["h2_RECO_AntiS_vx_vy_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->vx(),RECOAntiS->vy());
-					histos_th2f["h2_RECO_AntiS_vx_vz_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->vx(),RECOAntiS->vz());
-					histos_th1f["h_RECO_AntiS_lxy_extraplots_L4_dxy_dz_daughters"]->Fill(Lxy);	
-					histos_th1f["h_RECO_AntiS_vz_extraplots_L4_dxy_dz_daughters"]->Fill(RECOAntiS->vz());	
-					histos_th1f["h_RECO_AntiS_dxy_extraplots_L4_dxy_dz_daughters"]->Fill(dxy);	
-					histos_th1f["h_RECO_AntiS_deltaR_extraplots_L4_dxy_dz_daughters"]->Fill(deltaRDaughters);	
-					histos_th1f["h_RECO_AntiS_mass_extraplots_L4_dxy_dz_daughters"]->Fill(massAntiS);
-					histos_th1f["h_RECO_AntiS_dxyAntiSPVmin_extraplots_L4"]->Fill(dxyAntiSPVmin);
-					histos_th1f["h_RECO_AntiS_dzAntiSPVmin_extraplots_L4"]->Fill(dzAntiSPVmin);
-					histos_th1f["h_RECO_AntiS_pz_extraplots_L4"]->Fill(RECOAntiS->pz());
-			}
-		}
-
-		}
-	}
+	
 }
 
 void AnalyzerRECO::endJob()
