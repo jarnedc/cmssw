@@ -133,8 +133,11 @@ void FlatTreeProducerV0s::analyze(edm::Event const& iEvent, edm::EventSetup cons
 	for(unsigned int i = 0; i < h_muons->size(); ++i){
 
 		//now check if this muon i is tight and isolated, has a minmal pt and is in the acceptance, if not do not consider this muon
-		//bool muon1Tight = muon::isTightMuon(h_muons->at(i), h_offlinePV->at(0));
-		//if(!muon1Tight) continue;
+		bool muon1Tight = muon::isTightMuon(h_muons->at(i), h_offlinePV->at(0));
+		if(!muon1Tight) continue;
+		const auto& muon = h_muons->at(i);
+		bool muon1Isolated = muon.passed(muon::PFIsoMedium);
+		
 		if(h_muons->at(i).pt() < 20) continue;	
 		if(fabs(h_muons->at(i).eta()) > 2.4) continue;	
 
