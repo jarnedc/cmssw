@@ -86,8 +86,8 @@ process.genParticles.src= cms.InputTag("source")
 process.fiducial = cms.EDFilter("EtaPtMinPdgIdCandSelector",
   src = cms.InputTag("genParticles","","GEN"),
   ptMin = cms.double(0.),
-  etaMin = cms.double(-4),
-  etaMax = cms.double(4),
+  etaMin = cms.double(-999),
+  etaMax = cms.double(999),
   pdgId = cms.vint32(-1020000020)
 )
 
