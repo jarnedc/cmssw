@@ -59,6 +59,8 @@ class G4SQNeutronAnnih : public G4HadronicInteraction {
 
     virtual ~G4SQNeutronAnnih();
 
+    G4double momDistr(G4double x_in);
+
     virtual G4HadFinalState * ApplyYourself(
                    const G4HadProjectile & aTrack,
                    G4Nucleus & targetNucleus);
