@@ -90,7 +90,7 @@ G4AntiSQ* G4AntiSQ::AntiSQDefinition(double mass)
 
 G4AntiSQ*  G4AntiSQ::AntiSQ()
 { 
-  return Definition(2*GeV); // will use correct mass if instance exists
+  return Definition(1.8*GeV); // will use correct mass if instance exists
 }
 
 

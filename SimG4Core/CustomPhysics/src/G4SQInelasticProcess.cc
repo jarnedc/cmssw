@@ -277,6 +277,7 @@ std::cout << "=== SL track status not ok: " << aTrack.GetTrackStatus() << std::e
   G4HadFinalState* result = 0;
   G4int reentryCount = 0;
 
+
   do
   {
     try
