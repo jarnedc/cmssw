@@ -27,7 +27,7 @@ G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4
   fParticleChange->Clear();
   fParticleChange->Initialize(track);
   fParticleChange->ProposeWeight(track.GetWeight());
-  if(fabs(track.GetMomentumDirection().eta())>4.){std::cout << "G4SQLoopProcess::AlongStepDoIt particle getting killed because too large eta"<< std::endl; fParticleChange->ProposeTrackStatus(fStopAndKill);}
+  if(fabs(track.GetMomentumDirection().eta())>4.3){std::cout << "G4SQLoopProcess::AlongStepDoIt particle getting killed because too large eta"<< std::endl; fParticleChange->ProposeTrackStatus(fStopAndKill);}
 
   return fParticleChange;
 }
