@@ -51,7 +51,7 @@ G4double G4SQLoopProcessDiscr::PostStepGetPhysicalInteractionLength(const G4Trac
   G4Track * mytr = const_cast<G4Track *>(&track);
 //  if ((mytr->GetPosition().rho()>100*centimeter || // require to be "outside" the tracker
 //       fabs(mytr->GetPosition().z())>300*centimeter) ){
-  if(sqrt(pow(mytr->GetPosition().rho(),2)+pow(mytr->GetPosition().z(),2))>120*centimeter){//have to use a spherical border for the sensitive part, because if I put a different limit in different directions the interaction rate along the pathlength will not be uniform due to this. I use the requiremnt that the particle should come back to the origin when lxyz = 292 cm, because that is the furthest point in lxyz that modules are located from the beamspot
+  if(sqrt(pow(mytr->GetPosition().rho(),2))>2.5*centimeter){//have to use a spherical border for the sensitive part, because if I put a different limit in different directions the interaction rate along the pathlength will not be uniform due to this. I use the requiremnt that the particle should come back to the origin when lxyz = 292 cm, because that is the furthest point in lxyz that modules are located from the beamspot
        intLength = 0.0;//0 interaction length means particle will directly interact.
   } 
   return intLength;

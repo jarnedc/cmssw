@@ -93,7 +93,7 @@ process.fiducial = cms.EDFilter("EtaPtMinPdgIdCandSelector",
 
 process.NumAntiSexaqevFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag("fiducial"),
-    minNumber = cms.uint32(1),
+    minNumber = cms.uint32(1)
   )
 
 

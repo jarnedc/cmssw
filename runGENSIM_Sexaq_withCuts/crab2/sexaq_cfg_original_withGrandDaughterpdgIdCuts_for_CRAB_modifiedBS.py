@@ -24,7 +24,7 @@ process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.Geometry.GeometrySimDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_PostLS1_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
-process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic50ns13TeVCollision_cfi')
+process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic50ns13TeVCollision_cfi_Jarne2')
 process.load('GeneratorInterface.Core.genFilterSummary_cff')
 process.load('Configuration.StandardSequences.SimIdeal_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
@@ -133,7 +133,23 @@ process.g4SimHits.Physics = cms.PSet(
 
 process.g4SimHits.HepMCProductLabel = cms.InputTag("source")
 process.g4SimHits.Generator.HepMCProductLabel = cms.string("source")
-process.VtxSmeared.src = cms.InputTag("source")
+#process.VtxSmeared.src = cms.InputTag("source")
+process.VtxSmeared = cms.EDProducer("BetafuncEvtVtxGenerator",
+    Phi = cms.double(0.0),
+    BetaStar = cms.double(65.0),
+    Emittance = cms.double(5.411e-08),
+    Alpha = cms.double(0.0),
+    SigmaZ = cms.double(4.145),
+    TimeOffset = cms.double(0.0),
+    X0 = cms.double(-0.06597),
+    Y0 = cms.double(0.0805),
+    Z0 = cms.double(0.07968),
+    src = cms.InputTag("source","unsmeared"),
+    readDB = cms.bool(False)
+)
+
+
+
 process.genParticles.src = cms.InputTag("source")
 
 

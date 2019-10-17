@@ -88,7 +88,7 @@ G4double G4SQInelasticCrossSection::GetElementCrossSection(
   // now calculate the cross section
 
   //put the X section very low for the antiS to get a flat interaction rate, but also make it scale with the number of neutrons in the material, because we are going to interact on neutrons, not on protons
-  G4double baseXS = (.1*(A-(G4double)Z)/(G4double)Z)*millibarn; //40. * millibarn;
+  G4double baseXS = (1.*(A-(G4double)Z)/(G4double)Z)*millibarn; //40. * millibarn;
   // the following scaled xsection makes that we get instead of an exponential
   // rather a flat interaction probability over an ensemble of particles
   // for all material (neutrons) in the detector

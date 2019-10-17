@@ -462,6 +462,34 @@ Realistic50ns13TeVCollisionVtxSmearingParameters = cms.PSet(
     Z0 = cms.double(-1.0985)
 )
 
+#from PV distribution in data: SingleMuon_Run2016H
+Realistic50ns13TeVCollisionVtxSmearingParameters_Jarne = cms.PSet(
+    Phi = cms.double(0.0),
+    BetaStar = cms.double(65.0),
+    Emittance = cms.double(5.411e-08),
+    Alpha = cms.double(0.0),
+    SigmaZ = cms.double(4.145),
+    TimeOffset = cms.double(0.0),
+    X0 = cms.double(0.05803), 
+    Y0 = cms.double(0.1075), 
+    Z0 = cms.double(0.07968) 
+)
+
+#from PV distribution in data: SingleMuon_Run2016H - the actual x location of the beampipe: 0.05803-0.124
+#from PV distribution in data: SingleMuon_Run2016H - the actual y location of the beampipe: 0.1075-0.027
+#from PV distribution in data: SingleMuon_Run2016H 
+Realistic50ns13TeVCollisionVtxSmearingParameters_Jarne2 = cms.PSet(
+    Phi = cms.double(0.0),
+    BetaStar = cms.double(65.0),
+    Emittance = cms.double(5.411e-08),
+    Alpha = cms.double(0.0),
+    SigmaZ = cms.double(4.145),
+    TimeOffset = cms.double(0.0),
+    X0 = cms.double(-0.06597), 
+    Y0 = cms.double(0.0805),
+    Z0 = cms.double(0.07968)
+)
+
 # Test HF offset
 ShiftedCollision2015VtxSmearingParameters = cms.PSet(
     Phi = cms.double(0.0),
