@@ -1,9 +1,9 @@
 from WMCore.Configuration import Configuration
 
-day = "17102019"
+day = "23102019"
 version = "v1"
-trial = "17"
-mass = "1p8GeV_modifiedBS2"
+trial = "25"
+mass = "1p8GeV"
 
 config = Configuration()
 config.section_('General')
@@ -13,8 +13,9 @@ config.General.requestName = 'SIMSexaq_trial'+trial+'_'+mass+'_'+day+'_'+version
 
 config.section_('JobType') 
 config.JobType.pluginName = 'Analysis' 
-config.JobType.psetName = 'sexaq_cfg_original_withGrandDaughterpdgIdCuts_for_CRAB_modifiedBS.py' 
-config.JobType.priority = 110
+config.JobType.psetName = 'sexaq_cfg_original_withGrandDaughterpdgIdCuts_for_CRAB.py' 
+config.JobType.priority = 120
+#config.JobType.maxMemoryMB = 3000
 
 config.section_('Data') 
 config.Data.unitsPerJob = 1 
@@ -22,7 +23,7 @@ config.Data.totalUnits = 10000
 config.Data.publication = True 
 config.Data.splitting = 'FileBased' 
 config.Data.outLFNDirBase = '/store/user/jdeclerc/crmc_Sexaq/GENSIM' 
-config.Data.userInputFiles = open('/user/jdeclerc/CMSSW_7_1_20_patch2/src/runGENSIM_Sexaq_withCuts/crab2/inputFiles_trial'+trial+'.txt').readlines() 
+config.Data.userInputFiles = open('/user/jdeclerc/CMSSW_7_1_20_patch2/src/runGENSIM_Sexaq_withCuts/crab2/inputFiles_trial'+trial+'_'+mass+'.txt').readlines() 
 config.Data.outputPrimaryDataset = "CRAB_SimSexaq_trial"+trial
 config.Data.ignoreLocality = True
 
