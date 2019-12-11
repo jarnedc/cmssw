@@ -16,7 +16,7 @@ options.parseArguments()
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
-process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
+#process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
@@ -24,20 +24,20 @@ process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.Geometry.GeometrySimDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_PostLS1_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
-process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic50ns13TeVCollision_cfi')
+process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic50ns13TeVCollision_cfi_Jarne2')
 process.load('GeneratorInterface.Core.genFilterSummary_cff')
 process.load('Configuration.StandardSequences.SimIdeal_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(20)
+    input = cms.untracked.int32(-1)
 )
 
 process.source = cms.Source("PoolSource",
     #fileNames = cms.untracked.vstring('file:/pnfs/iihe/cms/store/user/jdeclerc/crmc_Sexaq/crmc/Sexaquark_13TeV_trial10_scalingNumAntiS/crmc_Sexaq_1.root'),
     fileNames = cms.untracked.vstring(options.inputFiles),
-    #skipEvents = cms.untracked.uint32(SKIP),
+    skipEvents = cms.untracked.uint32(0),
     duplicateCheckMode = cms.untracked.string ("noDuplicateCheck")
 )
 
@@ -75,43 +75,43 @@ process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'MCRUN2_71_V1::All', '')
 
-process.generator = cms.EDFilter("Pythia8HadronizerFilter",
-    pythiaPylistVerbosity = cms.untracked.int32(1),
-    filterEfficiency = cms.untracked.double(1.0),
-    pythiaHepMCVerbosity = cms.untracked.bool(False),
-    comEnergy = cms.double(13000.0),
-    maxEventsToPrint = cms.untracked.int32(1),
-    PythiaParameters = cms.PSet(
-        pythia8CommonSettings = cms.vstring('Tune:preferLHAPDF = 2', 
-            'Main:timesAllowErrors = 10000', 
-            'Check:epTolErr = 0.01', 
-            'Beams:setProductionScalesFromLHEF = off', 
-            'SLHA:keepSM = on', 
-            'SLHA:minMassSM = 1000.', 
-            'ParticleDecays:limitTau0 = on', 
-            'ParticleDecays:tau0Max = 10', 
-            'ParticleDecays:allowPhotonRadiation = on'),
-        pythia8CUEP8M1Settings = cms.vstring('Tune:pp 14', 
-            'Tune:ee 7', 
-            'MultipartonInteractions:pT0Ref=2.4024', 
-            'MultipartonInteractions:ecmPow=0.25208', 
-            'MultipartonInteractions:expPow=1.6'),
-        processParameters = cms.vstring('JetMatching:setMad = off', 
-            'JetMatching:scheme = 1', 
-            'JetMatching:merge = off',
-            'JetMatching:jetAlgorithm = 2', 
-            'JetMatching:etaJetMax = 5.', 
-            'JetMatching:coneRadius = 1.', 
-            'JetMatching:slowJetPower = 1', 
-            'JetMatching:qCut = 14.', 
-            'JetMatching:nQmatch = 5', 
-            'JetMatching:nJetMax = 4', 
-            'JetMatching:doShowerKt = off'),
-        parameterSets = cms.vstring('pythia8CommonSettings', 
-            'pythia8CUEP8M1Settings', 
-            'processParameters')
-    )
-)
+#process.generator = cms.EDFilter("Pythia8HadronizerFilter",
+#    pythiaPylistVerbosity = cms.untracked.int32(1),
+#    filterEfficiency = cms.untracked.double(1.0),
+#    pythiaHepMCVerbosity = cms.untracked.bool(False),
+#    comEnergy = cms.double(13000.0),
+#    maxEventsToPrint = cms.untracked.int32(1),
+#    PythiaParameters = cms.PSet(
+#        pythia8CommonSettings = cms.vstring('Tune:preferLHAPDF = 2', 
+#            'Main:timesAllowErrors = 10000', 
+#            'Check:epTolErr = 0.01', 
+#            'Beams:setProductionScalesFromLHEF = off', 
+#            'SLHA:keepSM = on', 
+#            'SLHA:minMassSM = 1000.', 
+#            'ParticleDecays:limitTau0 = on', 
+#            'ParticleDecays:tau0Max = 10', 
+#            'ParticleDecays:allowPhotonRadiation = on'),
+#        pythia8CUEP8M1Settings = cms.vstring('Tune:pp 14', 
+#            'Tune:ee 7', 
+#            'MultipartonInteractions:pT0Ref=2.4024', 
+#            'MultipartonInteractions:ecmPow=0.25208', 
+#            'MultipartonInteractions:expPow=1.6'),
+#        processParameters = cms.vstring('JetMatching:setMad = off', 
+#            'JetMatching:scheme = 1', 
+#            'JetMatching:merge = off',
+#            'JetMatching:jetAlgorithm = 2', 
+#            'JetMatching:etaJetMax = 5.', 
+#            'JetMatching:coneRadius = 1.', 
+#            'JetMatching:slowJetPower = 1', 
+#            'JetMatching:qCut = 14.', 
+#            'JetMatching:nQmatch = 5', 
+#            'JetMatching:nJetMax = 4', 
+#            'JetMatching:doShowerKt = off'),
+#        parameterSets = cms.vstring('pythia8CommonSettings', 
+#            'pythia8CUEP8M1Settings', 
+#            'processParameters')
+#    )
+#)
 
 process.genParticlesPlusGEANT = cms.EDProducer("GenPlusSimParticleProducer",
   src           = cms.InputTag("g4SimHits"),
@@ -128,11 +128,28 @@ process.g4SimHits.Physics = cms.PSet(
   process.g4SimHits.Physics, #keep all default value and add others
   particlesDef = cms.FileInPath('SimG4Core/CustomPhysics/data/particles_sexaq_1p8_GeV.txt'),
 )
+#process.g4SimHits.Generator.ApplyEtaCuts = cms.bool(False)
 
 
 process.g4SimHits.HepMCProductLabel = cms.InputTag("source")
 process.g4SimHits.Generator.HepMCProductLabel = cms.string("source")
-process.VtxSmeared.src = cms.InputTag("source")
+#process.VtxSmeared.src = cms.InputTag("source")
+process.VtxSmeared = cms.EDProducer("BetafuncEvtVtxGenerator",
+    Phi = cms.double(0.0),
+    BetaStar = cms.double(65.0),
+    Emittance = cms.double(5.411e-08),
+    Alpha = cms.double(0.0),
+    SigmaZ = cms.double(4.145),
+    TimeOffset = cms.double(0.0),
+    X0 = cms.double(-0.06597),
+    Y0 = cms.double(0.0805),
+    Z0 = cms.double(0.07968),
+    src = cms.InputTag("source"),
+    readDB = cms.bool(False)
+)
+
+
+
 process.genParticles.src = cms.InputTag("source")
 
 
@@ -243,13 +260,10 @@ process.printTree_step = cms.Path(process.printTree)
 
 process.masterSequence = cms.Sequence(
 process.pgen*
-#process.antiSeventFilter*process.NumantiSeventFilter*
+process.VtxSmeared*
 process.psim*process.genParticlesPlusGEANT*
 process.printTree
-#process.genAntiSGranddaughterFilterKs*process.NumgenAntiSGranddaughterFilterKs*
-#process.genAntiSGranddaughterFilterAntiLambda*process.NumgenAntiSGranddaughterFilterAntiLambda*
-#process.genAntiSGranddaughterFilterKsAntiLambdaPresent*process.NumgenAntiSGranddaughterFilterKsAntiLambdaPresent*
-#process.genAntiSGranddaughterFilterDeltaRKsAntiLambda*process.NumgenAntiSGranddaughterFilterDeltaRKsAntiLambda*
+
 #process.genAntiSGranddaughterFilterKsPiMin*process.NumgenAntiSGranddaughterFilterKsPiMin*
 #process.genAntiSGranddaughterFilterKsPiPlus*process.NumgenAntiSGranddaughterFilterKsPiPlus*
 #process.genAntiSGranddaughterFilterAntiLambdaPiPlus*process.NumgenAntiSGranddaughterFilterAntiLambdaPiPlus*

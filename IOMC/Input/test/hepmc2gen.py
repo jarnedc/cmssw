@@ -107,29 +107,29 @@ process.NumAntiSexaqevFilter = cms.EDFilter("CandViewCountFilter",
 #    )
 
 #adaped by Jarne:
-#from IOMC.EventVertexGenerators.VtxSmearedParameters_cfi import Realistic50ns13TeVCollisionVtxSmearingParameters,VtxSmearedCommon
-#VtxSmearedCommon.src=cms.InputTag("source")
-#process.generatorSmeared = cms.EDProducer("BetafuncEvtVtxGenerator",
-#    Realistic50ns13TeVCollisionVtxSmearingParameters,
-#    VtxSmearedCommon
-#    )
+from IOMC.EventVertexGenerators.VtxSmearedParameters_cfi import Realistic50ns13TeVCollisionVtxSmearingParameters,VtxSmearedCommon
+VtxSmearedCommon.src=cms.InputTag("source")
+process.generatorSmeared = cms.EDProducer("BetafuncEvtVtxGenerator",
+    Realistic50ns13TeVCollisionVtxSmearingParameters,
+    VtxSmearedCommon
+    )
 
 #from PV distribution in data: SingleMuon_Run2016H - the actual x location of the beampipe: 0.05803-0.124
 #from PV distribution in data: SingleMuon_Run2016H - the actual y location of the beampipe: 0.1075-0.027
 #from PV distribution in data: SingleMuon_Run2016H 
-process.generatorSmeared= cms.EDProducer("BetafuncEvtVtxGenerator",
-    Phi = cms.double(0.0),
-    BetaStar = cms.double(65.0),
-    Emittance = cms.double(5.411e-08),
-    Alpha = cms.double(0.0),
-    SigmaZ = cms.double(4.145),
-    TimeOffset = cms.double(0.0),
-    X0 = cms.double(-0.06597),
-    Y0 = cms.double(0.0805),
-    Z0 = cms.double(0.07968),
-    src = cms.InputTag("source"),
-    readDB = cms.bool(False)
-)
+#process.generatorSmeared= cms.EDProducer("BetafuncEvtVtxGenerator",
+#    Phi = cms.double(0.0),
+#    BetaStar = cms.double(65.0),
+#    Emittance = cms.double(5.411e-08),
+#    Alpha = cms.double(0.0),
+#    SigmaZ = cms.double(5.3),
+#    TimeOffset = cms.double(0.0),
+#    X0 = cms.double(-0.06597),
+#    Y0 = cms.double(0.0805),
+#    Z0 = cms.double(-1.0985),
+#    src = cms.InputTag("source"),
+#    readDB = cms.bool(False)
+#)
 
 
 process.load('Configuration.StandardSequences.Services_cff')
