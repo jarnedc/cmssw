@@ -22,12 +22,12 @@ G4VParticleChange* G4SQLoopProcess::AlongStepDoIt(const G4Track& track, const G4
 {
 
   if(track.GetPosition()==posini)std::cout  << "G4SQLoopProcess::AlongStepDoIt  MomentumDirection " << track.GetMomentumDirection().eta()  << " track GetPostion  " << track.GetPosition()/cm  << " trackId " << track.GetTrackID() << " parentId: " << track.GetParentID() << " GlobalTime " << track.GetGlobalTime()/ns << " TotalEnergy: " << track.GetTotalEnergy()/GeV << " Velocity " << track.GetVelocity()/m/ns << std::endl;
-  //if(track.GetPosition()==posini) std::cout << "G4SQLoopProcess::AlongStepDoIt particle is back at posini, where Material is " << track.GetMaterial()  << std::endl;
 
   fParticleChange->Clear();
   fParticleChange->Initialize(track);
   fParticleChange->ProposeWeight(track.GetWeight());
-  if(fabs(track.GetMomentumDirection().eta())>999. || fabs(track.GetPosition().z()) > 160*centimeter){std::cout << "G4SQLoopProcess::AlongStepDoIt particle getting killed because too large eta"<< std::endl; fParticleChange->ProposeTrackStatus(fStopAndKill);}
+  //Sbar not passing the following criteria are not of interest. They will not be reconstructable. A cut like this is required otherwise you will get Sbar infinitely looping.
+  if(fabs(track.GetMomentumDirection().eta())>999. || fabs(track.GetPosition().z()) > 160*centimeter){std::cout << "G4SQLoopProcess::AlongStepDoIt particle getting killed because too large z"<< std::endl; fParticleChange->ProposeTrackStatus(fStopAndKill);}
 
   return fParticleChange;
 }

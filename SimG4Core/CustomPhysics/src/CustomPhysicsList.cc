@@ -26,7 +26,6 @@
 #include "SimG4Core/CustomPhysics/src/G4SQInelasticProcess.hh"
 #include "SimG4Core/CustomPhysics/src/G4SQLoopProcess.hh"
 #include "SimG4Core/CustomPhysics/src/G4SQLoopProcessDiscr.hh"
-#include "SimG4Core/CustomPhysics/src/G4SQLoopProcessCreateDiscr.hh"
 #include "SimG4Core/CustomPhysics/src/G4SQNeutronAnnih.hh"
 #include "SimG4Core/CustomPhysics/src/G4SQInelasticCrossSection.hh"
 
@@ -89,7 +88,7 @@ std::cout << "=-= SL sexaq FTW! =-= "
           << particle->GetParticleName() << std::endl;
 
       G4ProcessManager* pmanager = particle->GetProcessManager();
-      if(pmanager) {
+      if(pmanager) { //this is an important bit for the Sexaquark. Here the different interactions get defined
         G4SQInelasticProcess * sqInelPr = new G4SQInelasticProcess();
 	G4SQNeutronAnnih * sqModel = new G4SQNeutronAnnih();
 	sqInelPr->RegisterMe(sqModel);
@@ -101,8 +100,6 @@ std::cout << "=-= SL sexaq FTW! =-= "
 	pmanager->AddContinuousProcess(sqLoopPr);
 	G4SQLoopProcessDiscr * sqLoopPrDiscr = new G4SQLoopProcessDiscr();
 	pmanager->AddDiscreteProcess(sqLoopPrDiscr);
-//	G4SQLoopProcessCreateDiscr * sqLoopPrCreateDiscr = new G4SQLoopProcessCreateDiscr();
-//	pmanager->AddDiscreteProcess(sqLoopPrCreateDiscr);
       }
       else  edm::LogInfo("CustomPhysics") << "   No pmanager";
 
