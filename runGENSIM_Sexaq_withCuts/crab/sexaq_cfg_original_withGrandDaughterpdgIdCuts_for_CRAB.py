@@ -137,16 +137,6 @@ process.VtxSmeared.src = cms.InputTag("source")
 process.genParticles.src = cms.InputTag("source")
 
 
-#temporary cut which asks for exactly one antiS to be present in the event:
-#process.antiSeventFilter = cms.EDFilter("CandViewSelector",
-#     src = cms.InputTag("genParticles"),
-#     cut = cms.string("pdgId == -1020000020")
-#     )
-#process.NumantiSeventFilter = cms.EDFilter("CandViewCountFilter",
-#    src = cms.InputTag("antiSeventFilter"),
-#    minNumber = cms.uint32(1),
-#    maxNumber = cms.uint32(1) ####THIS MAX NUMBER DOES NOT DO ANYTHING!!!!!!!!!! YOU WOULD HAVE TO ADAPTH THE FILTER YOURSELF TO MAKE THIS WORK
-#  )
 
 #make a cut on the daughters of the antiS: V0s which are created larger than 20cm should be cut (normally you could put the interaction cross section high, so they would all interact)
 process.genAntiSGranddaughterFilterKs = cms.EDFilter("CandViewSelector",
@@ -176,16 +166,6 @@ process.NumgenAntiSGranddaughterFilterKsAntiLambdaPresent = cms.EDFilter("CandVi
     src = cms.InputTag("genAntiSGranddaughterFilterKsAntiLambdaPresent"),
     minNumber = cms.uint32(1),
   )
-
-#cut on the angular separation between the two daughters: if deltaR(Ks,L) is larger than 3 it looks for sure like background
-#process.genAntiSGranddaughterFilterDeltaRKsAntiLambda = cms.EDFilter("CandViewSelector",
-#     src = cms.InputTag("genParticlesPlusGEANT"),
-#     cut = cms.string("pdgId == -1020000020 && deltaR( daughter(0).eta(),daughter(0).phi(),daughter(1).eta(),daughter(1).phi() ) < 3")
-#     )
-#process.NumgenAntiSGranddaughterFilterDeltaRKsAntiLambda = cms.EDFilter("CandViewCountFilter",
-#    src = cms.InputTag("genAntiSGranddaughterFilterDeltaRKsAntiLambda"),
-#    minNumber = cms.uint32(1),
-#  )
 
 
 #make a cut on the granddaughters of the antiS: particles with too low momenta anyway have a reco efficiency close to 0 and also too large displaced particles have a reco efficiency of 0
@@ -246,7 +226,7 @@ process.masterSequence = cms.Sequence(
 process.pgen*
 process.psim*process.genParticlesPlusGEANT*
 process.printTree
-
+#uncomment the below if you want to put some constraints on the events which are stored
 #process.genAntiSGranddaughterFilterKsPiMin*process.NumgenAntiSGranddaughterFilterKsPiMin*
 #process.genAntiSGranddaughterFilterKsPiPlus*process.NumgenAntiSGranddaughterFilterKsPiPlus*
 #process.genAntiSGranddaughterFilterAntiLambdaPiPlus*process.NumgenAntiSGranddaughterFilterAntiLambdaPiPlus*
